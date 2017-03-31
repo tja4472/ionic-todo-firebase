@@ -5,6 +5,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 //import { Auth, User, IDetailedError } from '@ionic/cloud-angular';
 
 import { ActiveUser } from '../models/active-user';
+import { CurrentUser } from '../models/current-user';
+
 import firebase from 'firebase';
 
 // Original: https://github.com/aaronksaunders/Ionic2-Ionic.io-Auth-Example
@@ -17,23 +19,35 @@ export class AuthService {
     // to changes of this object to determine of we are logged in or not
     activeUser = new BehaviorSubject<ActiveUser>(null)
 
+    currentUser$ = new BehaviorSubject<CurrentUser>(null)
+
     constructor(
-        //private auth: Auth,
-        //private user: User
     ) {
         console.log(`%s:constructor`, this.CLASS_NAME);
         firebase.auth().onAuthStateChanged((user: firebase.User) => {
             if (user) {
                 // User is signed in.
-                console.log('logged in>', user);
-                console.log('logged in:user.email>', user.email);
+                console.log(`%s:User is signed in>`, this.CLASS_NAME, user.uid);
+                this.currentUser$.next(this.createCurrentUser(user));
+
             } else {
                 // No user is signed in.
-                console.log('not logged in>');
+                console.log('No user is signed in.');
+                this.currentUser$.next(null);
             }
         });
     }
 
+    createCurrentUser(
+        user: firebase.User
+    ): CurrentUser {
+        let currentUser: CurrentUser = {
+            email: user.email,
+            id: user.uid,
+        }
+
+        return currentUser;
+    }
     /**
      * here we check to see if ionic saved a user for us
      */

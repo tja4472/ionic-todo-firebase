@@ -6,27 +6,40 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 
+import { HomePage } from '../pages/home/home.page';
 import { LoginPage } from '../pages/login/login.page';
 import { SignupPage } from '../pages/signup/signup.page';
 import { AuthService } from '../services/auth.service';
+import { CurrentUser } from '../models/current-user';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp implements OnInit {
+  private readonly CLASS_NAME = 'MyApp';
+
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = Page1;
 
   pages: Array<{ title: string, component: any }>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  private currentUser: CurrentUser = null;
+
+  constructor(
+    public platform: Platform,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    private authService: AuthService,
+  ) {
+    console.log(`%s:constructor`, this.CLASS_NAME);
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Page One', component: Page1 },
       { title: 'Page Two', component: Page2 },
+      { title: 'Home', component: HomePage },
       { title: 'Login', component: LoginPage },
       { title: 'Signup', component: SignupPage },
     ];
@@ -34,17 +47,25 @@ export class MyApp implements OnInit {
   }
 
   ngOnInit() {
+    console.log(`%s:ngOnInit`, this.CLASS_NAME);
     // check login state.
     //  firebase.auth().onAuthStateChanged((_currentUser) => {
 
   }
 
   initializeApp() {
+    console.log(`%s:initializeApp`, this.CLASS_NAME);
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
+      console.log(`%s:platform.ready()`, this.CLASS_NAME);
+
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+      // This has to be done after platform.ready() else enableMenu() will
+      // not change menu.
+      this.setupAuthServiceSubscription();
     });
   }
 
@@ -52,5 +73,32 @@ export class MyApp implements OnInit {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  private setupAuthServiceSubscription() {
+    this.authService.currentUser$
+      .subscribe(activeUser => {
+        console.log(`%s: -- authService.activeUser subscribe --`, this.CLASS_NAME);
+        console.log(`%s:activeUser>`, this.CLASS_NAME, activeUser);
+        this.currentUser = activeUser;
+
+        if (this.currentUser) {
+          console.log(`%s: -- logged in --`, this.CLASS_NAME);
+/*          
+          this.displayUserName = this.currentUser.email;
+          this.enableMenu(true);
+*/
+          this.nav.setRoot(HomePage).catch(() => {
+            console.error("Didn't set nav root");
+          });
+        } else {
+          console.log(`%s: -- logged out --`, this.CLASS_NAME);          
+          // this.displayUserName = 'Not logged in';
+          // this.enableMenu(false);
+          this.nav.setRoot(LoginPage).catch(() => {
+            console.error("Didn't set nav root");
+          });         
+        }
+      });
   }
 }
