@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle ion-button icon-only>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Signup</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <form [formGroup]="signupForm" novalidate>
+      <ion-item>
+        <ion-label floating color="primary">Username</ion-label>
+        <ion-input type="text" formControlName="username">
+        </ion-input>
+      </ion-item>
+
+      <control-messages [control]="signupForm.controls.username"></control-messages>   
+
+      <ion-item>
+        <ion-label floating color="primary">Password</ion-label>
+        <ion-input type="password" formControlName="password">
+        </ion-input>
+      </ion-item>
+
+      <control-messages [control]="signupForm.controls.password"></control-messages>   
+
+      <ion-row responsive-sm>
+        <ion-col>
+          <button ion-button (click)="onSignup()" color="primary" block [disabled]="!signupForm.valid">Signup</button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-list>
+</ion-content>
