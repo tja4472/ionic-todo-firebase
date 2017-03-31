@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -12,6 +12,15 @@ import { SignupPage } from '../pages/signup/signup.page';
 import { AuthService } from '../services/auth.service';
 import { CurrentUser } from '../models/current-user';
 
+export interface PageInterface {
+  title: string;
+  component: any;
+  icon: string;
+  logsOut?: boolean;
+  index?: number;
+  tabComponent?: any;
+}
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -20,13 +29,34 @@ export class MyApp implements OnInit {
 
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = Page1;
+  public displayUserName: string;
+  // List of pages that can be navigated to from the left menu
+  // the left menu only works after login
+  // the login page disables the left menu
+  appPages: PageInterface[] = [
+    { title: 'Page One', component: Page1, icon: 'calendar' },
+    { title: 'Page Two', component: Page2, icon: 'calendar' },
+  ];
+
+  loggedInPages: PageInterface[] = [
+    { title: 'Home Page', component: HomePage, icon: 'calendar' },
+    // { title: 'Current Todos Page', component: CurrentTodosPage, icon: 'calendar' },
+    // { title: 'Completed Todos Page', component: CompletedTodosPage, icon: 'calendar' },
+    { title: 'Logout', component: Page1, icon: 'log-out', logsOut: true }
+  ];
+
+  loggedOutPages: PageInterface[] = [
+    { title: 'Login', component: LoginPage, icon: 'log-in' },
+    { title: 'Signup', component: SignupPage, icon: 'log-in' },
+  ]  
+  // rootPage: any = Page1;
 
   pages: Array<{ title: string, component: any }>;
 
   private currentUser: CurrentUser = null;
 
   constructor(
+    public menu: MenuController,    
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
@@ -34,16 +64,6 @@ export class MyApp implements OnInit {
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
     this.initializeApp();
-
-    // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Page One', component: Page1 },
-      { title: 'Page Two', component: Page2 },
-      { title: 'Home', component: HomePage },
-      { title: 'Login', component: LoginPage },
-      { title: 'Signup', component: SignupPage },
-    ];
-
   }
 
   ngOnInit() {
@@ -70,35 +90,77 @@ export class MyApp implements OnInit {
   }
 
   openPage(page) {
-    // Reset the content nav to have just this page
+    // the nav component was found using @ViewChild(Nav)
+    // reset the nav to remove previous pages and only have this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+    // this.rootPage = page.component;
+    this.nav.setRoot(page.component).catch(() => {
+      console.error("Didn't set nav root");
+    });
+
+    if (page.logsOut === true) {
+      // Give the menu time to close before changing to logged out
+      setTimeout(() => {
+        this.authService.doLogout()
+      }, 1000);
+    }
   }
 
   private setupAuthServiceSubscription() {
     this.authService.currentUser$
-      .subscribe(activeUser => {
+      .subscribe(currentUser => {
         console.log(`%s: -- authService.activeUser subscribe --`, this.CLASS_NAME);
-        console.log(`%s:activeUser>`, this.CLASS_NAME, activeUser);
-        this.currentUser = activeUser;
+        console.log(`%s:activeUser>`, this.CLASS_NAME, currentUser);
+        this.currentUser = currentUser;
 
         if (this.currentUser) {
-          console.log(`%s: -- logged in --`, this.CLASS_NAME);
-/*          
+          console.log(`%s: -- logged in --`, this.CLASS_NAME);       
           this.displayUserName = this.currentUser.email;
           this.enableMenu(true);
-*/
           this.nav.setRoot(HomePage).catch(() => {
             console.error("Didn't set nav root");
           });
         } else {
           console.log(`%s: -- logged out --`, this.CLASS_NAME);          
-          // this.displayUserName = 'Not logged in';
-          // this.enableMenu(false);
+          this.displayUserName = 'Not logged in';
+          this.enableMenu(false);
           this.nav.setRoot(LoginPage).catch(() => {
             console.error("Didn't set nav root");
           });         
         }
       });
   }
+
+  enableMenu(loggedIn: boolean): void {
+    const loggedInMenu = 'loggedInMenu';
+    const loggedOutMenu = 'loggedOutMenu';
+
+    if (!this.menu.get(loggedInMenu)) {
+      console.error(`%s:enableMenu() *** WARNING: Menu not found>`, this.CLASS_NAME, loggedInMenu);
+    }
+
+    if (!this.menu.get(loggedOutMenu)) {
+      console.error(`%s:enableMenu() *** WARNING: Menu not found>`, this.CLASS_NAME, loggedOutMenu);
+    }
+
+    this.menu.enable(loggedIn, loggedInMenu);
+    this.menu.enable(!loggedIn, loggedOutMenu);
+  }
+
+  isActive(page: PageInterface) {
+    let childNav = this.nav.getActiveChildNav();
+
+    // Tabs are a special case because they have their own navigation
+    if (childNav) {
+      if (childNav.getSelected() && childNav.getSelected().root === page.tabComponent) {
+        return 'primary';
+      }
+      return;
+    }
+
+    if (this.nav.getActive() && this.nav.getActive().component === page.component) {
+      return 'primary';
+    }
+    return;
+  }  
 }
