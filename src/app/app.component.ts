@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
 import { MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -48,15 +48,16 @@ export class MyApp implements OnInit {
   loggedOutPages: PageInterface[] = [
     { title: 'Login', component: LoginPage, icon: 'log-in' },
     { title: 'Signup', component: SignupPage, icon: 'log-in' },
-  ]  
-  // rootPage: any = Page1;
+  ]
+  rootPage: any; // = Page1;
 
   pages: Array<{ title: string, component: any }>;
 
   private currentUser: CurrentUser = null;
 
   constructor(
-    public menu: MenuController,    
+    public menu: MenuController,
+    private ngZone: NgZone,
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
@@ -70,7 +71,7 @@ export class MyApp implements OnInit {
     console.log(`%s:ngOnInit`, this.CLASS_NAME);
     // check login state.
     //  firebase.auth().onAuthStateChanged((_currentUser) => {
-
+    // this.authService.init();
   }
 
   initializeApp() {
@@ -107,27 +108,43 @@ export class MyApp implements OnInit {
   }
 
   private setupAuthServiceSubscription() {
+    // NgZone.isInAngularZone() = true
+    // console.log('NgZone.isInAngularZone()-1>', NgZone.isInAngularZone());
     this.authService.currentUser$
       .subscribe(currentUser => {
         console.log(`%s: -- authService.activeUser subscribe --`, this.CLASS_NAME);
         console.log(`%s:activeUser>`, this.CLASS_NAME, currentUser);
-        this.currentUser = currentUser;
+        console.log(`%s:stateChecked>`, this.CLASS_NAME, this.authService.authStateChecked);
 
-        if (this.currentUser) {
-          console.log(`%s: -- logged in --`, this.CLASS_NAME);       
-          this.displayUserName = this.currentUser.email;
-          this.enableMenu(true);
-          this.nav.setRoot(HomePage).catch(() => {
-            console.error("Didn't set nav root");
-          });
-        } else {
-          console.log(`%s: -- logged out --`, this.CLASS_NAME);          
-          this.displayUserName = 'Not logged in';
-          this.enableMenu(false);
-          this.nav.setRoot(LoginPage).catch(() => {
-            console.error("Didn't set nav root");
-          });         
+        if (!this.authService.authStateChecked) {
+          return;
         }
+
+        this.currentUser = currentUser;
+        // NgZone.isInAngularZone() = false
+        // console.log('NgZone.isInAngularZone()-2>', NgZone.isInAngularZone());
+
+        // Without the ngZone the [disabled]="!loginForm.valid" was being ignored
+        // in login.page.html.
+        this.ngZone.run(() => {
+          // NgZone.isInAngularZone() = true
+          // console.log('NgZone.isInAngularZone()-3>', NgZone.isInAngularZone());
+          if (this.currentUser) {
+            console.log(`%s: -- logged in --`, this.CLASS_NAME);
+            this.displayUserName = this.currentUser.email;
+            this.enableMenu(true);
+            this.nav.setRoot(HomePage).catch(() => {
+              console.error("Didn't set nav root");
+            });
+          } else {
+            console.log(`%s: -- logged out --`, this.CLASS_NAME);
+            this.displayUserName = 'Not logged in';
+            this.enableMenu(false);
+            this.nav.setRoot(LoginPage).catch(() => {
+              console.error("Didn't set nav root");
+            });
+          }
+        });
       });
   }
 
@@ -162,5 +179,5 @@ export class MyApp implements OnInit {
       return 'primary';
     }
     return;
-  }  
+  }
 }

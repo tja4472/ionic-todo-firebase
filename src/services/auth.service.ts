@@ -20,11 +20,15 @@ export class AuthService {
     activeUser = new BehaviorSubject<ActiveUser>(null)
 
     currentUser$ = new BehaviorSubject<CurrentUser>(null)
+    authStateChecked: boolean = false;
 
     constructor(
     ) {
         console.log(`%s:constructor`, this.CLASS_NAME);
+
         firebase.auth().onAuthStateChanged((user: firebase.User) => {
+            this.authStateChecked = true;
+
             if (user) {
                 // User is signed in.
                 console.log(`%s:User is signed in>`, this.CLASS_NAME, user.uid);
@@ -32,12 +36,29 @@ export class AuthService {
 
             } else {
                 // No user is signed in.
-                console.log('No user is signed in.');
+                console.log(`%s: No user is signed in.`, this.CLASS_NAME);
                 this.currentUser$.next(null);
             }
         });
     }
+/*
+    init() {
+        firebase.auth().onAuthStateChanged((user: firebase.User) => {
+            this.stateChecked = true;
 
+            if (user) {
+                // User is signed in.
+                console.log(`%s:User is signed in>`, this.CLASS_NAME, user.uid);
+                this.currentUser$.next(this.createCurrentUser(user));
+
+            } else {
+                // No user is signed in.
+                console.log(`%s: No user is signed in.`, this.CLASS_NAME);
+                this.currentUser$.next(null);
+            }
+        });
+    }
+*/    
     createCurrentUser(
         user: firebase.User
     ): CurrentUser {
