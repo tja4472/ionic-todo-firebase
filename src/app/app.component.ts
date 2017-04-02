@@ -6,10 +6,14 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 
+import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
 import { HomePage } from '../pages/home/home.page';
 import { LoginPage } from '../pages/login/login.page';
 import { SignupPage } from '../pages/signup/signup.page';
+
 import { AuthService } from '../services/auth.service';
+import { CurrentTodoService } from '../services/current-todo.service';
+
 import { CurrentUser } from '../models/current-user';
 
 export interface PageInterface {
@@ -40,7 +44,7 @@ export class MyApp implements OnInit {
 
   loggedInPages: PageInterface[] = [
     { title: 'Home Page', component: HomePage, icon: 'calendar' },
-    // { title: 'Current Todos Page', component: CurrentTodosPage, icon: 'calendar' },
+    { title: 'Current Todos Page', component: CurrentTodosPage, icon: 'calendar' },
     // { title: 'Completed Todos Page', component: CompletedTodosPage, icon: 'calendar' },
     { title: 'Logout', component: Page1, icon: 'log-out', logsOut: true }
   ];
@@ -62,9 +66,12 @@ export class MyApp implements OnInit {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     private authService: AuthService,
+    private currentTodoService: CurrentTodoService,
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
     this.initializeApp();
+    this.rootPage = CurrentTodosPage;
+this.currentTodoService.load('dddd');    
   }
 
   ngOnInit() {
@@ -86,7 +93,7 @@ export class MyApp implements OnInit {
 
       // This has to be done after platform.ready() else enableMenu() will
       // not change menu.
-      this.setupAuthServiceSubscription();
+      //this.setupAuthServiceSubscription();
     });
   }
 
@@ -95,6 +102,7 @@ export class MyApp implements OnInit {
     // reset the nav to remove previous pages and only have this page
     // we wouldn't want the back button to show in this scenario
     // this.rootPage = page.component;
+       console.log('NgZone.isInAngularZone()-2>', NgZone.isInAngularZone());    
     this.nav.setRoot(page.component).catch(() => {
       console.error("Didn't set nav root");
     });
@@ -119,7 +127,7 @@ export class MyApp implements OnInit {
         if (!this.authService.authStateChecked) {
           return;
         }
-
+this.currentTodoService.load('dddd');
         this.currentUser = currentUser;
         // NgZone.isInAngularZone() = false
         // console.log('NgZone.isInAngularZone()-2>', NgZone.isInAngularZone());
@@ -136,6 +144,7 @@ export class MyApp implements OnInit {
             this.nav.setRoot(HomePage).catch(() => {
               console.error("Didn't set nav root");
             });
+            // this.currentTodoService.load(this.currentUser.id);
           } else {
             console.log(`%s: -- logged out --`, this.CLASS_NAME);
             this.displayUserName = 'Not logged in';
@@ -143,6 +152,9 @@ export class MyApp implements OnInit {
             this.nav.setRoot(LoginPage).catch(() => {
               console.error("Didn't set nav root");
             });
+            
+            // stop watching this.currentTodoService.
+            
           }
         });
       });

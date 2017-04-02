@@ -12,6 +12,13 @@ import { SignupPage } from '../pages/signup/signup.page';
 import { AuthService } from '../services/auth.service';
 import { ValidationService } from '../services/validation.service';
 // ---
+import { CurrentTodoDetailPage } from '../pages/current-todo-detail/current-todo-detail.page';
+import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
+
+import { CurrentTodoListComponent } from '../components/current-todo-list/current-todo-list.component';
+import { MyPopoverPage } from '../components/popover/popover.component';
+
+import { CurrentTodoService } from '../services/current-todo.service';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -30,7 +37,11 @@ import firebase from 'firebase';
     Page1,
     Page2,
     ControlMessages,
+    CurrentTodoDetailPage,
+    CurrentTodoListComponent,
+    CurrentTodosPage,
     LoginPage,
+    MyPopoverPage,
     SignupPage,
   ],
   imports: [
@@ -38,15 +49,19 @@ import firebase from 'firebase';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
+    CurrentTodoDetailPage,
+    CurrentTodosPage,
     HomePage,
     MyApp,
     Page1,
     Page2,
     LoginPage,
+    MyPopoverPage,
     SignupPage,
   ],
   providers: [
     AuthService,
+    CurrentTodoService,
     ValidationService,
     StatusBar,
     SplashScreen,
