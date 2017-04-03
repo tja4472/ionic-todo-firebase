@@ -56,7 +56,6 @@ export class CurrentTodoService {
         private ngZone: NgZone,
     ) {
         console.log(`%s:constructor`, this.CLASS_NAME);
-        // this.dataStore = { todos: [] };
         this.data = [];
         this.dataBehaviorSubject = <BehaviorSubject<Todo[]>>new BehaviorSubject([]);
     }

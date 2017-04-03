@@ -18,6 +18,7 @@ import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
 import { CurrentTodoListComponent } from '../components/current-todo-list/current-todo-list.component';
 import { MyPopoverPage } from '../components/popover/popover.component';
 
+import { CompletedTodoService } from '../services/completed-todo.service';
 import { CurrentTodoService } from '../services/current-todo.service';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -61,6 +62,7 @@ import firebase from 'firebase';
   ],
   providers: [
     AuthService,
+    CompletedTodoService,
     CurrentTodoService,
     ValidationService,
     StatusBar,
