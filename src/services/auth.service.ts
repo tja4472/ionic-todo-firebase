@@ -17,27 +17,40 @@ export class AuthService {
     //
     // this will hold the user object when we have one, we can subscribe
     // to changes of this object to determine of we are logged in or not
-    activeUser = new BehaviorSubject<ActiveUser>(null)
+    // activeUser = new BehaviorSubject<ActiveUser>(null)
 
-    currentUser$ = new BehaviorSubject<CurrentUser>(null)
-    authStateChecked: boolean = false;
+    private _authUserBehaviorSubject$ = new BehaviorSubject<CurrentUser>(null)
+    private _authStateChecked: boolean = false;
+
+    get authUser() {
+        return this._authUserBehaviorSubject$.getValue();
+    }
+
+    get authStateChecked() {
+        return this._authStateChecked;
+    }
+
+    get authUser$() {
+        return this._authUserBehaviorSubject$.asObservable();
+    }
+
 
     constructor(
     ) {
         console.log(`%s:constructor`, this.CLASS_NAME);
 
         firebase.auth().onAuthStateChanged((user: firebase.User) => {
-            this.authStateChecked = true;
+            this._authStateChecked = true;
 
             if (user) {
                 // User is signed in.
                 console.log(`%s:User is signed in>`, this.CLASS_NAME, user.uid);
-                this.currentUser$.next(this.createCurrentUser(user));
+                this._authUserBehaviorSubject$.next(this.createCurrentUser(user));
 
             } else {
                 // No user is signed in.
                 console.log(`%s: No user is signed in.`, this.CLASS_NAME);
-                this.currentUser$.next(null);
+                this._authUserBehaviorSubject$.next(null);
             }
         });
     }
@@ -183,6 +196,6 @@ export class AuthService {
             // this.error = error
             console.log(error);
         });
-        this.activeUser.next(null)
+        this._authUserBehaviorSubject$.next(null)
     }
 }

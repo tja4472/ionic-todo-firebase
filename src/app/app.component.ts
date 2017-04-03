@@ -71,7 +71,7 @@ export class MyApp implements OnInit {
     console.log(`%s:constructor`, this.CLASS_NAME);
     this.initializeApp();
     this.rootPage = CurrentTodosPage;
-this.currentTodoService.load('dddd');    
+    this.currentTodoService.load('dddd');
   }
 
   ngOnInit() {
@@ -93,7 +93,7 @@ this.currentTodoService.load('dddd');
 
       // This has to be done after platform.ready() else enableMenu() will
       // not change menu.
-      //this.setupAuthServiceSubscription();
+      this.setupAuthServiceSubscription();
     });
   }
 
@@ -102,7 +102,7 @@ this.currentTodoService.load('dddd');
     // reset the nav to remove previous pages and only have this page
     // we wouldn't want the back button to show in this scenario
     // this.rootPage = page.component;
-       console.log('NgZone.isInAngularZone()-2>', NgZone.isInAngularZone());    
+    console.log('NgZone.isInAngularZone()-2>', NgZone.isInAngularZone());
     this.nav.setRoot(page.component).catch(() => {
       console.error("Didn't set nav root");
     });
@@ -118,16 +118,16 @@ this.currentTodoService.load('dddd');
   private setupAuthServiceSubscription() {
     // NgZone.isInAngularZone() = true
     // console.log('NgZone.isInAngularZone()-1>', NgZone.isInAngularZone());
-    this.authService.currentUser$
+    this.authService.authUser$
       .subscribe(currentUser => {
         console.log(`%s: -- authService.activeUser subscribe --`, this.CLASS_NAME);
-        console.log(`%s:activeUser>`, this.CLASS_NAME, currentUser);
+        console.log(`%s:currentUser>`, this.CLASS_NAME, currentUser);
         console.log(`%s:stateChecked>`, this.CLASS_NAME, this.authService.authStateChecked);
 
         if (!this.authService.authStateChecked) {
           return;
         }
-this.currentTodoService.load('dddd');
+        this.currentTodoService.load('dddd');
         this.currentUser = currentUser;
         // NgZone.isInAngularZone() = false
         // console.log('NgZone.isInAngularZone()-2>', NgZone.isInAngularZone());
@@ -152,9 +152,9 @@ this.currentTodoService.load('dddd');
             this.nav.setRoot(LoginPage).catch(() => {
               console.error("Didn't set nav root");
             });
-            
+
             // stop watching this.currentTodoService.
-            
+
           }
         });
       });
