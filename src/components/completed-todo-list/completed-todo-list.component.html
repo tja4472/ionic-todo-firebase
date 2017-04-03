@@ -1,0 +1,16 @@
+<ion-grid>
+	<ion-row center
+	         *ngFor="let item of data">
+		<ion-col col-auto>
+			<ion-checkbox [checked]="item.isComplete"
+			              (ionChange)="toggleCompleteItem.emit(item)">
+			</ion-checkbox>
+		</ion-col>
+		<ion-col>
+			<ion-item (click)="editItem.emit(item)">
+				<h3 [style.text-decoration]="item.isComplete ? 'line-through': ''">{{item.name}}</h3>
+				<p>{{item.description}}</p>
+			</ion-item>
+		</ion-col>
+	</ion-row>
+</ion-grid>

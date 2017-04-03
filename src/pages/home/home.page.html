@@ -9,8 +9,8 @@
 
 <ion-content padding>
   <h1>Current User</h1>
-  Email: {{this.authService.currentUser$.getValue()?.email}}<br>
-  Id: {{this.authService.currentUser$.getValue()?.id}}<br>
+  Email: {{this.authService.authUser?.email}}<br>
+  Id: {{this.authService.authUser?.id}}<br>
   <p>
     <button ion-button (click)="doLogout()">LOGOUT</button>
   </p>

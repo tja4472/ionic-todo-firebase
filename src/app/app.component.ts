@@ -6,12 +6,14 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 
+import { CompletedTodosPage } from '../pages/completed-todos/completed-todos.page';
 import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
 import { HomePage } from '../pages/home/home.page';
 import { LoginPage } from '../pages/login/login.page';
 import { SignupPage } from '../pages/signup/signup.page';
 
 import { AuthService } from '../services/auth.service';
+import { CompletedTodoService } from '../services/completed-todo.service';
 import { CurrentTodoService } from '../services/current-todo.service';
 
 import { CurrentUser } from '../models/current-user';
@@ -45,7 +47,7 @@ export class MyApp implements OnInit {
   loggedInPages: PageInterface[] = [
     { title: 'Home Page', component: HomePage, icon: 'calendar' },
     { title: 'Current Todos Page', component: CurrentTodosPage, icon: 'calendar' },
-    // { title: 'Completed Todos Page', component: CompletedTodosPage, icon: 'calendar' },
+    { title: 'Completed Todos Page', component: CompletedTodosPage, icon: 'calendar' },
     { title: 'Logout', component: Page1, icon: 'log-out', logsOut: true }
   ];
 
@@ -66,6 +68,7 @@ export class MyApp implements OnInit {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     private authService: AuthService,
+    private completedTodoService: CompletedTodoService,
     private currentTodoService: CurrentTodoService,
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
@@ -128,6 +131,8 @@ export class MyApp implements OnInit {
           return;
         }
         this.currentTodoService.load('dddd');
+        this.completedTodoService.load('dddd');
+
         this.currentUser = currentUser;
         // NgZone.isInAngularZone() = false
         // console.log('NgZone.isInAngularZone()-2>', NgZone.isInAngularZone());
