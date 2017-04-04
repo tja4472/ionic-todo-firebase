@@ -31,7 +31,7 @@ export class CurrentTodosPage {
     private todoService: CurrentTodoService,
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
-    this.todos$ = this.todoService.todos;
+    this.todos$ = this.todoService.data$;
   }
 
   createItem() {

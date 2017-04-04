@@ -14,7 +14,7 @@ import { ReorderArrayIndexes } from '../models/reorder-array-indexes';
 import { Todo } from '../models/todo';
 import { TodoCompleted } from '../models/todo-completed';
 
-const FIREBASE_CURRENT_TODOS = '/todo/currentTodos';
+
 
 // Multiple subscriptions on a FirebaseListObservable #574
 // https://github.com/angular/angularfire2/issues/574
@@ -27,22 +27,16 @@ const FIREBASE_CURRENT_TODOS = '/todo/currentTodos';
 @Injectable()
 export class CurrentTodoService {
     private readonly CLASS_NAME = 'CurrentTodoService';
+    private readonly FIREBASE_DATABASE_KEY = '/todo/currentTodos';
 
-    private dataBehaviorSubject: BehaviorSubject<Todo[]>;
-    /*    
-        private dataStore: {  // This is where we will store our data in memory
-            todos: Todo[]
-        };
-    */
     private data: Todo[];
+    private dataBehaviorSubject: BehaviorSubject<Todo[]>;
 
-    get todos() {
+    private databaseReference: firebase.database.Reference;
+
+    get data$() {
         return this.dataBehaviorSubject.asObservable();
     }
-
-    private readonly collectionName = 'current_todos';
-
-    private ref;
 
     /*
     Currently this is a singleton for the app.
@@ -58,6 +52,8 @@ export class CurrentTodoService {
         console.log('%s:constructor', this.CLASS_NAME);
         this.data = [];
         this.dataBehaviorSubject = <BehaviorSubject<Todo[]>>new BehaviorSubject([]);
+        this.databaseReference = firebase.database()
+            .ref(this.FIREBASE_DATABASE_KEY);
     }
 
     public clearCompletedItems(): void {
@@ -66,18 +62,6 @@ export class CurrentTodoService {
         console.log('%s:completedItems>', this.CLASS_NAME, completedItems);
 
         completedItems.map(x => {
-            console.log('x>', x);
-            /*
-                private todo: TodoCompleted =
-                {
-                  id: undefined,
-                  isComplete: false,
-                  description: null,
-                  name: '',
-                  userId: '',
-                };
-            */
-
             let todoCompleted: TodoCompleted =
                 {
                     id: undefined,
@@ -95,7 +79,7 @@ export class CurrentTodoService {
     public moveToCurrent(
         item: TodoCompleted,
     ): void {
-        console.log('%s:clearCompletedItems', this.CLASS_NAME, item);        
+        console.log('%s:clearCompletedItems', this.CLASS_NAME, item);
         let todo: Todo = {
             id: undefined,
             description: item.description,
@@ -109,91 +93,43 @@ export class CurrentTodoService {
         this.completedTodoService.removeItem(item);
     }
 
-    // =======
-
-    public reset(): void {
-        console.log('CurrentTodoService#reset');
-        this.data = [];
-        this.dataBehaviorSubject = <BehaviorSubject<Todo[]>>new BehaviorSubject([]);
-    }
-
+    /*
+        public reset(): void {
+            console.log('CurrentTodoService#reset');
+            this.data = [];
+            this.dataBehaviorSubject = <BehaviorSubject<Todo[]>>new BehaviorSubject([]);
+        }
+    */
     public load(
         activeUserId: string,
     ): void {
         console.log('TodoService:load:activeUserId>', activeUserId);
 
-        this.ref = firebase.database()
-            .ref('todo/currentTodos')
-            .orderByChild('index');
+        this.databaseReference
+            .orderByChild('index')
+            .on('value', snapshot => {
+                // console.log('snapshot>', snapshot);
+                let arr = [];
 
-        this.ref.on('value', snapshot => {
-            // console.log('snapshot>', snapshot);
-            let arr = [];
+                snapshot.forEach((childSnapshot) => {
+                    arr.push(
+                        fromFirebaseTodo
+                            (childSnapshot.key, childSnapshot.val()));
+                    return false;
+                });
 
-            snapshot.forEach((childSnapshot) => {
-                // var data = childSnapshot.val()
-                // data['id'] = childSnapshot.key
-                // arr.push(data);
-
-                // console.log('data>', data);
-                // return false;
-
-                // let xx = fromFirebaseTodo(childSnapshot.key, data);  
-                // let xx = fromFirebaseTodo                    (childSnapshot.key, childSnapshot.val());
-                // console.log('xx>', xx);
-                // arr.push(xx);
-                arr.push(
-                    fromFirebaseTodo
-                        (childSnapshot.key, childSnapshot.val()));
+                console.log('arr>', arr);
+                this.data = arr;
+                // NgZone.isInAngularZone() = false
+                // console.log('isInAngularZone()-2>', NgZone.isInAngularZone());
+                this.ngZone.run(() => {
+                    // NgZone.isInAngularZone() = true
+                    // console.log('isInAngularZone()-3>', NgZone.isInAngularZone());
+                    // this._todos.next(Object.assign({}, this.dataStore).todos);
+                    this.dataBehaviorSubject.next(Object.assign([], this.data));
+                });
             });
-
-            console.log('arr>', arr);
-            this.data = arr;
-            // NgZone.isInAngularZone() = false
-            // console.log('isInAngularZone()-2>', NgZone.isInAngularZone());
-            this.ngZone.run(() => {
-                // NgZone.isInAngularZone() = true
-                // console.log('isInAngularZone()-3>', NgZone.isInAngularZone());
-                // this._todos.next(Object.assign({}, this.dataStore).todos);
-                this.dataBehaviorSubject.next(Object.assign([], this.data));
-            });
-        });
-
-        /*
-        this.ref.once('value', snapshot => {
-            console.log('snapshot>', snapshot);
-                  snapshot.forEach((childSnapshot) => {
-                    var data = childSnapshot.val()
-                    data['id'] = childSnapshot.key
-                    // arr.push(data);
-        
-                    console.log('data>', data);
-                    // return false;
-                  });    
-        });
-        */
-        // this._todos = <BehaviorSubject<Todo[]>>new BehaviorSubject([]);
-        /*        
-                this.db.collection(this.collectionName)
-                    .order("index", "ascending")
-                    .findAll({ userId: activeUserId })
-                    .watch()
-                    .do(x => console.log('TodoService:watch>', x))
-                    // replace this with one function.
-                    //.map(x => x.map(d => fromFirebaseTodo(d)))
-                    .map(x => fromDatabase(x))
-                    .subscribe(
-                    result3 => {
-                        console.log('TodosPage:result3>', result3);
-                        this.dataStore.todos = result3;
-                        this._todos.next(Object.assign({}, this.dataStore).todos);
-                    },
-                    err => { console.error(err); }
-                    );
-        */
     }
-
-    // =======
 
     reorderItems(
         indexes: ReorderArrayIndexes,
@@ -204,42 +140,41 @@ export class CurrentTodoService {
 
         let updates = {};
         for (let x = 0; x < itemsToSave.length; x++) {
-            updates['todo/currentTodos/' + itemsToSave[x].id + '/index'] = x;
+            updates[itemsToSave[x].id + '/index'] = x;
         }
 
-        firebase.database().ref().update(updates);
+        this.databaseReference.update(updates);
     }
 
     removeItem(
-        todo: Todo,
+        item: Todo,
     ) {
-        console.log('%s:removeItem>', this.CLASS_NAME, todo);
-        firebase.database()
-            .ref('todo/currentTodos/' + todo.id)
+        console.log('%s:removeItem>', this.CLASS_NAME, item);
+        this.databaseReference
+            .child(item.id)
             .remove();
     }
 
     saveItem(
-        todo: Todo,
+        item: Todo,
     ) {
-        console.log('%s:saveItem>', this.CLASS_NAME, todo);
-        if (todo.id == undefined) {
+        console.log('%s:saveItem>', this.CLASS_NAME, item);
+        if (item.id == undefined) {
             // insert.
-            firebase.database()
-                .ref('todo/currentTodos')
-                .push(toFirebaseTodo(todo));
+            this.databaseReference
+                .push(toFirebaseTodo(item));
         } else {
             // update.                        
-            firebase.database()
-                .ref('todo/currentTodos/' + todo.id)
-                .set(toFirebaseTodo(todo));
+            this.databaseReference
+                .child(item.id)
+                .set(toFirebaseTodo(item));
         }
     }
 
     public toggleCompleteItem(
         todo: Todo
-        ): void {
-        console.log('%s:toggleCompleteItem>', this.CLASS_NAME, todo);            
+    ): void {
+        console.log('%s:toggleCompleteItem>', this.CLASS_NAME, todo);
         todo.isComplete = !todo.isComplete;
         this.saveItem(todo);
     }
