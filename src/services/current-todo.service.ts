@@ -8,7 +8,7 @@ import firebase from 'firebase';
 import { reorderArray } from 'ionic-angular';
 
 import { AuthService } from '../services/auth.service';
-// import { CompletedTodoService } from '../services/completed-todo.service';
+import { CompletedTodoService } from '../services/completed-todo.service';
 
 import { ReorderArrayIndexes } from '../models/reorder-array-indexes';
 import { Todo } from '../models/todo';
@@ -52,17 +52,18 @@ export class CurrentTodoService {
     */
     constructor(
         private authService: AuthService,
-        // private completedTodoService: CompletedTodoService,
+        private completedTodoService: CompletedTodoService,
         private ngZone: NgZone,
     ) {
-        console.log(`%s:constructor`, this.CLASS_NAME);
+        console.log('%s:constructor', this.CLASS_NAME);
         this.data = [];
         this.dataBehaviorSubject = <BehaviorSubject<Todo[]>>new BehaviorSubject([]);
     }
 
     public clearCompletedItems(): void {
+        console.log('%s:clearCompletedItems', this.CLASS_NAME);
         let completedItems = this.data.filter(a => a.isComplete);
-        console.log('TodoService:clearCompletedItems>', completedItems);
+        console.log('%s:completedItems>', this.CLASS_NAME, completedItems);
 
         completedItems.map(x => {
             console.log('x>', x);
@@ -85,16 +86,8 @@ export class CurrentTodoService {
                     name: x.name,
                     userId: x.userId,
                 };
-            /*    
-                        let todoCompleted = new TodoCompleted(
-                            x.isComplete,
-                            x.userId,
-                            x.name,
-                            x.description,
-                        );
-            */
 
-            // this.completedTodoService.saveItem(todoCompleted);
+            this.completedTodoService.saveItem(todoCompleted);
             this.removeItem(x);
         });
     }
@@ -102,7 +95,7 @@ export class CurrentTodoService {
     public moveToCurrent(
         item: TodoCompleted,
     ): void {
-        console.log('moveToCurrent>', item);
+        console.log('%s:clearCompletedItems', this.CLASS_NAME, item);        
         let todo: Todo = {
             id: undefined,
             description: item.description,
@@ -113,7 +106,7 @@ export class CurrentTodoService {
         };
 
         this.saveItem(todo);
-        // this.completedTodoService.removeItem(item);
+        this.completedTodoService.removeItem(item);
     }
 
     // =======
@@ -129,7 +122,9 @@ export class CurrentTodoService {
     ): void {
         console.log('TodoService:load:activeUserId>', activeUserId);
 
-        this.ref = firebase.database().ref('todo/currentTodos');
+        this.ref = firebase.database()
+            .ref('todo/currentTodos')
+            .orderByChild('index');
 
         this.ref.on('value', snapshot => {
             // console.log('snapshot>', snapshot);
@@ -200,41 +195,51 @@ export class CurrentTodoService {
 
     // =======
 
-    reorderItems(indexes: ReorderArrayIndexes) {
+    reorderItems(
+        indexes: ReorderArrayIndexes,
+    ) {
+        console.log('%s:reorderItems:indexes>', this.CLASS_NAME, indexes);
         const itemsToSave = [...this.data];
         reorderArray(itemsToSave, indexes);
 
-        let updates: any[] = [];
+        let updates = {};
         for (let x = 0; x < itemsToSave.length; x++) {
-            updates.push({ id: itemsToSave[x].id, index: x });
+            updates['todo/currentTodos/' + itemsToSave[x].id + '/index'] = x;
         }
 
-        // this.db.collection(this.collectionName).update(updates);
+        firebase.database().ref().update(updates);
     }
 
-    removeItem(todo: Todo) {
-        console.log('removeItem>', todo);
-        // this.db.collection(this.collectionName).remove(todo.id);
+    removeItem(
+        todo: Todo,
+    ) {
+        console.log('%s:removeItem>', this.CLASS_NAME, todo);
+        firebase.database()
+            .ref('todo/currentTodos/' + todo.id)
+            .remove();
     }
 
-    saveItem(todo: Todo) {
-        console.log('save>', todo);
-        // let userId = this.authService.activeUser.value.id;
-        // todo.userId = userId;
-        // this.db.collection(this.collectionName).store(toFirebaseTodo(todo));
-
-        /*
-                if (todo.$key === '') {
-                    // insert.
-                    this.fb_CurrentTodos$.push(toFirebaseTodo(todo));
-                } else {
-                    // update.
-                    this.fb_CurrentTodos$.update(todo.$key, toFirebaseTodo(todo));
-                }
-        */
+    saveItem(
+        todo: Todo,
+    ) {
+        console.log('%s:saveItem>', this.CLASS_NAME, todo);
+        if (todo.id == undefined) {
+            // insert.
+            firebase.database()
+                .ref('todo/currentTodos')
+                .push(toFirebaseTodo(todo));
+        } else {
+            // update.                        
+            firebase.database()
+                .ref('todo/currentTodos/' + todo.id)
+                .set(toFirebaseTodo(todo));
+        }
     }
 
-    public toggleCompleteItem(todo: Todo): void {
+    public toggleCompleteItem(
+        todo: Todo
+        ): void {
+        console.log('%s:toggleCompleteItem>', this.CLASS_NAME, todo);            
         todo.isComplete = !todo.isComplete;
         this.saveItem(todo);
     }
@@ -274,25 +279,25 @@ export class CurrentTodoService {
 // To insert need to remove id PropertyKey.
 //
 interface FirebaseTodo {
-    id: string;
+    // id: string;
     description?: string;
     index: number;
     name: string;
     isComplete: boolean;
-    userId: string;
+    // userId: string;
 }
 
 function toFirebaseTodo(todo: Todo): FirebaseTodo {
     //
     let result: FirebaseTodo = {
-        id: todo.id,
+        // id: todo.id,
         //id: undefined,
         description: todo.description,
         index: todo.index,
         name: todo.name,
         isComplete: todo.isComplete,
         //userId: todo.userId,
-        userId: 'aaa',
+        // userId: 'aaa',
     };
 
     console.log('toFirebaseTodo>', result);

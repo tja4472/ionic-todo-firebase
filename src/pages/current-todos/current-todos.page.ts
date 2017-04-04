@@ -108,7 +108,7 @@ export class CurrentTodosPage {
 
   removeItem(item: Todo) {
     console.log('CurrentTodosPage:removeItem:item>', item);
-    // this.todoService.removeItem(item);
+    this.todoService.removeItem(item);
   }
 
   ionViewDidLeave() {

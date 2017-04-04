@@ -98,13 +98,32 @@ export class CompletedTodoService {
         });
     }
 
-    removeItem(todo: TodoCompleted) {
-        console.log('removeItem>', todo);
-        //        this.db.collection(this.collectionName).remove(todo.id);
+    removeItem(
+        todo: TodoCompleted,
+    ) {
+        console.log('%s:removeItem>', this.CLASS_NAME, todo);
+        firebase.database()
+            .ref('todo/completedTodos/' + todo.id)
+            .remove();
     }
 
-    saveItem(todo: TodoCompleted) {
-        console.log('saveItem>', todo);
+    saveItem(
+        todo: TodoCompleted
+        ) {
+        console.log(`%s:saveItem>`, this.CLASS_NAME, todo);        
+
+        if (todo.id == undefined) {
+            // insert.
+            firebase.database()
+                .ref('todo/completedTodos')
+                .push(toFirebaseTodo(todo));
+        } else {
+            // update.                        
+            firebase.database()
+                .ref('todo/completedTodos/' + todo.id)
+                .set(toFirebaseTodo(todo));
+        }
+
         //   let userId = this.authService.activeUser.value.id;
         //   todo.userId = userId;
         //   this.db.collection(this.collectionName).store(toFirebaseTodo(todo));
@@ -116,22 +135,22 @@ export class CompletedTodoService {
 // To insert need to remove id PropertyKey.
 //
 interface FirebaseTodo {
-    id: string;
+    // id: string;
     description?: string;
     name: string;
     isComplete: boolean;
-    userId: string;
+    // userId: string;
 }
 
 function toFirebaseTodo(todo: TodoCompleted): FirebaseTodo {
     //
     let result: FirebaseTodo = {
-        id: todo.id,
+        // id: todo.id,
         //id: undefined,
         description: todo.description,
         name: todo.name,
         isComplete: todo.isComplete,
-        userId: todo.userId,
+        // userId: todo.userId,
     };
 
     console.log('toFirebaseTodo>', result);
