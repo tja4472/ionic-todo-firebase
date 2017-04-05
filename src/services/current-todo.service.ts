@@ -1,4 +1,4 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Observable } from 'rxjs/Observable';
@@ -47,7 +47,7 @@ export class CurrentTodoService {
     constructor(
         // private authService: AuthService,
         private completedTodoService: CompletedTodoService,
-        private ngZone: NgZone,
+        // private ngZone: NgZone,
     ) {
         console.log('%s:constructor()', this.CLASS_NAME);
         this.data = [];
@@ -122,12 +122,12 @@ export class CurrentTodoService {
                 this.data = arr;
                 // NgZone.isInAngularZone() = false
                 // console.log('isInAngularZone()-2>', NgZone.isInAngularZone());
-                this.ngZone.run(() => {
-                    // NgZone.isInAngularZone() = true
-                    // console.log('isInAngularZone()-3>', NgZone.isInAngularZone());
-                    // this._todos.next(Object.assign({}, this.dataStore).todos);
-                    this.dataBehaviorSubject.next(Object.assign([], this.data));
-                });
+                // this.ngZone.run(() => {
+                // NgZone.isInAngularZone() = true
+                // console.log('isInAngularZone()-3>', NgZone.isInAngularZone());
+                // this._todos.next(Object.assign({}, this.dataStore).todos);
+                this.dataBehaviorSubject.next(Object.assign([], this.data));
+                // });
             });
     }
 

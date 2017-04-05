@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -15,8 +15,6 @@ import { SignupPage } from '../pages/signup/signup.page';
 import { AuthService } from '../services/auth.service';
 import { CompletedTodoService } from '../services/completed-todo.service';
 import { CurrentTodoService } from '../services/current-todo.service';
-
-import { CurrentUser } from '../models/current-user';
 
 export interface PageInterface {
   title: string;
@@ -61,7 +59,7 @@ export class MyApp implements OnInit {
 
   constructor(
     public menu: MenuController,
-    private ngZone: NgZone,
+    // private ngZone: NgZone,
     public platform: Platform,
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
@@ -101,7 +99,7 @@ export class MyApp implements OnInit {
     // reset the nav to remove previous pages and only have this page
     // we wouldn't want the back button to show in this scenario
     // this.rootPage = page.component;
-    console.log('NgZone.isInAngularZone()-2>', NgZone.isInAngularZone());
+    // console.log('NgZone.isInAngularZone()-2>', NgZone.isInAngularZone());
     this.nav.setRoot(page.component).catch(() => {
       console.error("Didn't set nav root");
     });
@@ -132,7 +130,7 @@ export class MyApp implements OnInit {
 
         // Without the ngZone the [disabled]="!loginForm.valid" was being ignored
         // in login.page.html.
-        this.ngZone.run(() => {
+        // this.ngZone.run(() => {
           // NgZone.isInAngularZone() = true
           // console.log('NgZone.isInAngularZone()-3>', NgZone.isInAngularZone());
           if (currentUser) {
@@ -158,7 +156,7 @@ export class MyApp implements OnInit {
             this.completedTodoService.stopListening();
           }
         });
-      });
+      // });
   }
 
   enableMenu(loggedIn: boolean): void {
