@@ -7,7 +7,7 @@ import firebase from 'firebase';
 
 import { reorderArray } from 'ionic-angular';
 
-import { AuthService } from '../services/auth.service';
+// import { AuthService } from '../services/auth.service';
 import { CompletedTodoService } from '../services/completed-todo.service';
 
 import { ReorderArrayIndexes } from '../models/reorder-array-indexes';
@@ -45,11 +45,11 @@ export class CurrentTodoService {
     Database needs to be requeried when login status changes.
     */
     constructor(
-        private authService: AuthService,
+        // private authService: AuthService,
         private completedTodoService: CompletedTodoService,
         private ngZone: NgZone,
     ) {
-        console.log('%s:constructor', this.CLASS_NAME);
+        console.log('%s:constructor()', this.CLASS_NAME);
         this.data = [];
         this.dataBehaviorSubject = <BehaviorSubject<Todo[]>>new BehaviorSubject([]);
         this.databaseReference = firebase.database()
@@ -100,10 +100,10 @@ export class CurrentTodoService {
             this.dataBehaviorSubject = <BehaviorSubject<Todo[]>>new BehaviorSubject([]);
         }
     */
-    public load(
-        activeUserId: string,
+    public startListening(
+        userId: string,
     ): void {
-        console.log('TodoService:load:activeUserId>', activeUserId);
+        console.log('TodoService:startListening():userId>', userId);
 
         this.databaseReference
             .orderByChild('index')
@@ -131,10 +131,15 @@ export class CurrentTodoService {
             });
     }
 
+    public stopListening(): void {
+        console.log('%s:startListening()', this.CLASS_NAME);
+        this.databaseReference.off();
+    }
+
     reorderItems(
         indexes: ReorderArrayIndexes,
     ) {
-        console.log('%s:reorderItems:indexes>', this.CLASS_NAME, indexes);
+        console.log('%s:reorderItems():indexes>', this.CLASS_NAME, indexes);
         const itemsToSave = [...this.data];
         reorderArray(itemsToSave, indexes);
 

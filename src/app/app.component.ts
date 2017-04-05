@@ -59,8 +59,6 @@ export class MyApp implements OnInit {
 
   pages: Array<{ title: string, component: any }>;
 
-  private currentUser: CurrentUser = null;
-
   constructor(
     public menu: MenuController,
     private ngZone: NgZone,
@@ -73,8 +71,6 @@ export class MyApp implements OnInit {
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
     this.initializeApp();
-    this.rootPage = CurrentTodosPage;
-    this.currentTodoService.load('dddd');
   }
 
   ngOnInit() {
@@ -130,10 +126,7 @@ export class MyApp implements OnInit {
         if (!this.authService.authStateChecked) {
           return;
         }
-        this.currentTodoService.load('dddd');
-        this.completedTodoService.load('dddd');
 
-        this.currentUser = currentUser;
         // NgZone.isInAngularZone() = false
         // console.log('NgZone.isInAngularZone()-2>', NgZone.isInAngularZone());
 
@@ -142,14 +135,16 @@ export class MyApp implements OnInit {
         this.ngZone.run(() => {
           // NgZone.isInAngularZone() = true
           // console.log('NgZone.isInAngularZone()-3>', NgZone.isInAngularZone());
-          if (this.currentUser) {
+          if (currentUser) {
             console.log(`%s: -- logged in --`, this.CLASS_NAME);
-            this.displayUserName = this.currentUser.email;
+            this.displayUserName = currentUser.email;
             this.enableMenu(true);
             this.nav.setRoot(HomePage).catch(() => {
               console.error("Didn't set nav root");
             });
             // this.currentTodoService.load(this.currentUser.id);
+            this.currentTodoService.startListening(currentUser.id);
+            this.completedTodoService.startListening(currentUser.id);
           } else {
             console.log(`%s: -- logged out --`, this.CLASS_NAME);
             this.displayUserName = 'Not logged in';
@@ -159,7 +154,8 @@ export class MyApp implements OnInit {
             });
 
             // stop watching this.currentTodoService.
-
+            this.currentTodoService.stopListening();
+            this.completedTodoService.stopListening();
           }
         });
       });

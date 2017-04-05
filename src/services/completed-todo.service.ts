@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
 import firebase from 'firebase';
 
-import { AuthService } from '../services/auth.service';
+// import { AuthService } from '../services/auth.service';
 import { TodoCompleted } from '../models/todo-completed';
 
 // const FIREBASE_CURRENT_TODOS = '/todo/currentTodos';
@@ -39,10 +39,10 @@ export class CompletedTodoService {
     Database needs to be requeried when login status changes.
     */
     constructor(
-        private authService: AuthService,
+        // private authService: AuthService,
         private ngZone: NgZone,
     ) {
-        console.log(`%s:constructor`, this.CLASS_NAME);
+        console.log(`%s:constructor()`, this.CLASS_NAME);
         this.data = [];
         this.dataBehaviorSubject = <BehaviorSubject<TodoCompleted[]>>new BehaviorSubject([]);
         this.databaseReference = firebase.database()
@@ -58,10 +58,10 @@ export class CompletedTodoService {
             this.dataStore = { todos: [] };
         }
     */
-    public load(
-        activeUserId: string,
+    public startListening(
+        userId: string,
     ): void {
-        console.log('%s:load:activeUserId>', this.CLASS_NAME, activeUserId);
+        console.log('%s:startListening():userId>', this.CLASS_NAME, userId);
 
         this.databaseReference
             .orderByChild('index')
@@ -87,6 +87,11 @@ export class CompletedTodoService {
                     this.dataBehaviorSubject.next(Object.assign([], this.data));
                 });
             });
+    }
+
+    public stopListening(): void {
+        console.log('%s:stopListening()', this.CLASS_NAME);
+        this.databaseReference.off();
     }
 
     removeItem(
