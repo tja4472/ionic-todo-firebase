@@ -96,7 +96,7 @@ export class MyApp implements OnInit {
     });
   }
 
-  openPage(page) {
+  openPage(page: PageInterface) {
     // the nav component was found using @ViewChild(Nav)
     // reset the nav to remove previous pages and only have this page
     // we wouldn't want the back button to show in this scenario

@@ -109,7 +109,7 @@ export class CurrentTodoService {
             .orderByChild('index')
             .on('value', snapshot => {
                 // console.log('snapshot>', snapshot);
-                let arr = [];
+                let arr: Todo[] = [];
 
                 snapshot.forEach((childSnapshot) => {
                     arr.push(
@@ -143,7 +143,7 @@ export class CurrentTodoService {
         const itemsToSave = [...this.data];
         reorderArray(itemsToSave, indexes);
 
-        let updates = {};
+        let updates: any = {};
         for (let x = 0; x < itemsToSave.length; x++) {
             updates[itemsToSave[x].id + '/index'] = x;
         }

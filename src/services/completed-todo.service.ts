@@ -67,7 +67,7 @@ export class CompletedTodoService {
             .orderByChild('index')
             .on('value', snapshot => {
                 // console.log('snapshot>', snapshot);
-                let arr = [];
+                let arr: TodoCompleted[] = [];
 
                 snapshot.forEach((childSnapshot) => {
                     arr.push(

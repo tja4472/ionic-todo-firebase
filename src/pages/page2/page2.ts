@@ -2,6 +2,12 @@ import { Component } from '@angular/core';
 
 import { NavController, NavParams } from 'ionic-angular';
 
+export interface ItemInterface {
+  title: string, 
+  note: string, 
+  icon: string
+}
+
 @Component({
   selector: 'page-page2',
   templateUrl: 'page2.html'
@@ -9,7 +15,7 @@ import { NavController, NavParams } from 'ionic-angular';
 export class Page2 {
   selectedItem: any;
   icons: string[];
-  items: Array<{title: string, note: string, icon: string}>;
+  items: Array<ItemInterface>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     // If we navigated to this page, we will have an item available as a nav param
@@ -29,7 +35,7 @@ export class Page2 {
     }
   }
 
-  itemTapped(event, item) {
+  itemTapped(event: Event, item: ItemInterface) {
     // That's right, we're pushing to ourselves!
     this.navCtrl.push(Page2, {
       item: item

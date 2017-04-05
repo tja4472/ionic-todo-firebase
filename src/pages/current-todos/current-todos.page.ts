@@ -73,7 +73,7 @@ export class CurrentTodosPage {
     modal.present();
   }
 
-  presentPopover(ev) {
+  presentPopover(event: Event) {
     let popover = this.popoverCtrl.create(MyPopoverPage);
 
     popover.onDidDismiss((result: MyPopoverPageResult) => {
@@ -93,7 +93,7 @@ export class CurrentTodosPage {
     });
 
     popover.present({
-      ev: ev
+      ev: event
     });
   }
 

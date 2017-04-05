@@ -54,24 +54,24 @@ export class AuthService {
             }
         });
     }
-/*
-    init() {
-        firebase.auth().onAuthStateChanged((user: firebase.User) => {
-            this.stateChecked = true;
-
-            if (user) {
-                // User is signed in.
-                console.log(`%s:User is signed in>`, this.CLASS_NAME, user.uid);
-                this.currentUser$.next(this.createCurrentUser(user));
-
-            } else {
-                // No user is signed in.
-                console.log(`%s: No user is signed in.`, this.CLASS_NAME);
-                this.currentUser$.next(null);
-            }
-        });
-    }
-*/    
+    /*
+        init() {
+            firebase.auth().onAuthStateChanged((user: firebase.User) => {
+                this.stateChecked = true;
+    
+                if (user) {
+                    // User is signed in.
+                    console.log(`%s:User is signed in>`, this.CLASS_NAME, user.uid);
+                    this.currentUser$.next(this.createCurrentUser(user));
+    
+                } else {
+                    // No user is signed in.
+                    console.log(`%s: No user is signed in.`, this.CLASS_NAME);
+                    this.currentUser$.next(null);
+                }
+            });
+        }
+    */
     createCurrentUser(
         user: firebase.User
     ): CurrentUser {
@@ -105,10 +105,12 @@ export class AuthService {
     /**
      * login using a username and password
      */
-    doLogin(_username, _password?) {
+    doLogin(
+        _username: string,
+        _password?: string
+    ) {
         console.log('%s:doLogin()', this.CLASS_NAME);
         if (_username.length) {
-
             firebase.auth().signInWithEmailAndPassword(_username, _password)
                 .catch(error => {
                     // Handle Errors here.
@@ -144,6 +146,7 @@ export class AuthService {
     /**
      * create the user with the information and set the user object
      */
+/*    
     doCreateUser(_params) {
         console.log('%s:doCreateUser()', this.CLASS_NAME);
         /*        
@@ -160,10 +163,12 @@ export class AuthService {
                             }
                         }
                     });
-        */
+        * /
     }
-
-    doSignup(_email, _password?) {
+*/
+    doSignup(
+        _email: string, 
+        _password?: string) {
         console.log('%s:doSignup()', this.CLASS_NAME)
         if (_email.length) {
             let details = { 'email': _email, 'password': _password };
