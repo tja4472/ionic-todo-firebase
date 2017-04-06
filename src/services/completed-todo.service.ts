@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
-// import { Observable } from 'rxjs/Observable';
 
 import firebase from 'firebase';
 
-// import { AuthService } from '../services/auth.service';
+import { DM_CompletedTodo } from '../database-models/dm-completed-todo';
+
 import { TodoCompleted } from '../models/todo-completed';
 
 // const FIREBASE_CURRENT_TODOS = '/todo/currentTodos';
@@ -125,17 +125,11 @@ export class CompletedTodoService {
 // !!!!!!!!!!!!!!!!!!!!!!!!!!
 // To insert need to remove id PropertyKey.
 //
-interface FirebaseTodo {
-    // id: string;
-    description?: string;
-    name: string;
-    isComplete: boolean;
-    // userId: string;
-}
 
-function toFirebaseTodo(todo: TodoCompleted): FirebaseTodo {
+
+function toFirebaseTodo(todo: TodoCompleted): DM_CompletedTodo {
     //
-    let result: FirebaseTodo = {
+    let result: DM_CompletedTodo = {
         // id: todo.id,
         //id: undefined,
         description: todo.description,

@@ -11,6 +11,9 @@ import { reorderArray } from 'ionic-angular';
 import { CompletedTodoService } from '../services/completed-todo.service';
 
 import { ReorderArrayIndexes } from '../models/reorder-array-indexes';
+
+import { DM_CurrentTodo } from '../database-models/dm-current-todo';
+
 import { Todo } from '../models/todo';
 import { TodoCompleted } from '../models/todo-completed';
 
@@ -215,21 +218,10 @@ export class CurrentTodoService {
     }
 }
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!
-// To insert need to remove id PropertyKey.
-//
-interface FirebaseTodo {
-    // id: string;
-    description?: string;
-    index: number;
-    name: string;
-    isComplete: boolean;
-    // userId: string;
-}
 
-function toFirebaseTodo(todo: Todo): FirebaseTodo {
+function toFirebaseTodo(todo: Todo): DM_CurrentTodo {
     //
-    let result: FirebaseTodo = {
+    let result: DM_CurrentTodo = {
         // id: todo.id,
         //id: undefined,
         description: todo.description,
