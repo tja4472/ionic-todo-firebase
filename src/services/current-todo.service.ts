@@ -7,7 +7,7 @@ import firebase from 'firebase';
 
 import { reorderArray } from 'ionic-angular';
 
-// import { AuthService } from '../services/auth.service';
+import { AuthService } from '../services/auth.service';
 import { CompletedTodoService } from '../services/completed-todo.service';
 
 import { ReorderArrayIndexes } from '../models/reorder-array-indexes';
@@ -30,12 +30,14 @@ import { TodoCompleted } from '../models/todo-completed';
 @Injectable()
 export class CurrentTodoService {
     private readonly CLASS_NAME = 'CurrentTodoService';
-    private readonly FIREBASE_DATABASE_KEY = '/todo/currentTodos';
+    // private readonly FIREBASE_DATABASE_KEY = '/todo/currentTodos';
+    private readonly DB_LIST_KEY = 'currentTodos';
+    private readonly DB_USERS_KEY = '/users';
 
     private data: Todo[];
     private dataBehaviorSubject: BehaviorSubject<Todo[]>;
 
-    private databaseReference: firebase.database.Reference;
+    // private databaseReference: firebase.database.Reference;
 
     get data$() {
         return this.dataBehaviorSubject.asObservable();
@@ -48,15 +50,15 @@ export class CurrentTodoService {
     Database needs to be requeried when login status changes.
     */
     constructor(
-        // private authService: AuthService,
+        private authService: AuthService,
         private completedTodoService: CompletedTodoService,
         // private ngZone: NgZone,
     ) {
         console.log('%s:constructor()', this.CLASS_NAME);
         this.data = [];
         this.dataBehaviorSubject = <BehaviorSubject<Todo[]>>new BehaviorSubject([]);
-        this.databaseReference = firebase.database()
-            .ref(this.FIREBASE_DATABASE_KEY);
+        // this.databaseReference = firebase.database()
+        //  .ref(this.FIREBASE_DATABASE_KEY);
     }
 
     public clearCompletedItems(): void {
@@ -104,11 +106,14 @@ export class CurrentTodoService {
         }
     */
     public startListening(
-        userId: string,
+        // userId: string,
     ): void {
-        console.log('TodoService:startListening():userId>', userId);
-
-        this.databaseReference
+        console.log('TodoService:startListening()');
+        firebase.database()
+            .ref(this.DB_USERS_KEY)
+            .child(this.authService.authUser.id)
+            .child(this.DB_LIST_KEY)
+            // this.databaseReference
             .orderByChild('index')
             .on('value', snapshot => {
                 // console.log('snapshot>', snapshot);
@@ -136,7 +141,12 @@ export class CurrentTodoService {
 
     public stopListening(): void {
         console.log('%s:startListening()', this.CLASS_NAME);
-        this.databaseReference.off();
+        // this.databaseReference.off();
+        firebase.database()
+            .ref(this.DB_USERS_KEY)
+            .child(this.authService.authUser.id)
+            .child(this.DB_LIST_KEY)
+            .off();
     }
 
     reorderItems(
@@ -151,14 +161,25 @@ export class CurrentTodoService {
             updates[itemsToSave[x].id + '/index'] = x;
         }
 
-        this.databaseReference.update(updates);
+        //this.databaseReference.update(updates);
+        firebase.database()
+            .ref(this.DB_USERS_KEY)
+            .child(this.authService.authUser.id)
+            .child(this.DB_LIST_KEY)
+            .update(updates);
     }
 
     removeItem(
         item: Todo,
     ) {
         console.log('%s:removeItem>', this.CLASS_NAME, item);
-        this.databaseReference
+        // this.databaseReference
+        //  .child(item.id)
+        //  .remove();
+        firebase.database()
+            .ref(this.DB_USERS_KEY)
+            .child(this.authService.authUser.id)
+            .child(this.DB_LIST_KEY)
             .child(item.id)
             .remove();
     }
@@ -169,11 +190,22 @@ export class CurrentTodoService {
         console.log('%s:saveItem>', this.CLASS_NAME, item);
         if (item.id == undefined) {
             // insert.
-            this.databaseReference
+            // this.databaseReference
+            // .push(toFirebaseTodo(item));
+            firebase.database()
+                .ref(this.DB_USERS_KEY)
+                .child(this.authService.authUser.id)
+                .child(this.DB_LIST_KEY)
                 .push(toFirebaseTodo(item));
         } else {
             // update.                        
-            this.databaseReference
+            //this.databaseReference
+            // .child(item.id)
+            // .set(toFirebaseTodo(item));
+            firebase.database()
+                .ref(this.DB_USERS_KEY)
+                .child(this.authService.authUser.id)
+                .child(this.DB_LIST_KEY)
                 .child(item.id)
                 .set(toFirebaseTodo(item));
         }

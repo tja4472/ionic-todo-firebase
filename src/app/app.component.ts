@@ -141,8 +141,8 @@ export class MyApp implements OnInit {
               console.error("Didn't set nav root");
             });
             // this.currentTodoService.load(this.currentUser.id);
-            this.currentTodoService.startListening(currentUser.id);
-            this.completedTodoService.startListening(currentUser.id);
+            this.currentTodoService.startListening();
+            this.completedTodoService.startListening();
           } else {
             console.log(`%s: -- logged out --`, this.CLASS_NAME);
             this.displayUserName = 'Not logged in';

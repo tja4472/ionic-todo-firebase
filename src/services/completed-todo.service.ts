@@ -8,7 +8,7 @@ import { DM_CompletedTodo } from '../database-models/dm-completed-todo';
 
 import { TodoCompleted } from '../models/todo-completed';
 
-// const FIREBASE_CURRENT_TODOS = '/todo/currentTodos';
+import { AuthService } from '../services/auth.service';
 
 // Multiple subscriptions on a FirebaseListObservable #574
 // https://github.com/angular/angularfire2/issues/574
@@ -22,6 +22,8 @@ import { TodoCompleted } from '../models/todo-completed';
 export class CompletedTodoService {
     private readonly CLASS_NAME = 'CompletedTodoService';
     private readonly FIREBASE_DATABASE_KEY = '/todo/completedTodos';
+    private readonly DB_LIST_KEY = 'completedTodos';
+    private readonly DB_USERS_KEY = '/users';
 
     private data: TodoCompleted[];
     private dataBehaviorSubject: BehaviorSubject<TodoCompleted[]>;
@@ -39,7 +41,7 @@ export class CompletedTodoService {
     Database needs to be requeried when login status changes.
     */
     constructor(
-        // private authService: AuthService,
+        private authService: AuthService,
         // private ngZone: NgZone,
     ) {
         console.log(`%s:constructor()`, this.CLASS_NAME);
@@ -59,11 +61,15 @@ export class CompletedTodoService {
         }
     */
     public startListening(
-        userId: string,
+        // userId: string,
     ): void {
-        console.log('%s:startListening():userId>', this.CLASS_NAME, userId);
+        console.log('%s:startListening()', this.CLASS_NAME);
 
-        this.databaseReference
+        //this.databaseReference
+        firebase.database()
+            .ref(this.DB_USERS_KEY)
+            .child(this.authService.authUser.id)
+            .child(this.DB_LIST_KEY)
             .orderByChild('index')
             .on('value', snapshot => {
                 // console.log('snapshot>', snapshot);
@@ -91,14 +97,25 @@ export class CompletedTodoService {
 
     public stopListening(): void {
         console.log('%s:stopListening()', this.CLASS_NAME);
-        this.databaseReference.off();
+        // this.databaseReference.off();
+        firebase.database()
+            .ref(this.DB_USERS_KEY)
+            .child(this.authService.authUser.id)
+            .child(this.DB_LIST_KEY)
+            .off();
     }
 
     removeItem(
         item: TodoCompleted,
     ) {
         console.log('%s:removeItem>', this.CLASS_NAME, item);
-        this.databaseReference
+        // this.databaseReference
+        //  .child(item.id)
+        //  .remove();
+        firebase.database()
+            .ref(this.DB_USERS_KEY)
+            .child(this.authService.authUser.id)
+            .child(this.DB_LIST_KEY)
             .child(item.id)
             .remove();
     }
@@ -110,11 +127,22 @@ export class CompletedTodoService {
 
         if (item.id == undefined) {
             // insert.
-            this.databaseReference
+            // this.databaseReference
+            // .push(toFirebaseTodo(item));
+            firebase.database()
+                .ref(this.DB_USERS_KEY)
+                .child(this.authService.authUser.id)
+                .child(this.DB_LIST_KEY)
                 .push(toFirebaseTodo(item));
         } else {
             // update.                        
-            this.databaseReference
+            //this.databaseReference
+            //   .child(item.id)
+            //   .set(toFirebaseTodo(item));
+            firebase.database()
+                .ref(this.DB_USERS_KEY)
+                .child(this.authService.authUser.id)
+                .child(this.DB_LIST_KEY)
                 .child(item.id)
                 .set(toFirebaseTodo(item));
         }
