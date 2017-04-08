@@ -194,13 +194,14 @@ export class AuthService {
      * logout and remove the user...
      */
     doLogout() {
-        // this.auth.logout();
+        console.log('%s:doLogout()', this.CLASS_NAME);        
+
         firebase.auth().signOut().then(function () {
             // Sign-out successful.
         }, (error) => {
             // this.error = error
             console.log(error);
         });
-        this._authUserBehaviorSubject$.next(null)
+       // this._authUserBehaviorSubject$.next(null)
     }
 }

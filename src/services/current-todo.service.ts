@@ -37,7 +37,7 @@ export class CurrentTodoService {
     private data: Todo[];
     private dataBehaviorSubject: BehaviorSubject<Todo[]>;
 
-    // private databaseReference: firebase.database.Reference;
+    private databaseReferenceListening: firebase.database.Reference = null;
 
     get data$() {
         return this.dataBehaviorSubject.asObservable();
@@ -57,8 +57,6 @@ export class CurrentTodoService {
         console.log('%s:constructor()', this.CLASS_NAME);
         this.data = [];
         this.dataBehaviorSubject = <BehaviorSubject<Todo[]>>new BehaviorSubject([]);
-        // this.databaseReference = firebase.database()
-        //  .ref(this.FIREBASE_DATABASE_KEY);
     }
 
     public clearCompletedItems(): void {
@@ -108,12 +106,13 @@ export class CurrentTodoService {
     public startListening(
         // userId: string,
     ): void {
-        console.log('TodoService:startListening()');
-        firebase.database()
+        console.log('%s:startListening()', this.CLASS_NAME);
+        this.databaseReferenceListening = firebase.database()
             .ref(this.DB_USERS_KEY)
             .child(this.authService.authUser.id)
-            .child(this.DB_LIST_KEY)
-            // this.databaseReference
+            .child(this.DB_LIST_KEY);
+
+        this.databaseReferenceListening
             .orderByChild('index')
             .on('value', snapshot => {
                 // console.log('snapshot>', snapshot);
@@ -140,13 +139,12 @@ export class CurrentTodoService {
     }
 
     public stopListening(): void {
-        console.log('%s:startListening()', this.CLASS_NAME);
-        // this.databaseReference.off();
-        firebase.database()
-            .ref(this.DB_USERS_KEY)
-            .child(this.authService.authUser.id)
-            .child(this.DB_LIST_KEY)
-            .off();
+        console.log('%s:stopListening()', this.CLASS_NAME);
+
+        if (this.databaseReferenceListening != null) {
+            this.databaseReferenceListening.off();
+            this.databaseReferenceListening = null;
+        }
     }
 
     reorderItems(

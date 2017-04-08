@@ -28,7 +28,7 @@ export class CompletedTodoService {
     private data: TodoCompleted[];
     private dataBehaviorSubject: BehaviorSubject<TodoCompleted[]>;
 
-    private databaseReference: firebase.database.Reference;
+    private databaseReferenceListening: firebase.database.Reference = null;
 
     get data$() {
         return this.dataBehaviorSubject.asObservable();
@@ -47,8 +47,6 @@ export class CompletedTodoService {
         console.log(`%s:constructor()`, this.CLASS_NAME);
         this.data = [];
         this.dataBehaviorSubject = <BehaviorSubject<TodoCompleted[]>>new BehaviorSubject([]);
-        this.databaseReference = firebase.database()
-            .ref(this.FIREBASE_DATABASE_KEY);
     }
     /*
         // =======
@@ -65,11 +63,12 @@ export class CompletedTodoService {
     ): void {
         console.log('%s:startListening()', this.CLASS_NAME);
 
-        //this.databaseReference
-        firebase.database()
+        this.databaseReferenceListening = firebase.database()
             .ref(this.DB_USERS_KEY)
             .child(this.authService.authUser.id)
-            .child(this.DB_LIST_KEY)
+            .child(this.DB_LIST_KEY);
+
+        this.databaseReferenceListening
             .orderByChild('index')
             .on('value', snapshot => {
                 // console.log('snapshot>', snapshot);
@@ -97,12 +96,11 @@ export class CompletedTodoService {
 
     public stopListening(): void {
         console.log('%s:stopListening()', this.CLASS_NAME);
-        // this.databaseReference.off();
-        firebase.database()
-            .ref(this.DB_USERS_KEY)
-            .child(this.authService.authUser.id)
-            .child(this.DB_LIST_KEY)
-            .off();
+        
+        if (this.databaseReferenceListening != null) {
+            this.databaseReferenceListening.off();
+            this.databaseReferenceListening = null;
+        }            
     }
 
     removeItem(

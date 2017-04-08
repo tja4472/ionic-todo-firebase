@@ -150,10 +150,12 @@ export class MyApp implements OnInit {
             this.nav.setRoot(LoginPage).catch(() => {
               console.error("Didn't set nav root");
             });
-
+console.log(`%s: -- logged out 1--`, this.CLASS_NAME);
             // stop watching this.currentTodoService.
             this.currentTodoService.stopListening();
+console.log(`%s: -- logged out 2--`, this.CLASS_NAME);            
             this.completedTodoService.stopListening();
+console.log(`%s: -- logged out 3 --`, this.CLASS_NAME);            
           }
         });
       // });
