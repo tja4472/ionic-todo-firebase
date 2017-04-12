@@ -1,4 +1,4 @@
-import { OpaqueToken } from '@angular/core';
+import { InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { TodoCompleted } from '../models/todo-completed';
@@ -17,4 +17,5 @@ export interface ICompletedTodoService {
     stopListening(): void;
 }
 
-export const COMPLETED_TODO_SERVICE = new OpaqueToken('ICompletedTodoService');
+// export const COMPLETED_TODO_SERVICE = new OpaqueToken('ICompletedTodoService');
+export const COMPLETED_TODO_SERVICE = new InjectionToken<ICompletedTodoService>('ICompletedTodoService');
