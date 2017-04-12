@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { NavController, ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
-import { CompletedTodoService } from '../../services/completed-todo.service';
+import { COMPLETED_TODO_SERVICE, ICompletedTodoService } from '../../services/i-completed-todo-service';
 import { CurrentTodoService } from '../../services/current-todo.service';
 
 import { TodoCompleted } from '../../models/todo-completed';
@@ -18,7 +18,7 @@ export class CompletedTodosPage {
   data$: Observable<TodoCompleted[]>;
 
   constructor(
-    private completedTodoService: CompletedTodoService,
+    @Inject(COMPLETED_TODO_SERVICE) private completedTodoService: ICompletedTodoService,    
     private currentTodoService: CurrentTodoService,
     public navCtrl: NavController,
     public modalCtrl: ModalController,

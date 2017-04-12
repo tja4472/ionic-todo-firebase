@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Observable } from 'rxjs/Observable';
@@ -8,7 +8,8 @@ import firebase from 'firebase';
 import { reorderArray } from 'ionic-angular';
 
 import { AuthService } from '../services/auth.service';
-import { CompletedTodoService } from '../services/completed-todo.service';
+
+import { COMPLETED_TODO_SERVICE, ICompletedTodoService } from '../services/i-completed-todo-service';
 
 import { ReorderArrayIndexes } from '../models/reorder-array-indexes';
 
@@ -51,7 +52,7 @@ export class CurrentTodoService {
     */
     constructor(
         private authService: AuthService,
-        private completedTodoService: CompletedTodoService,
+        @Inject(COMPLETED_TODO_SERVICE) private completedTodoService: ICompletedTodoService,
         // private ngZone: NgZone,
     ) {
         console.log('%s:constructor()', this.CLASS_NAME);

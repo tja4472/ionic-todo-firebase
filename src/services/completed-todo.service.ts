@@ -7,6 +7,7 @@ import firebase from 'firebase';
 import { DM_CompletedTodo } from '../database-models/dm-completed-todo';
 
 import { TodoCompleted } from '../models/todo-completed';
+import { ICompletedTodoService } from './i-completed-todo-service';
 
 import { AuthService } from '../services/auth.service';
 
@@ -19,7 +20,7 @@ import { AuthService } from '../services/auth.service';
 // https://dzone.com/articles/how-to-build-angular-2-apps-using-observable-data-1
 
 @Injectable()
-export class CompletedTodoService {
+export class CompletedTodoService implements ICompletedTodoService {
     private readonly CLASS_NAME = 'CompletedTodoService';
     private readonly FIREBASE_DATABASE_KEY = '/todo/completedTodos';
     private readonly DB_LIST_KEY = 'completedTodos';

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -13,7 +13,8 @@ import { LoginPage } from '../pages/login/login.page';
 import { SignupPage } from '../pages/signup/signup.page';
 
 import { AuthService } from '../services/auth.service';
-import { CompletedTodoService } from '../services/completed-todo.service';
+// import { CompletedTodoService } from '../services/completed-todo.service';
+import { COMPLETED_TODO_SERVICE, ICompletedTodoService } from '../services/i-completed-todo-service';
 import { CurrentTodoService } from '../services/current-todo.service';
 
 export interface PageInterface {
@@ -64,7 +65,7 @@ export class MyApp implements OnInit {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     private authService: AuthService,
-    private completedTodoService: CompletedTodoService,
+    @Inject(COMPLETED_TODO_SERVICE) private completedTodoService: ICompletedTodoService,
     private currentTodoService: CurrentTodoService,
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
@@ -131,34 +132,33 @@ export class MyApp implements OnInit {
         // Without the ngZone the [disabled]="!loginForm.valid" was being ignored
         // in login.page.html.
         // this.ngZone.run(() => {
-          // NgZone.isInAngularZone() = true
-          // console.log('NgZone.isInAngularZone()-3>', NgZone.isInAngularZone());
-          if (currentUser) {
-            console.log(`%s: -- logged in --`, this.CLASS_NAME);
-            this.displayUserName = currentUser.email;
-            this.enableMenu(true);
-            this.nav.setRoot(HomePage).catch(() => {
-              console.error("Didn't set nav root");
-            });
-            // this.currentTodoService.load(this.currentUser.id);
-            this.currentTodoService.startListening();
-            this.completedTodoService.startListening();
-          } else {
-            console.log(`%s: -- logged out --`, this.CLASS_NAME);
-            this.displayUserName = 'Not logged in';
-            this.enableMenu(false);
-            this.nav.setRoot(LoginPage).catch(() => {
-              console.error("Didn't set nav root");
-            });
-console.log(`%s: -- logged out 1--`, this.CLASS_NAME);
-            // stop watching this.currentTodoService.
-            this.currentTodoService.stopListening();
-console.log(`%s: -- logged out 2--`, this.CLASS_NAME);            
-            this.completedTodoService.stopListening();
-console.log(`%s: -- logged out 3 --`, this.CLASS_NAME);            
-          }
-        });
-      // });
+        // NgZone.isInAngularZone() = true
+        // console.log('NgZone.isInAngularZone()-3>', NgZone.isInAngularZone());
+        if (currentUser) {
+          console.log(`%s: -- logged in --`, this.CLASS_NAME);
+          this.displayUserName = currentUser.email;
+          this.enableMenu(true);
+          this.nav.setRoot(HomePage).catch(() => {
+            console.error("Didn't set nav root");
+          });
+
+          this.currentTodoService.startListening();
+          this.completedTodoService.startListening();
+        } else {
+          console.log(`%s: -- logged out --`, this.CLASS_NAME);
+          this.displayUserName = 'Not logged in';
+          this.enableMenu(false);
+          this.nav.setRoot(LoginPage).catch(() => {
+            console.error("Didn't set nav root");
+          });
+          console.log(`%s: -- logged out 1--`, this.CLASS_NAME);
+          this.currentTodoService.stopListening();
+          console.log(`%s: -- logged out 2--`, this.CLASS_NAME);
+          this.completedTodoService.stopListening();
+          console.log(`%s: -- logged out 3 --`, this.CLASS_NAME);
+        }
+      });
+    // });
   }
 
   enableMenu(loggedIn: boolean): void {

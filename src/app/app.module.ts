@@ -23,6 +23,9 @@ import { CurrentTodoListComponent } from '../components/current-todo-list/curren
 import { MyPopoverPage } from '../components/popover/popover.component';
 
 import { CompletedTodoService } from '../services/completed-todo.service';
+import { COMPLETED_TODO_SERVICE } from '../services/i-completed-todo-service';
+// import { MockCompletedTodoService } from '../services/mock-completed-todo.service';
+
 import { CurrentTodoService } from '../services/current-todo.service';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -35,15 +38,16 @@ import './rxjs-operators';
 
 import firebase from 'firebase';
 
+
 @NgModule({
   declarations: [
     HomePage,
     MyApp,
     Page1,
     Page2,
-    CompletedTodoDetailPage,    
+    CompletedTodoDetailPage,
     CompletedTodoListComponent,
-    CompletedTodosPage,    
+    CompletedTodosPage,
     ControlMessages,
     CurrentTodoDetailPage,
     CurrentTodoListComponent,
@@ -59,7 +63,7 @@ import firebase from 'firebase';
   bootstrap: [IonicApp],
   entryComponents: [
     CompletedTodoDetailPage,
-    CompletedTodosPage,    
+    CompletedTodosPage,
     CurrentTodoDetailPage,
     CurrentTodosPage,
     HomePage,
@@ -72,7 +76,7 @@ import firebase from 'firebase';
   ],
   providers: [
     AuthService,
-    CompletedTodoService,
+    { provide: COMPLETED_TODO_SERVICE, useClass: CompletedTodoService },
     CurrentTodoService,
     ValidationService,
     StatusBar,
