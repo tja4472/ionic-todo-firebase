@@ -23,7 +23,7 @@ import { CurrentTodoListComponent } from '../components/current-todo-list/curren
 import { MyPopoverPage } from '../components/popover/popover.component';
 
 import { CompletedTodoService } from '../services/completed-todo.service';
-import { COMPLETED_TODO_SERVICE } from '../services/i-completed-todo-service';
+import { ICompletedTodoService } from '../services/i-completed-todo-service';
 // import { MockCompletedTodoService } from '../services/mock-completed-todo.service';
 
 import { CurrentTodoService } from '../services/current-todo.service';
@@ -76,7 +76,7 @@ import firebase from 'firebase';
   ],
   providers: [
     AuthService,
-    { provide: COMPLETED_TODO_SERVICE, useClass: CompletedTodoService },
+    { provide: ICompletedTodoService, useClass: CompletedTodoService },
     CurrentTodoService,
     ValidationService,
     StatusBar,

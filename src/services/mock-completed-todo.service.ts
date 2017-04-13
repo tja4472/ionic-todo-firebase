@@ -19,6 +19,7 @@ export class MockCompletedTodoService implements ICompletedTodoService {
         // private authService: AuthService,
         // private ngZone: NgZone,
     ) {
+        // super();
         console.log(`%s:constructor()`, this.CLASS_NAME);
         this.data = this.dummyData();
         this.dataBehaviorSubject = <BehaviorSubject<TodoCompleted[]>>new BehaviorSubject(this.data);
@@ -43,7 +44,7 @@ export class MockCompletedTodoService implements ICompletedTodoService {
     stopListening(): void {
         console.log(`%s:stopListening>`, this.CLASS_NAME);
     }
-    
+
     private dummyData(): TodoCompleted[] {
         let data: TodoCompleted[] =
             [{

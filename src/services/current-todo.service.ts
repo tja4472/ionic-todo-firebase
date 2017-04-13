@@ -9,7 +9,7 @@ import { reorderArray } from 'ionic-angular';
 
 import { AuthService } from '../services/auth.service';
 
-import { COMPLETED_TODO_SERVICE, ICompletedTodoService } from '../services/i-completed-todo-service';
+import { ICompletedTodoService } from '../services/i-completed-todo-service';
 
 import { ReorderArrayIndexes } from '../models/reorder-array-indexes';
 
@@ -52,7 +52,7 @@ export class CurrentTodoService {
     */
     constructor(
         private authService: AuthService,
-        @Inject(COMPLETED_TODO_SERVICE) private completedTodoService: ICompletedTodoService,
+        private completedTodoService: ICompletedTodoService,
         // private ngZone: NgZone,
     ) {
         console.log('%s:constructor()', this.CLASS_NAME);
