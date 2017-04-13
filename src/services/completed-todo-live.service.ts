@@ -48,16 +48,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
         this.data = [];
         this.dataBehaviorSubject = <BehaviorSubject<TodoCompleted[]>>new BehaviorSubject([]);
     }
-    /*
-        // =======
-        get todos() {
-            return this._todos.asObservable();
-        }
-    
-        public reset(): void {
-            this.dataStore = { todos: [] };
-        }
-    */
+
     public startListening(
         // userId: string,
     ): void {
@@ -107,9 +98,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
         item: TodoCompleted,
     ) {
         console.log('%s:removeItem>', this.CLASS_NAME, item);
-        // this.databaseReference
-        //  .child(item.id)
-        //  .remove();
+
         firebase.database()
             .ref(this.DB_USERS_KEY)
             .child(this.authService.authUser.id)
@@ -125,8 +114,6 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
 
         if (item.id == undefined) {
             // insert.
-            // this.databaseReference
-            // .push(toFirebaseTodo(item));
             firebase.database()
                 .ref(this.DB_USERS_KEY)
                 .child(this.authService.authUser.id)
@@ -134,9 +121,6 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
                 .push(toFirebaseTodo(item));
         } else {
             // update.                        
-            //this.databaseReference
-            //   .child(item.id)
-            //   .set(toFirebaseTodo(item));
             firebase.database()
                 .ref(this.DB_USERS_KEY)
                 .child(this.authService.authUser.id)
@@ -146,12 +130,6 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
         }
     }
 }
-
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!
-// To insert need to remove id PropertyKey.
-//
-
 
 function toFirebaseTodo(todo: TodoCompleted): DM_CompletedTodo {
     //

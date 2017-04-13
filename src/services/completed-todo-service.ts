@@ -1,4 +1,3 @@
-//import { InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { TodoCompleted } from '../models/todo-completed';
@@ -13,6 +12,6 @@ export abstract class CompletedTodoService {
         item: TodoCompleted
     ): void;
 
-    startListening(): void { };
-    stopListening(): void { };
+    abstract startListening(): void;
+    abstract stopListening(): void;
 }

@@ -15,11 +15,7 @@ export class CompletedTodoServiceMock implements CompletedTodoService {
         return this.dataBehaviorSubject.asObservable();
     }
 
-    constructor(
-        // private authService: AuthService,
-        // private ngZone: NgZone,
-    ) {
-        // super();
+    constructor() {
         console.log(`%s:constructor()`, this.CLASS_NAME);
         this.data = this.dummyData();
         this.dataBehaviorSubject = <BehaviorSubject<TodoCompleted[]>>new BehaviorSubject(this.data);
