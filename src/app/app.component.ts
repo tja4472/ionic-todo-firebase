@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -13,9 +13,8 @@ import { LoginPage } from '../pages/login/login.page';
 import { SignupPage } from '../pages/signup/signup.page';
 
 import { AuthService } from '../services/auth.service';
-// import { CompletedTodoService } from '../services/completed-todo.service';
 import { CompletedTodoService } from '../services/completed-todo-service';
-import { CurrentTodoService } from '../services/current-todo.service';
+import { CurrentTodoServiceLive } from '../services/current-todo-live.service';
 
 export interface PageInterface {
   title: string;
@@ -66,7 +65,7 @@ export class MyApp implements OnInit {
     public splashScreen: SplashScreen,
     private authService: AuthService,
     private completedTodoService: CompletedTodoService,
-    private currentTodoService: CurrentTodoService,
+    private currentTodoService: CurrentTodoServiceLive,
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
     this.initializeApp();

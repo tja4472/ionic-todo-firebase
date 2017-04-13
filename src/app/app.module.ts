@@ -27,7 +27,7 @@ import { CompletedTodoService } from '../services/completed-todo-service';
 import { CompletedTodoServiceLive } from '../services/completed-todo-live.service';
 // import { CompletedTodoServiceMock } from '../services/completed-todo-mock.service';
 
-import { CurrentTodoService } from '../services/current-todo.service';
+import { CurrentTodoServiceLive } from '../services/current-todo-live.service';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -78,7 +78,7 @@ import firebase from 'firebase';
   providers: [
     AuthService,
     { provide: CompletedTodoService, useClass: CompletedTodoServiceLive },
-    CurrentTodoService,
+    CurrentTodoServiceLive,
     ValidationService,
     StatusBar,
     SplashScreen,

@@ -3,7 +3,7 @@ import { NavController, ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { CompletedTodoService } from '../../services/completed-todo-service';
-import { CurrentTodoService } from '../../services/current-todo.service';
+import { CurrentTodoServiceLive } from '../../services/current-todo-live.service';
 
 import { TodoCompleted } from '../../models/todo-completed';
 import { CompletedTodoDetailPage, ModalResult } from '../completed-todo-detail/completed-todo-detail.page';
@@ -19,7 +19,7 @@ export class CompletedTodosPage {
 
   constructor(
     private completedTodoService: CompletedTodoService,    
-    private currentTodoService: CurrentTodoService,
+    private currentTodoService: CurrentTodoServiceLive,
     public navCtrl: NavController,
     public modalCtrl: ModalController,
   ) {

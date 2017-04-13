@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Observable } from 'rxjs/Observable';
@@ -29,9 +29,8 @@ import { TodoCompleted } from '../models/todo-completed';
 // https://dzone.com/articles/how-to-build-angular-2-apps-using-observable-data-1
 
 @Injectable()
-export class CurrentTodoService {
+export class CurrentTodoServiceLive {
     private readonly CLASS_NAME = 'CurrentTodoService';
-    // private readonly FIREBASE_DATABASE_KEY = '/todo/currentTodos';
     private readonly DB_LIST_KEY = 'currentTodos';
     private readonly DB_USERS_KEY = '/users';
 
