@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { TodoCompleted } from '../models/todo-completed';
-import { ICompletedTodoService } from './i-completed-todo-service';
+import { CompletedTodoService } from './completed-todo-service';
 
 @Injectable()
-export class MockCompletedTodoService implements ICompletedTodoService {
+export class CompletedTodoServiceMock implements CompletedTodoService {
     private readonly CLASS_NAME = 'MockCompletedTodoService';
 
     private data: TodoCompleted[];

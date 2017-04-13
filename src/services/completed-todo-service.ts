@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { TodoCompleted } from '../models/todo-completed';
 
-export abstract class ICompletedTodoService {
+export abstract class CompletedTodoService {
     readonly data$: Observable<TodoCompleted[]>;
 
     removeItem(
@@ -16,6 +16,3 @@ export abstract class ICompletedTodoService {
     startListening(): void { };
     stopListening(): void { };
 }
-
-// export const COMPLETED_TODO_SERVICE = new OpaqueToken('ICompletedTodoService');
-// export const COMPLETED_TODO_SERVICE = new InjectionToken<ICompletedTodoService>('ICompletedTodoService');

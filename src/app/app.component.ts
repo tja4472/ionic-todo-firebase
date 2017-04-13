@@ -14,7 +14,7 @@ import { SignupPage } from '../pages/signup/signup.page';
 
 import { AuthService } from '../services/auth.service';
 // import { CompletedTodoService } from '../services/completed-todo.service';
-import { ICompletedTodoService } from '../services/i-completed-todo-service';
+import { CompletedTodoService } from '../services/completed-todo-service';
 import { CurrentTodoService } from '../services/current-todo.service';
 
 export interface PageInterface {
@@ -65,7 +65,7 @@ export class MyApp implements OnInit {
     public statusBar: StatusBar,
     public splashScreen: SplashScreen,
     private authService: AuthService,
-    private completedTodoService: ICompletedTodoService,
+    private completedTodoService: CompletedTodoService,
     private currentTodoService: CurrentTodoService,
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
