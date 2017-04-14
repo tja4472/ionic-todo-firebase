@@ -28,8 +28,8 @@ import { CompletedTodoServiceLive } from '../services/completed-todo-live.servic
 // import { CompletedTodoServiceMock } from '../services/completed-todo-mock.service';
 
 import { CurrentTodoService } from '../services/current-todo.service';
-// import { CurrentTodoServiceLive } from '../services/current-todo-live.service';
-import { CurrentTodoServiceMock } from '../services/current-todo-mock.service';
+import { CurrentTodoServiceLive } from '../services/current-todo-live.service';
+// import { CurrentTodoServiceMock } from '../services/current-todo-mock.service';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -80,7 +80,7 @@ import firebase from 'firebase';
   providers: [
     AuthService,
     { provide: CompletedTodoService, useClass: CompletedTodoServiceLive },
-    { provide: CurrentTodoService, useClass: CurrentTodoServiceMock },    
+    { provide: CurrentTodoService, useClass: CurrentTodoServiceLive },    
     ValidationService,
     StatusBar,
     SplashScreen,
