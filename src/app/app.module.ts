@@ -23,11 +23,13 @@ import { CurrentTodoListComponent } from '../components/current-todo-list/curren
 import { MyPopoverPage } from '../components/popover/popover.component';
 
 
-import { CompletedTodoService } from '../services/completed-todo-service';
+import { CompletedTodoService } from '../services/completed-todo.service';
 import { CompletedTodoServiceLive } from '../services/completed-todo-live.service';
 // import { CompletedTodoServiceMock } from '../services/completed-todo-mock.service';
 
-import { CurrentTodoServiceLive } from '../services/current-todo-live.service';
+import { CurrentTodoService } from '../services/current-todo.service';
+// import { CurrentTodoServiceLive } from '../services/current-todo-live.service';
+import { CurrentTodoServiceMock } from '../services/current-todo-mock.service';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -78,7 +80,7 @@ import firebase from 'firebase';
   providers: [
     AuthService,
     { provide: CompletedTodoService, useClass: CompletedTodoServiceLive },
-    CurrentTodoServiceLive,
+    { provide: CurrentTodoService, useClass: CurrentTodoServiceMock },    
     ValidationService,
     StatusBar,
     SplashScreen,

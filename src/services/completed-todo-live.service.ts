@@ -7,7 +7,7 @@ import firebase from 'firebase';
 import { DM_CompletedTodo } from '../database-models/dm-completed-todo';
 
 import { TodoCompleted } from '../models/todo-completed';
-import { CompletedTodoService } from './completed-todo-service';
+import { CompletedTodoService } from './completed-todo.service';
 
 import { AuthService } from '../services/auth.service';
 

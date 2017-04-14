@@ -8,7 +8,7 @@ import {
 
 import { Observable } from 'rxjs/Observable';
 
-import { CurrentTodoServiceLive } from '../../services/current-todo-live.service';
+import { CurrentTodoService } from '../../services/current-todo.service';
 
 import { ReorderArrayIndexes } from '../../models/reorder-array-indexes';
 import { Todo } from '../../models/todo';
@@ -28,7 +28,7 @@ export class CurrentTodosPage {
     public modalCtrl: ModalController,
     public navCtrl: NavController,
     public popoverCtrl: PopoverController,
-    private todoService: CurrentTodoServiceLive,
+    private todoService: CurrentTodoService,
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
     this.todos$ = this.todoService.data$;

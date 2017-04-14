@@ -5,9 +5,9 @@ import { TodoCompleted } from '../models/todo-completed';
 export abstract class CompletedTodoService {
     readonly data$: Observable<TodoCompleted[]>;
 
-    removeItem(
+    abstract removeItem(
         item: TodoCompleted,
-    ): void { };
+    ): void;
     abstract saveItem(
         item: TodoCompleted
     ): void;

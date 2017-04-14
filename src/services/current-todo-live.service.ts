@@ -9,7 +9,8 @@ import { reorderArray } from 'ionic-angular';
 
 import { AuthService } from '../services/auth.service';
 
-import { CompletedTodoService } from '../services/completed-todo-service';
+import { CompletedTodoService } from '../services/completed-todo.service';
+import { CurrentTodoService } from './current-todo.service';
 
 import { ReorderArrayIndexes } from '../models/reorder-array-indexes';
 
@@ -29,7 +30,7 @@ import { TodoCompleted } from '../models/todo-completed';
 // https://dzone.com/articles/how-to-build-angular-2-apps-using-observable-data-1
 
 @Injectable()
-export class CurrentTodoServiceLive {
+export class CurrentTodoServiceLive implements CurrentTodoService {
     private readonly CLASS_NAME = 'CurrentTodoService';
     private readonly DB_LIST_KEY = 'currentTodos';
     private readonly DB_USERS_KEY = '/users';

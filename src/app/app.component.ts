@@ -13,8 +13,8 @@ import { LoginPage } from '../pages/login/login.page';
 import { SignupPage } from '../pages/signup/signup.page';
 
 import { AuthService } from '../services/auth.service';
-import { CompletedTodoService } from '../services/completed-todo-service';
-import { CurrentTodoServiceLive } from '../services/current-todo-live.service';
+import { CompletedTodoService } from '../services/completed-todo.service';
+import { CurrentTodoService } from '../services/current-todo.service';
 
 export interface PageInterface {
   title: string;
@@ -65,7 +65,7 @@ export class MyApp implements OnInit {
     public splashScreen: SplashScreen,
     private authService: AuthService,
     private completedTodoService: CompletedTodoService,
-    private currentTodoService: CurrentTodoServiceLive,
+    private currentTodoService: CurrentTodoService,
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
     this.initializeApp();
