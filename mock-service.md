@@ -1,22 +1,29 @@
-completed-todo.service.ts
+### completed-todo.service.ts
+``` typescript
+export abstract class CompletedTodoService {...};
 ```
-export interface ICompletedTodoService {...}
-export const COMPLETED_TODO_SERVICE = new OpaqueToken('ICompletedTodoService');
+### completed-todo-live.service.ts
+``` typescript
+import { CompletedTodoService } from './completed-todo.service';
+
+export class CompletedTodoServiceLive implements CompletedTodoService {...}
 ```
-app.module.ts
-```
+### app.module.ts
+``` typescript
 import { CompletedTodoService } from '../services/completed-todo.service';
-import { COMPLETED_TODO_SERVICE } from '../services/i-completed-todo.service';
-// import { MockCompletedTodoService } from '../services/mock-completed-todo.service';
+import { CompletedTodoServiceLive } from '../services/completed-todo-live.service';
+// import { CompletedTodoServiceMock } from '../services/completed-todo-mock.service';
 
 providers: [
-    { provide: COMPLETED_TODO_SERVICE, useClass: CompletedTodoService },
+        { provide: CompletedTodoService, useClass: CompletedTodoServiceLive },
 ```
-current-todo.service.ts
-```
-import { COMPLETED_TODO_SERVICE, ICompletedTodoService } from '../services/i-completed-todo.service';
+### current-todo-live.service.ts
+``` typescript
+import { CompletedTodoService } from '../services/completed-todo.service';
+import { CurrentTodoService } from './current-todo.service';
 
 constructor(
-    private authService: AuthService,
-    @Inject(COMPLETED_TODO_SERVICE) private completedTodoService: ICompletedTodoService,
+        private authService: AuthService,
+        private completedTodoService: CompletedTodoService,
+)
 ```
