@@ -10,6 +10,7 @@ import { TodoCompleted } from '../models/todo-completed';
 import { CompletedTodoService } from './completed-todo.service';
 
 import { AuthService } from '../services/auth.service';
+import { DM_CompletedTodoService } from '../services/dm-completed-todo.service';
 
 // Multiple subscriptions on a FirebaseListObservable #574
 // https://github.com/angular/angularfire2/issues/574
@@ -42,6 +43,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     */
     constructor(
         private authService: AuthService,
+        private dm_CompletedTodoService: DM_CompletedTodoService,
         // private ngZone: NgZone,
     ) {
         console.log(`%s:constructor()`, this.CLASS_NAME);
@@ -67,7 +69,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
 
                 snapshot.forEach((childSnapshot) => {
                     arr.push(
-                        fromFirebaseTodo
+                        this.dm_CompletedTodoService.fromDatabase
                             (childSnapshot.key, childSnapshot.val()));
                     return false;
                 });
@@ -154,6 +156,7 @@ function fromDatabase(x: any[]): TodoCompleted[] {
     return result;
 }
 */
+/*
 function fromFirebaseTodo(
     id: string,
     x: any
@@ -178,3 +181,5 @@ function fromFirebaseTodo(
 
     return result;
 }
+*/
+

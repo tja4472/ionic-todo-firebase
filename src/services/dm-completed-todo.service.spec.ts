@@ -18,9 +18,9 @@ let expected: TodoCompleted = {
 };
 
 describe('DM_CompletedTodoService', () => {
-    it('fromFirebaseTodo', () => {
+    it('fromDatabase', () => {
         let dm_CompletedTodoService = new DM_CompletedTodoService();
-        let result = dm_CompletedTodoService.fromFirebaseTodo('id1', data);
+        let result = dm_CompletedTodoService.fromDatabase('id1', data);
         expect(result).toEqual(expected);
     });
 });

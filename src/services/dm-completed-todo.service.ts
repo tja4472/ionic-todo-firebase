@@ -6,17 +6,17 @@ import { TodoCompleted } from '../models/todo-completed';
 
 @Injectable()
 export class DM_CompletedTodoService {
-    private readonly CLASS_NAME: string = 'GreatDealsConvert';
+    private readonly CLASS_NAME: string = 'DM_CompletedTodoService';
 
     constructor() {
         console.log(`%s:constructor()`, this.CLASS_NAME);
     }
 
-    public fromFirebaseTodo(
+    public fromDatabase(
         id: string,
         data: DM_CompletedTodo,
     ): TodoCompleted {
-        console.log(`%s:fromFirebaseTodo()`, this.CLASS_NAME);
+        console.log(`%s:fromDatabase()`, this.CLASS_NAME);
 
         let expected: TodoCompleted = {
             description: data.description,
@@ -28,3 +28,29 @@ export class DM_CompletedTodoService {
         return expected;
     }
 }
+/*
+function fromFirebaseTodo(
+    id: string,
+    x: any
+): TodoCompleted {
+    console.log('fromFirebaseTodo');
+
+    let result: TodoCompleted = {
+        id: id,
+        description: x.description,
+        isComplete: x.isComplete,
+        name: x.name,
+        userId: x.userId,
+    };
+
+    if (result.description === undefined) {
+        result.description = null;
+    }
+
+    if (result.isComplete === undefined) {
+        result.isComplete = false;
+    }
+
+    return result;
+}
+*/
