@@ -13,7 +13,7 @@ import { CurrentTodoService } from '../../services/current-todo.service';
 import { ReorderArrayIndexes } from '../../models/reorder-array-indexes';
 import { Todo } from '../../models/todo';
 
-import { CurrentTodoDetailPage } from '../current-todo-detail/current-todo-detail.page';
+import { CurrentTodoDetailModal } from '../current-todo-detail/current-todo-detail.modal';
 import { MyPopoverPage, MyPopoverPageResult } from '../../components/popover/popover.component';
 
 @Component({
@@ -36,7 +36,7 @@ export class CurrentTodosPage {
 
   createItem() {
     console.log('createItem');
-    let modal = this.modalCtrl.create(CurrentTodoDetailPage);
+    let modal = this.modalCtrl.create(CurrentTodoDetailModal);
 
     modal.onDidDismiss((data: Todo) => {
       console.log('onDidDismiss>', data);
@@ -60,7 +60,7 @@ export class CurrentTodosPage {
     // todo = assign(todo, item);
 
 
-    let modal = this.modalCtrl.create(CurrentTodoDetailPage, { todo: item });
+    let modal = this.modalCtrl.create(CurrentTodoDetailModal, { todo: item });
 
     modal.onDidDismiss((data: Todo) => {
       console.log('onDidDismiss>', data);

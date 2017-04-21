@@ -15,7 +15,7 @@ import { ValidationService } from '../services/validation.service';
 // ---
 import { CompletedTodoDetailPage } from '../pages/completed-todo-detail/completed-todo-detail.page';
 import { CompletedTodosPage } from '../pages/completed-todos/completed-todos.page';
-import { CurrentTodoDetailPage } from '../pages/current-todo-detail/current-todo-detail.page';
+import { CurrentTodoDetailModal } from '../pages/current-todo-detail/current-todo-detail.modal';
 import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
 
 import { CompletedTodoListComponent } from '../components/completed-todo-list/completed-todo-list.component';
@@ -54,7 +54,7 @@ import firebase from 'firebase';
     CompletedTodoListComponent,
     CompletedTodosPage,
     ControlMessages,
-    CurrentTodoDetailPage,
+    CurrentTodoDetailModal,
     CurrentTodoListComponent,
     CurrentTodosPage,
     LoginPage,
@@ -69,7 +69,7 @@ import firebase from 'firebase';
   entryComponents: [
     CompletedTodoDetailPage,
     CompletedTodosPage,
-    CurrentTodoDetailPage,
+    CurrentTodoDetailModal,
     CurrentTodosPage,
     HomePage,
     MyApp,
