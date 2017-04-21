@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 
-export interface MyPopoverPageResult {
+export interface CurrentTodosPopoverResult {
   clearCompleted: boolean;
 }
 
@@ -15,8 +15,8 @@ export interface MyPopoverPageResult {
     </ion-list>
   `
 })
-export class MyPopoverPage {
-    private readonly CLASS_NAME = 'MyPopoverPage';
+export class CurrentTodosPopover {
+    private readonly CLASS_NAME = 'CurrentTodosPopover';
 
   constructor(
     public viewCtrl: ViewController
@@ -25,7 +25,7 @@ export class MyPopoverPage {
     }
 
   clearCompleted() {
-    let result: MyPopoverPageResult = {
+    let result: CurrentTodosPopoverResult = {
       clearCompleted: true,
     }
 

@@ -20,7 +20,7 @@ import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
 
 import { CompletedTodoListComponent } from '../components/completed-todo-list/completed-todo-list.component';
 import { CurrentTodoListComponent } from '../components/current-todo-list/current-todo-list.component';
-import { MyPopoverPage } from '../components/popover/popover.component';
+import { CurrentTodosPopover } from '../components/current-todos-popover/current-todos.popover';
 
 
 import { CompletedTodoService } from '../services/completed-todo.service';
@@ -58,7 +58,7 @@ import firebase from 'firebase';
     CurrentTodoListComponent,
     CurrentTodosPage,
     LoginPage,
-    MyPopoverPage,
+    CurrentTodosPopover,
     SignupPage,
   ],
   imports: [
@@ -76,7 +76,7 @@ import firebase from 'firebase';
     Page1,
     Page2,
     LoginPage,
-    MyPopoverPage,
+    CurrentTodosPopover,
     SignupPage,
   ],
   providers: [

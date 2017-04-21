@@ -14,7 +14,7 @@ import { ReorderArrayIndexes } from '../../models/reorder-array-indexes';
 import { Todo } from '../../models/todo';
 
 import { CurrentTodoDetailModal } from '../current-todo-detail/current-todo-detail.modal';
-import { MyPopoverPage, MyPopoverPageResult } from '../../components/popover/popover.component';
+import { CurrentTodosPopover, CurrentTodosPopoverResult } from '../../components/current-todos-popover/current-todos.popover';
 
 @Component({
   selector: 'page-current-todos',
@@ -74,9 +74,9 @@ export class CurrentTodosPage {
   }
 
   presentPopover(event: Event) {
-    let popover = this.popoverCtrl.create(MyPopoverPage);
+    let popover = this.popoverCtrl.create(CurrentTodosPopover);
 
-    popover.onDidDismiss((result: MyPopoverPageResult) => {
+    popover.onDidDismiss((result: CurrentTodosPopoverResult) => {
       console.log('popover.onDidDismiss>', result);
 
       if (!!!result) {
