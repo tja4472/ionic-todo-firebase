@@ -15,7 +15,7 @@ import { ValidationService } from '../services/validation.service';
 // ---
 import { CompletedTodoDetailPage } from '../pages/completed-todo-detail/completed-todo-detail.page';
 import { CompletedTodosPage } from '../pages/completed-todos/completed-todos.page';
-import { CurrentTodoDetailModal } from '../pages/current-todo-detail/current-todo-detail.modal';
+import { CurrentTodoDetailModal } from '../pages/current-todo-detail-modal/current-todo-detail.modal';
 import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
 
 import { CompletedTodoListComponent } from '../components/completed-todo-list/completed-todo-list.component';

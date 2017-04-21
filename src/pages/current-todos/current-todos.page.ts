@@ -13,7 +13,7 @@ import { CurrentTodoService } from '../../services/current-todo.service';
 import { ReorderArrayIndexes } from '../../models/reorder-array-indexes';
 import { Todo } from '../../models/todo';
 
-import { CurrentTodoDetailModal } from '../current-todo-detail/current-todo-detail.modal';
+import { CurrentTodoDetailModal } from '../current-todo-detail-modal/current-todo-detail.modal';
 import { CurrentTodosPopover, CurrentTodosPopoverResult } from '../../components/current-todos-popover/current-todos.popover';
 
 @Component({
