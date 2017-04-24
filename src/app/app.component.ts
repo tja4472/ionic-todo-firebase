@@ -38,12 +38,12 @@ export class MyApp implements OnInit {
   // the left menu only works after login
   // the login page disables the left menu
   appPages: PageInterface[] = [
+    { title: 'Home Page', component: HomePage, icon: 'calendar' },    
     { title: 'Page One', component: Page1, icon: 'calendar' },
     { title: 'Page Two', component: Page2, icon: 'calendar' },
   ];
 
   loggedInPages: PageInterface[] = [
-    { title: 'Home Page', component: HomePage, icon: 'calendar' },
     { title: 'Current Todos Page', component: CurrentTodosPage, icon: 'calendar' },
     { title: 'Completed Todos Page', component: CompletedTodosPage, icon: 'calendar' },
     { title: 'Logout', component: Page1, icon: 'log-out', logsOut: true }
@@ -137,7 +137,7 @@ export class MyApp implements OnInit {
           console.log(`%s: -- logged in --`, this.CLASS_NAME);
           this.displayUserName = currentUser.email;
           this.enableMenu(true);
-          this.nav.setRoot(HomePage).catch(() => {
+          this.nav.setRoot(CurrentTodosPage).catch(() => {
             console.error("Didn't set nav root");
           });
 
@@ -147,7 +147,7 @@ export class MyApp implements OnInit {
           console.log(`%s: -- logged out --`, this.CLASS_NAME);
           this.displayUserName = 'Not logged in';
           this.enableMenu(false);
-          this.nav.setRoot(LoginPage).catch(() => {
+          this.nav.setRoot(HomePage).catch(() => {
             console.error("Didn't set nav root");
           });
           console.log(`%s: -- logged out 1--`, this.CLASS_NAME);
