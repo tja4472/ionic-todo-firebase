@@ -111,6 +111,13 @@ export class CurrentTodosPage {
     this.todoService.removeItem(item);
   }
 
+  ionViewCanEnter(): boolean {
+    console.log('CurrentTodosPage:ionViewCanEnter');
+    // Check if logged in.
+    return true;
+    // return false;
+  }
+
   ionViewDidLeave() {
     console.log('CurrentTodosPage:ionViewDidLeave');
   }

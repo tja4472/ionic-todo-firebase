@@ -101,7 +101,7 @@ export class MyApp implements OnInit {
     // this.rootPage = page.component;
     // console.log('NgZone.isInAngularZone()-2>', NgZone.isInAngularZone());
     this.nav.setRoot(page.component).catch(() => {
-      console.error("Didn't set nav root");
+      console.error('openPage:Didn\'t set nav root.');
     });
 
     if (page.logsOut === true) {
