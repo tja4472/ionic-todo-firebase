@@ -13,7 +13,7 @@ import { CurrentTodoService } from '../../services/current-todo.service';
 import { ReorderArrayIndexes } from '../../models/reorder-array-indexes';
 import { Todo } from '../../models/todo';
 
-import { CurrentTodoDetailModal } from '../current-todo-detail-modal/current-todo-detail.modal';
+import { CurrentTodoDetailModal, CurrentTodoDetailModalParam } from '../current-todo-detail-modal/current-todo-detail.modal';
 import { CurrentTodosPopover, CurrentTodosPopoverResult } from '../../components/current-todos-popover/current-todos.popover';
 
 @Component({
@@ -36,7 +36,8 @@ export class CurrentTodosPage {
 
   createItem() {
     console.log('createItem');
-    let modal = this.modalCtrl.create(CurrentTodoDetailModal);
+    let params: CurrentTodoDetailModalParam = { isEdited: false }
+    let modal = this.modalCtrl.create(CurrentTodoDetailModal, params);
 
     modal.onDidDismiss((data: Todo) => {
       console.log('onDidDismiss>', data);
@@ -59,8 +60,8 @@ export class CurrentTodosPage {
     // let todo: ToDo;
     // todo = assign(todo, item);
 
-
-    let modal = this.modalCtrl.create(CurrentTodoDetailModal, { todo: item });
+    let params: CurrentTodoDetailModalParam = { data: item, isEdited: true }
+    let modal = this.modalCtrl.create(CurrentTodoDetailModal, params);
 
     modal.onDidDismiss((data: Todo) => {
       console.log('onDidDismiss>', data);
@@ -121,7 +122,7 @@ export class CurrentTodosPage {
   ionViewDidLeave() {
     console.log('CurrentTodosPage:ionViewDidLeave');
   }
-}   
+}
 
 /*    
         this.todos =
@@ -151,4 +152,4 @@ export class CurrentTodosPage {
             }];   
 
             this.todos$ = Observable.of(this.todos);     
-*/            
+*/

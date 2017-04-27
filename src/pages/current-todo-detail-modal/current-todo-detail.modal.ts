@@ -4,6 +4,11 @@ import { NavParams, ViewController } from 'ionic-angular';
 import { Todo } from '../../models/todo';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
+export interface CurrentTodoDetailModalParam {
+    data?: Todo;
+    isEdited: boolean;
+}
+
 @Component({
     selector: 'modal-current-todo-detail',
     templateUrl: 'current-todo-detail.modal.html',
@@ -13,8 +18,7 @@ export class CurrentTodoDetailModal {
 
     public todoForm: FormGroup;
 
-    // data model.
-    private formResult: Todo =
+    private dataModel: Todo =
     {
         id: undefined,
         description: null,
@@ -32,23 +36,23 @@ export class CurrentTodoDetailModal {
         public viewController: ViewController
     ) {
         console.log(`%s:constructor`, this.CLASS_NAME);
-        console.log('params:get>', params.get('todo'));
 
-        let paramTodo: Todo = params.get('todo');
-        this.isEditing = !!paramTodo;
-
-        if (this.isEditing) {
-            this.formResult = paramTodo;
+        if (params.get('isEdited')) {
+            this.isEditing = true;
+            this.dataModel = params.get('data');
+        } else {
+            this.isEditing = false;
         }
 
+        console.log('isEditing>', this.isEditing);
         this.createForm();
     }
 
     private createForm(): void {
         this.todoForm = this.formBuilder.group({
-            nameA: [this.formResult.name, Validators.required],
-            description: [this.formResult.description],
-            isComplete: [this.formResult.isComplete]
+            nameA: [this.dataModel.name, Validators.required],
+            description: [this.dataModel.description],
+            isComplete: [this.dataModel.isComplete]
         });
     }
 
@@ -72,27 +76,27 @@ export class CurrentTodoDetailModal {
 
         // if(this.todoForm.touched)
         console.log(this.todoForm.value);
-        console.log('this.formResult>', this.formResult);
+        console.log('this.formResult>', this.dataModel);
         // this.formResult.description = this.todoForm.value.description;
         // this.formResult.isComplete = this.todoForm.value.isComplete;
         // this.formResult.name = this.todoForm.value.nameA;
-        this.formResult = this.prepareSaveData();
-        
-        this.viewController.dismiss(this.formResult);
+        this.dataModel = this.prepareSaveData();
+
+        this.viewController.dismiss(this.dataModel);
     }
 
-   private prepareSaveData(): Todo {
-    const formModel = this.todoForm.value;
+    private prepareSaveData(): Todo {
+        const formModel = this.todoForm.value;
 
-    const saveData: Todo = {
-      description: formModel.description,
-      id: this.formResult.id,
-      index: this.formResult.index,
-      isComplete: formModel.isComplete,
-      name: formModel.nameA,
-      userId: this.formResult.userId,
-    };
+        const saveData: Todo = {
+            description: formModel.description,
+            id: this.dataModel.id,
+            index: this.dataModel.index,
+            isComplete: formModel.isComplete,
+            name: formModel.nameA,
+            userId: this.dataModel.userId,
+        };
 
-    return saveData;
-  }   
+        return saveData;
+    }
 }
