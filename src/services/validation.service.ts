@@ -4,7 +4,7 @@
 import { FormControl } from '@angular/forms';
 
 export class ValidationService {
-    private readonly CLASS_NAME = 'ValidationService';
+    // private readonly CLASS_NAME = 'ValidationService';
     
     static getValidatorErrorMessage(validatorName: string, validatorValue?: any) {
         let config: any = {

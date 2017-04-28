@@ -115,27 +115,6 @@ export class AuthService {
                     // var errorMessage = error.message;
                     // ...
                 });
-
-            let details = { 'email': _username, 'password': _password };
-            /*
-                        this.auth.login('basic', details).then((_result) => {
-            
-                            let authUser: ActiveUser = {
-                                id: this.user.id,
-                                email: this.user.details.email,
-                                image: this.user.details.image,
-                                name: this.user.details.name,
-                                userName: this.user.details.username
-                            };
-            
-                            this.activeUser.next(authUser);
-                            // this.activeUser.next(Object.assign({}, this.user.details, { id: this.user.id }))
-                        }, (err) => {
-                            // Gives POST https://api.ionic.io/auth/login 401 ()
-                            // Error: Unsuccessful HTTP response
-                            console.log('AAAAA>', err)
-                        });
-            */
         }
     }
 
@@ -167,8 +146,9 @@ export class AuthService {
         _password?: string) {
         console.log('%s:doSignup()', this.CLASS_NAME)
         if (_email.length) {
+           /*
             let details = { 'email': _email, 'password': _password };
-            /*
+ 
                         this.auth.signup(details)
                             .then(() => {
                                 return this.doLogin(_email, _password);

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
-import { Observable } from 'rxjs/Observable';
 
 import * as firebase from 'firebase/app';
 
@@ -216,36 +215,6 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         console.log('%s:toggleCompleteItem>', this.CLASS_NAME, todo);
         todo.isComplete = !todo.isComplete;
         this.saveItem(todo);
-    }
-
-    private dummyData(): Observable<Todo[]> {
-        let data: Todo[] =
-            [{
-                id: 'AA',
-                description: 'AA-description',
-                name: 'AA-name',
-                index: 0,
-                isComplete: false,
-                userId: 'a01',
-            },
-            {
-                id: 'BB',
-                description: 'BB-description',
-                name: 'BB-name',
-                index: 0,
-                isComplete: false,
-                userId: 'a01',
-            },
-            {
-                id: 'CC',
-                description: 'CC-description',
-                name: 'CC-name',
-                index: 0,
-                isComplete: false,
-                userId: 'a01',
-            }];
-
-        return Observable.of(data);
     }
 }
 
