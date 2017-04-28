@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MenuController, Nav, Platform } from 'ionic-angular';
+import { Events, MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -38,7 +38,7 @@ export class MyApp implements OnInit {
   // the left menu only works after login
   // the login page disables the left menu
   appPages: PageInterface[] = [
-    { title: 'Home Page', component: HomePage, icon: 'calendar' },    
+    { title: 'Home Page', component: HomePage, icon: 'calendar' },
     { title: 'Page One', component: Page1, icon: 'calendar' },
     { title: 'Page Two', component: Page2, icon: 'calendar' },
   ];
@@ -58,6 +58,7 @@ export class MyApp implements OnInit {
   pages: Array<{ title: string, component: any }>;
 
   constructor(
+    public events: Events,
     public menu: MenuController,
     // private ngZone: NgZone,
     public platform: Platform,
@@ -80,10 +81,20 @@ export class MyApp implements OnInit {
 
   initializeApp() {
     console.log(`%s:initializeApp`, this.CLASS_NAME);
+    let bootTime = Date.now();
+
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       console.log(`%s:platform.ready()`, this.CLASS_NAME);
+      let readyTime = Date.now();
+      this.events.subscribe('app:boot', (time: number) => {
+        console.log('App boot start: ', bootTime);
+        console.log('App boot ready: ', readyTime);
+        console.log('App boot done: ', time);
+        console.log('Diff boot', time - bootTime);
+        console.log('Diff ready', time - readyTime);
+      });
 
       this.statusBar.styleDefault();
       this.splashScreen.hide();

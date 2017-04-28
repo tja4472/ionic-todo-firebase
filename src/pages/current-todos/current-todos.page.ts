@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import {
+  Events,
   ModalController,
   NavController,
   PopoverController,
@@ -25,6 +26,7 @@ export class CurrentTodosPage {
   todos$: Observable<Todo[]>;
 
   constructor(
+        public events: Events,
     public modalCtrl: ModalController,
     public navCtrl: NavController,
     public popoverCtrl: PopoverController,
@@ -122,6 +124,11 @@ export class CurrentTodosPage {
   ionViewDidLeave() {
     console.log('CurrentTodosPage:ionViewDidLeave');
   }
+
+  ionViewDidLoad() {
+    console.log('CurrentTodosPage:ionViewDidLoad');
+    this.events.publish('app:boot', Date.now());
+  }  
 }
 
 /*    
