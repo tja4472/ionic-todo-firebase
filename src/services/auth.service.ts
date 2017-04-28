@@ -1,13 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
-
-//import { Auth, User, IDetailedError } from '@ionic/cloud-angular';
-
-import { ActiveUser } from '../models/active-user';
 import { CurrentUser } from '../models/current-user';
 
-import firebase from 'firebase';
+import * as firebase from 'firebase/app';
 
 // Original: https://github.com/aaronksaunders/Ionic2-Ionic.io-Auth-Example
 

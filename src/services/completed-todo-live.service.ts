@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
-import firebase from 'firebase';
+import * as firebase from 'firebase/app';
 
 import { DM_CompletedTodo } from '../database-models/dm-completed-todo';
 

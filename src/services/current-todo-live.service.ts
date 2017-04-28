@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Observable } from 'rxjs/Observable';
 
-import firebase from 'firebase';
+import * as firebase from 'firebase/app';
 
 import { reorderArray } from 'ionic-angular';
 

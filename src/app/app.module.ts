@@ -41,8 +41,12 @@ import { MyFirebaseAppConfig } from './my-firebase-app-config';
 // Add the RxJS Observable operators we need in this app.
 import './rxjs-operators';
 
-import firebase from 'firebase';
-
+// This import loads the firebase namespace along with all its type information.
+import * as firebase from 'firebase/app';
+ 
+// These imports load individual services into the firebase namespace.
+import 'firebase/auth';
+import 'firebase/database';
 
 @NgModule({
   declarations: [
