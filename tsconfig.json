@@ -4,7 +4,13 @@
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noImplicitAny": true,    
+    // strict
+    "alwaysStrict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,  
+    // https://github.com/Microsoft/TypeScript/issues/10078
+    "strictNullChecks": false,
+    //
     "lib": [
       "dom",
       "es2015"
