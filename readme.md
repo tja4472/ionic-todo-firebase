@@ -17,3 +17,4 @@ cordova platform update android@6.2.2
 ```
 cordova platform add android@6.2.2
 ```
+npm install npm@latest -g
