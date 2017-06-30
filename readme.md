@@ -18,3 +18,5 @@ cordova platform update android@6.2.2
 cordova platform add android@6.2.2
 ```
 npm install npm@latest -g
+
+https://codeburst.io/disabling-package-lock-json-6be662f5b97d
