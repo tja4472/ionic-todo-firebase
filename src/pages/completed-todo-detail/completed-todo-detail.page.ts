@@ -27,7 +27,7 @@ export class CompletedTodoDetailPage {
   {
     id: undefined,
     isComplete: false,
-    description: null,
+    description: undefined,
     name: '',
     userId: '',
   };

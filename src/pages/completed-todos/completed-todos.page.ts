@@ -43,6 +43,10 @@ export class CompletedTodosPage {
         return;
       }
 
+      if (modalResult.todo === undefined) {
+        return;
+      }
+      
       if (modalResult.isRemoved) {
         this.completedTodoService.removeItem(modalResult.todo);
         return;

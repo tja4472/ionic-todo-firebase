@@ -37,7 +37,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
     private data: Todo[];
     private dataBehaviorSubject: BehaviorSubject<Todo[]>;
 
-    private databaseReferenceListening: firebase.database.Reference = null;
+    private databaseReferenceListening: firebase.database.Reference;
 
     get data$() {
         return this.dataBehaviorSubject.asObservable();
@@ -107,6 +107,8 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         // userId: string,
     ): void {
         console.log('%s:startListening()', this.CLASS_NAME);
+        if (this.authService.authUser.id === null) return;
+
         this.databaseReferenceListening = firebase.database()
             .ref(this.DB_USERS_KEY)
             .child(this.authService.authUser.id)
@@ -116,9 +118,13 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
             .orderByChild('index')
             .on('value', snapshot => {
                 // console.log('snapshot>', snapshot);
+                if (snapshot === null) return;
+
                 let arr: Todo[] = [];
 
                 snapshot.forEach((childSnapshot) => {
+                    if (childSnapshot.key === null) return false;
+
                     arr.push(
                         fromFirebaseTodo
                             (childSnapshot.key, childSnapshot.val()));
@@ -143,7 +149,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
 
         if (this.databaseReferenceListening != null) {
             this.databaseReferenceListening.off();
-            this.databaseReferenceListening = null;
+            // this.databaseReferenceListening = null;
         }
     }
 
@@ -151,6 +157,8 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         indexes: ReorderArrayIndexes,
     ) {
         console.log('%s:reorderItems():indexes>', this.CLASS_NAME, indexes);
+        if (this.authService.authUser.id === null) return;
+
         const itemsToSave = [...this.data];
         reorderArray(itemsToSave, indexes);
 
@@ -171,6 +179,9 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         item: Todo,
     ) {
         console.log('%s:removeItem>', this.CLASS_NAME, item);
+        if (this.authService.authUser.id === null) return;    
+        if (item.id === undefined) return;
+
         // this.databaseReference
         //  .child(item.id)
         //  .remove();
@@ -186,6 +197,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         item: Todo,
     ) {
         console.log('%s:saveItem>', this.CLASS_NAME, item);
+        if (this.authService.authUser.id === null) return;        
         if (item.id == undefined) {
             // insert.
             // this.databaseReference
@@ -263,10 +275,11 @@ function fromFirebaseTodo(
         userId: 'aaa',
     };
 
+/*
     if (result.description === undefined) {
         result.description = null;
     }
-
+*/
     if (result.isComplete === undefined) {
         result.isComplete = false;
     }

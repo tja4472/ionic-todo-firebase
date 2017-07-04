@@ -29,7 +29,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     private data: TodoCompleted[];
     private dataBehaviorSubject: BehaviorSubject<TodoCompleted[]>;
 
-    private databaseReferenceListening: firebase.database.Reference = null;
+    private databaseReferenceListening: firebase.database.Reference;
 
     get data$() {
         return this.dataBehaviorSubject.asObservable();
@@ -56,6 +56,8 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     ): void {
         console.log('%s:startListening()', this.CLASS_NAME);
 
+        if (this.authService.authUser.id === null) return;
+
         this.databaseReferenceListening = firebase.database()
             .ref(this.DB_USERS_KEY)
             .child(this.authService.authUser.id)
@@ -67,7 +69,10 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
                 // console.log('snapshot>', snapshot);
                 let arr: TodoCompleted[] = [];
 
+                if (snapshot === null) return;
+
                 snapshot.forEach((childSnapshot) => {
+                    if (childSnapshot.key === null) return false;
                     arr.push(
                         this.dm_CompletedTodoService.fromDatabase
                             (childSnapshot.key, childSnapshot.val()));
@@ -92,7 +97,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
         
         if (this.databaseReferenceListening != null) {
             this.databaseReferenceListening.off();
-            this.databaseReferenceListening = null;
+            // this.databaseReferenceListening = null;
         }            
     }
 
@@ -100,6 +105,9 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
         item: TodoCompleted,
     ) {
         console.log('%s:removeItem>', this.CLASS_NAME, item);
+ 
+        if (this.authService.authUser.id === null) return;
+        if (item.id === undefined) return;
 
         firebase.database()
             .ref(this.DB_USERS_KEY)
@@ -113,8 +121,9 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
         item: TodoCompleted
     ) {
         console.log(`%s:saveItem>`, this.CLASS_NAME, item);
-
-        if (item.id == undefined) {
+        if (this.authService.authUser.id === null) return;
+        
+        if (item.id === undefined) {
             // insert.
             firebase.database()
                 .ref(this.DB_USERS_KEY)

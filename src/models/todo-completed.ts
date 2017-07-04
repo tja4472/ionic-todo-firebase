@@ -1,5 +1,5 @@
 export interface TodoCompleted {
-    id: string;
+    id?: string;
     isComplete: boolean;    
     description?: string;
     name: string;

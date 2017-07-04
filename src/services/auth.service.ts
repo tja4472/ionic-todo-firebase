@@ -15,7 +15,8 @@ export class AuthService {
     // to changes of this object to determine of we are logged in or not
     // activeUser = new BehaviorSubject<ActiveUser>(null)
 
-    private _authUserBehaviorSubject$ = new BehaviorSubject<CurrentUser>(null)
+    private _authUserBehaviorSubject$ = new BehaviorSubject<CurrentUser>({ id: null, email: null });
+
     private _authStateChecked: boolean = false;
 
     get authUser() {
@@ -46,7 +47,7 @@ export class AuthService {
             } else {
                 // No user is signed in.
                 console.log(`%s: No user is signed in.`, this.CLASS_NAME);
-                this._authUserBehaviorSubject$.next(null);
+                this._authUserBehaviorSubject$.next({ id: null, email: null });
             }
         });
     }
@@ -103,7 +104,7 @@ export class AuthService {
      */
     doLogin(
         _username: string,
-        _password?: string
+        _password: string
     ) {
         console.log('%s:doLogin()', this.CLASS_NAME);
         if (_username.length) {

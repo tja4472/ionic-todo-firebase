@@ -3,15 +3,14 @@ import { Events, MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { Page1 } from '../pages/page1/page1';
-import { Page2 } from '../pages/page2/page2';
-
+import { CurrentUser } from '../models/current-user';
 import { CompletedTodosPage } from '../pages/completed-todos/completed-todos.page';
 import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
 import { HomePage } from '../pages/home/home.page';
 import { LoginPage } from '../pages/login/login.page';
+import { Page1 } from '../pages/page1/page1';
+import { Page2 } from '../pages/page2/page2';
 import { SignupPage } from '../pages/signup/signup.page';
-
 import { AuthService } from '../services/auth.service';
 import { CompletedTodoService } from '../services/completed-todo.service';
 import { CurrentTodoService } from '../services/current-todo.service';
@@ -127,7 +126,7 @@ export class MyApp implements OnInit {
     // NgZone.isInAngularZone() = true
     // console.log('NgZone.isInAngularZone()-1>', NgZone.isInAngularZone());
     this.authService.authUser$
-      .subscribe(currentUser => {
+      .subscribe((currentUser: CurrentUser) => {
         console.log(`%s: -- authService.activeUser subscribe --`, this.CLASS_NAME);
         console.log(`%s:currentUser>`, this.CLASS_NAME, currentUser);
         console.log(`%s:stateChecked>`, this.CLASS_NAME, this.authService.authStateChecked);
@@ -146,7 +145,13 @@ export class MyApp implements OnInit {
         // console.log('NgZone.isInAngularZone()-3>', NgZone.isInAngularZone());
         if (currentUser) {
           console.log(`%s: -- logged in --`, this.CLASS_NAME);
-          this.displayUserName = currentUser.email;
+
+          if (currentUser.email === null) {
+            this.displayUserName = '';
+          } else {
+            this.displayUserName = currentUser.email;
+          }
+
           this.enableMenu(true);
           this.nav.setRoot(CurrentTodosPage).catch(() => {
             console.error("Didn't set nav root");

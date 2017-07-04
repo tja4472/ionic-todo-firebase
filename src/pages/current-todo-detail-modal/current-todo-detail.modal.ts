@@ -21,11 +21,11 @@ export class CurrentTodoDetailModal {
     private dataModel: Todo =
     {
         id: undefined,
-        description: null,
+        description: undefined,
         name: '',
         index: 0,
         isComplete: false,
-        userId: undefined,
+        userId: '',
     };
 
     private isEditing: boolean;
