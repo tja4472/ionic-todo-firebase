@@ -98,6 +98,10 @@ export class MyApp implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
+      this.authService.replaySubject$.subscribe((user:CurrentUser) => {
+console.log('>>>>>>>>>>>>>>app.component.ts: authService.replaySubject$>', user);
+      });
+
       // This has to be done after platform.ready() else enableMenu() will
       // not change menu.
       this.setupAuthServiceSubscription();

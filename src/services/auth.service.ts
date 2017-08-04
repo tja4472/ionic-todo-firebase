@@ -1,3 +1,4 @@
+import { ReplaySubject } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 
@@ -15,7 +16,9 @@ export class AuthService {
     // to changes of this object to determine of we are logged in or not
     // activeUser = new BehaviorSubject<ActiveUser>(null)
 
-    private _authUserBehaviorSubject$ = new BehaviorSubject<CurrentUser>({ id: null, email: null });
+    public replaySubject$: ReplaySubject<CurrentUser | null> = new ReplaySubject<CurrentUser>(1);
+
+    private _authUserBehaviorSubject$ = new BehaviorSubject<CurrentUser | null>({ id: null, email: null });
 
     private _authStateChecked: boolean = false;
 
@@ -43,11 +46,14 @@ export class AuthService {
                 // User is signed in.
                 console.log(`%s:User is signed in>`, this.CLASS_NAME, user.uid);
                 this._authUserBehaviorSubject$.next(this.createCurrentUser(user));
-
+this.replaySubject$.next(this.createCurrentUser(user));
             } else {
                 // No user is signed in.
                 console.log(`%s: No user is signed in.`, this.CLASS_NAME);
-                this._authUserBehaviorSubject$.next({ id: null, email: null });
+                // this._authUserBehaviorSubject$.next({ id: null, email: null });
+                // this.replaySubject$.next({ id: null, email: null });
+                this._authUserBehaviorSubject$.next(null);
+                this.replaySubject$.next(null);  
             }
         });
     }

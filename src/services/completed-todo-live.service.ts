@@ -56,6 +56,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     ): void {
         console.log('%s:startListening()', this.CLASS_NAME);
 
+        if (this.authService.authUser === null) return;
         if (this.authService.authUser.id === null) return;
 
         this.databaseReferenceListening = firebase.database()
@@ -94,18 +95,19 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
 
     public stopListening(): void {
         console.log('%s:stopListening()', this.CLASS_NAME);
-        
+
         if (this.databaseReferenceListening != null) {
             this.databaseReferenceListening.off();
             // this.databaseReferenceListening = null;
-        }            
+        }
     }
 
     removeItem(
         item: TodoCompleted,
     ) {
         console.log('%s:removeItem>', this.CLASS_NAME, item);
- 
+
+        if (this.authService.authUser === null) return;
         if (this.authService.authUser.id === null) return;
         if (item.id === undefined) return;
 
@@ -121,8 +123,9 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
         item: TodoCompleted
     ) {
         console.log(`%s:saveItem>`, this.CLASS_NAME, item);
+        if (this.authService.authUser === null) return;
         if (this.authService.authUser.id === null) return;
-        
+
         if (item.id === undefined) {
             // insert.
             firebase.database()

@@ -107,6 +107,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         // userId: string,
     ): void {
         console.log('%s:startListening()', this.CLASS_NAME);
+        if (this.authService.authUser === null) return;
         if (this.authService.authUser.id === null) return;
 
         this.databaseReferenceListening = firebase.database()
@@ -157,6 +158,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         indexes: ReorderArrayIndexes,
     ) {
         console.log('%s:reorderItems():indexes>', this.CLASS_NAME, indexes);
+        if (this.authService.authUser === null) return;
         if (this.authService.authUser.id === null) return;
 
         const itemsToSave = [...this.data];
@@ -179,7 +181,8 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         item: Todo,
     ) {
         console.log('%s:removeItem>', this.CLASS_NAME, item);
-        if (this.authService.authUser.id === null) return;    
+        if (this.authService.authUser === null) return;
+        if (this.authService.authUser.id === null) return;
         if (item.id === undefined) return;
 
         // this.databaseReference
@@ -197,7 +200,8 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         item: Todo,
     ) {
         console.log('%s:saveItem>', this.CLASS_NAME, item);
-        if (this.authService.authUser.id === null) return;        
+        if (this.authService.authUser === null) return;
+        if (this.authService.authUser.id === null) return;
         if (item.id == undefined) {
             // insert.
             // this.databaseReference
@@ -275,11 +279,11 @@ function fromFirebaseTodo(
         userId: 'aaa',
     };
 
-/*
-    if (result.description === undefined) {
-        result.description = null;
-    }
-*/
+    /*
+        if (result.description === undefined) {
+            result.description = null;
+        }
+    */
     if (result.isComplete === undefined) {
         result.isComplete = false;
     }
