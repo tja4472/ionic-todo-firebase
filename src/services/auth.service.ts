@@ -16,44 +16,40 @@ export class AuthService {
     // to changes of this object to determine of we are logged in or not
     // activeUser = new BehaviorSubject<ActiveUser>(null)
 
-    public replaySubject$: ReplaySubject<CurrentUser | null> = new ReplaySubject<CurrentUser>(1);
+    public notifier$: ReplaySubject<CurrentUser | null> = new ReplaySubject<CurrentUser>(1);
 
     private _authUserBehaviorSubject$ = new BehaviorSubject<CurrentUser | null>({ id: null, email: null });
 
-    private _authStateChecked: boolean = false;
+    // private _authStateChecked: boolean = false;
 
     get authUser() {
         return this._authUserBehaviorSubject$.getValue();
     }
 
+/*
     get authStateChecked() {
         return this._authStateChecked;
     }
-
-    get authUser$() {
-        return this._authUserBehaviorSubject$.asObservable();
-    }
-
-
+*/
     constructor(
     ) {
         console.log(`%s:constructor`, this.CLASS_NAME);
 
         firebase.auth().onAuthStateChanged((user: firebase.User) => {
-            this._authStateChecked = true;
+            // this._authStateChecked = true;
 
             if (user) {
                 // User is signed in.
                 console.log(`%s:User is signed in>`, this.CLASS_NAME, user.uid);
                 this._authUserBehaviorSubject$.next(this.createCurrentUser(user));
-this.replaySubject$.next(this.createCurrentUser(user));
+this.notifier$.next(this.createCurrentUser(user));
             } else {
                 // No user is signed in.
                 console.log(`%s: No user is signed in.`, this.CLASS_NAME);
                 // this._authUserBehaviorSubject$.next({ id: null, email: null });
                 // this.replaySubject$.next({ id: null, email: null });
                 this._authUserBehaviorSubject$.next(null);
-                this.replaySubject$.next(null);  
+                this.notifier$.next(null);  
             }
         });
     }

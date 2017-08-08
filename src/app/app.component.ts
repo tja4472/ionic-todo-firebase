@@ -98,10 +98,11 @@ export class MyApp implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
+/*      
       this.authService.replaySubject$.subscribe((user:CurrentUser) => {
 console.log('>>>>>>>>>>>>>>app.component.ts: authService.replaySubject$>', user);
       });
-
+*/
       // This has to be done after platform.ready() else enableMenu() will
       // not change menu.
       this.setupAuthServiceSubscription();
@@ -129,16 +130,19 @@ console.log('>>>>>>>>>>>>>>app.component.ts: authService.replaySubject$>', user)
   private setupAuthServiceSubscription() {
     // NgZone.isInAngularZone() = true
     // console.log('NgZone.isInAngularZone()-1>', NgZone.isInAngularZone());
-    this.authService.authUser$
-      .subscribe((currentUser: CurrentUser) => {
+          this.authService.notifier$.subscribe((currentUser: CurrentUser) => {
+console.log('>>>>>>>>>>>>>>app.component.ts: authService.replaySubject$>', currentUser);
+    //  });
+    // this.authService.authUser$
+    //  .subscribe((currentUser: CurrentUser) => {
         console.log(`%s: -- authService.activeUser subscribe --`, this.CLASS_NAME);
         console.log(`%s:currentUser>`, this.CLASS_NAME, currentUser);
-        console.log(`%s:stateChecked>`, this.CLASS_NAME, this.authService.authStateChecked);
-
+//        console.log(`%s:stateChecked>`, this.CLASS_NAME, this.authService.authStateChecked);
+/*
         if (!this.authService.authStateChecked) {
           return;
         }
-
+*/
         // NgZone.isInAngularZone() = false
         // console.log('NgZone.isInAngularZone()-2>', NgZone.isInAngularZone());
 
