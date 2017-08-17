@@ -5,15 +5,15 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { CurrentTodoService } from './current-todo.service';
 
 import { ReorderArrayIndexes } from '../models/reorder-array-indexes';
-import { Todo } from '../models/todo';
+import { ITodo } from '../models/todo.model';
 import { TodoCompleted } from '../models/todo-completed';
 
 @Injectable()
 export class CurrentTodoServiceMock implements CurrentTodoService {
     private readonly CLASS_NAME = 'CurrentTodoServiceMock';
 
-    private data: Todo[];
-    private dataBehaviorSubject: BehaviorSubject<Todo[]>;
+    private data: ITodo[];
+    private dataBehaviorSubject: BehaviorSubject<ITodo[]>;
 
     get data$() {
         return this.dataBehaviorSubject.asObservable();
@@ -22,7 +22,7 @@ export class CurrentTodoServiceMock implements CurrentTodoService {
     constructor() {
         console.log(`%s:constructor()`, this.CLASS_NAME);
         this.data = this.dummyData();
-        this.dataBehaviorSubject = <BehaviorSubject<Todo[]>>new BehaviorSubject(this.data);
+        this.dataBehaviorSubject = <BehaviorSubject<ITodo[]>>new BehaviorSubject(this.data);
     }
 
     clearCompletedItems(): void {
@@ -36,7 +36,7 @@ export class CurrentTodoServiceMock implements CurrentTodoService {
     }
 
     removeItem(
-        item: Todo,
+        item: ITodo,
     ): void {
         console.log(`%s:removeItem>`, this.CLASS_NAME, item);
     }
@@ -48,7 +48,7 @@ export class CurrentTodoServiceMock implements CurrentTodoService {
     }
 
     saveItem(
-        item: Todo
+        item: ITodo
     ): void {
         console.log(`%s:saveItem>`, this.CLASS_NAME, item);
     }
@@ -62,15 +62,15 @@ export class CurrentTodoServiceMock implements CurrentTodoService {
     }
 
     toggleCompleteItem(
-        item: Todo
+        item: ITodo
     ): void {
         console.log(`%s:toggleCompleteItem>`, this.CLASS_NAME, item);
     }
 
-    private dummyData(): Todo[] {
-        let data: Todo[] =
+    private dummyData(): ITodo[] {
+        let data: ITodo[] =
             [{
-                id: 'AA',
+                $key: 'AA',
                 description: 'AA-description',
                 name: 'AA-name',
                 index: 0,
@@ -78,7 +78,7 @@ export class CurrentTodoServiceMock implements CurrentTodoService {
                 userId: 'a01',
             },
             {
-                id: 'BB',
+                $key: 'BB',
                 description: 'BB-description',
                 name: 'BB-name',
                 index: 0,
@@ -86,7 +86,7 @@ export class CurrentTodoServiceMock implements CurrentTodoService {
                 userId: 'a01',
             },
             {
-                id: 'CC',
+                $key: 'CC',
                 description: 'CC-description',
                 name: 'CC-name',
                 index: 0,

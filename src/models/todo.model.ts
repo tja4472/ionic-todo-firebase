@@ -1,5 +1,5 @@
-export interface Todo {
-    id?: string;
+export interface ITodo {
+    $key?: string;
     index: number;
     name: string;
     description?: string;

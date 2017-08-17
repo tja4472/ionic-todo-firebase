@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 
-import { Todo } from '../../models/todo';
+import { ITodo } from '../../models/todo.model';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 export interface CurrentTodoDetailModalParam {
-    data?: Todo;
+    data?: ITodo;
     isEdited: boolean;
 }
 
@@ -18,9 +18,9 @@ export class CurrentTodoDetailModal {
 
     public todoForm: FormGroup;
 
-    private dataModel: Todo =
+    private dataModel: ITodo =
     {
-        id: undefined,
+        $key: undefined,
         description: undefined,
         name: '',
         index: 0,
@@ -85,12 +85,12 @@ export class CurrentTodoDetailModal {
         this.viewController.dismiss(this.dataModel);
     }
 
-    private prepareSaveData(): Todo {
+    private prepareSaveData(): ITodo {
         const formModel = this.todoForm.value;
 
-        const saveData: Todo = {
+        const saveData: ITodo = {
             description: formModel.description,
-            id: this.dataModel.id,
+            $key: this.dataModel.$key,
             index: this.dataModel.index,
             isComplete: formModel.isComplete,
             name: formModel.nameA,

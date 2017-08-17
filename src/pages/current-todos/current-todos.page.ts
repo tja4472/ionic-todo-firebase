@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { CurrentTodoService } from '../../services/current-todo.service';
 
 import { ReorderArrayIndexes } from '../../models/reorder-array-indexes';
-import { Todo } from '../../models/todo';
+import { ITodo } from '../../models/todo.model';
 
 import { CurrentTodoDetailModal, CurrentTodoDetailModalParam } from '../current-todo-detail-modal/current-todo-detail.modal';
 import { CurrentTodosPopover, CurrentTodosPopoverResult } from '../../components/current-todos-popover/current-todos.popover';
@@ -23,7 +23,7 @@ import { CurrentTodosPopover, CurrentTodosPopoverResult } from '../../components
 })
 export class CurrentTodosPage {
   private readonly CLASS_NAME = 'CurrentTodosPage';
-  todos$: Observable<Todo[]>;
+  todos$: Observable<ITodo[]>;
 
   constructor(
         public events: Events,
@@ -41,7 +41,7 @@ export class CurrentTodosPage {
     let params: CurrentTodoDetailModalParam = { isEdited: false }
     let modal = this.modalCtrl.create(CurrentTodoDetailModal, params);
 
-    modal.onDidDismiss((data: Todo) => {
+    modal.onDidDismiss((data: ITodo) => {
       console.log('onDidDismiss>', data);
 
       if (!!data) {
@@ -52,12 +52,12 @@ export class CurrentTodosPage {
     modal.present()
   }
 
-  toggleCompleteItem(item: Todo) {
+  toggleCompleteItem(item: ITodo) {
     console.log('completeItem:item>', item);
     this.todoService.toggleCompleteItem(item);
   }
 
-  editItem(item: Todo) {
+  editItem(item: ITodo) {
     console.log('editItem:item>', item);
     // let todo: ToDo;
     // todo = assign(todo, item);
@@ -65,7 +65,7 @@ export class CurrentTodosPage {
     let params: CurrentTodoDetailModalParam = { data: item, isEdited: true }
     let modal = this.modalCtrl.create(CurrentTodoDetailModal, params);
 
-    modal.onDidDismiss((data: Todo) => {
+    modal.onDidDismiss((data: ITodo) => {
       console.log('onDidDismiss>', data);
 
       if (!!data) {
@@ -109,7 +109,7 @@ export class CurrentTodosPage {
     // this.items = reorderArray(this.items, indexes);
   }
 
-  removeItem(item: Todo) {
+  removeItem(item: ITodo) {
     console.log('CurrentTodosPage:removeItem:item>', item);
     this.todoService.removeItem(item);
   }

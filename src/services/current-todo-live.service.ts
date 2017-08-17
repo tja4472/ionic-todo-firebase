@@ -15,7 +15,7 @@ import { ReorderArrayIndexes } from '../models/reorder-array-indexes';
 
 import { DM_CurrentTodo } from '../database-models/dm-current-todo';
 
-import { Todo } from '../models/todo';
+import { ITodo } from '../models/todo.model';
 import { TodoCompleted } from '../models/todo-completed';
 
 
@@ -34,8 +34,8 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
     private readonly DB_LIST_KEY = 'currentTodos';
     private readonly DB_USERS_KEY = '/users';
 
-    private data: Todo[];
-    private dataBehaviorSubject: BehaviorSubject<Todo[]>;
+    private data: ITodo[];
+    private dataBehaviorSubject: BehaviorSubject<ITodo[]>;
 
     private databaseReferenceListening: firebase.database.Reference;
 
@@ -56,7 +56,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
     ) {
         console.log('%s:constructor()', this.CLASS_NAME);
         this.data = [];
-        this.dataBehaviorSubject = <BehaviorSubject<Todo[]>>new BehaviorSubject([]);
+        this.dataBehaviorSubject = <BehaviorSubject<ITodo[]>>new BehaviorSubject([]);
     }
 
     public clearCompletedItems(): void {
@@ -83,8 +83,8 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         item: TodoCompleted,
     ): void {
         console.log('%s:clearCompletedItems', this.CLASS_NAME, item);
-        let todo: Todo = {
-            id: undefined,
+        let todo: ITodo = {
+            $key: undefined,
             description: item.description,
             name: item.name,
             isComplete: false,
@@ -121,7 +121,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
                 // console.log('snapshot>', snapshot);
                 if (snapshot === null) return;
 
-                let arr: Todo[] = [];
+                let arr: ITodo[] = [];
 
                 snapshot.forEach((childSnapshot) => {
                     if (childSnapshot.key === null) return false;
@@ -166,7 +166,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
 
         let updates: any = {};
         for (let x = 0; x < itemsToSave.length; x++) {
-            updates[itemsToSave[x].id + '/index'] = x;
+            updates[itemsToSave[x].$key + '/index'] = x;
         }
 
         //this.databaseReference.update(updates);
@@ -178,12 +178,12 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
     }
 
     removeItem(
-        item: Todo,
+        item: ITodo,
     ) {
         console.log('%s:removeItem>', this.CLASS_NAME, item);
         if (this.authService.authUser === null) return;
         if (this.authService.authUser.id === null) return;
-        if (item.id === undefined) return;
+        if (item.$key === undefined) return;
 
         // this.databaseReference
         //  .child(item.id)
@@ -192,17 +192,17 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
             .ref(this.DB_USERS_KEY)
             .child(this.authService.authUser.id)
             .child(this.DB_LIST_KEY)
-            .child(item.id)
+            .child(item.$key)
             .remove();
     }
 
     saveItem(
-        item: Todo,
+        item: ITodo,
     ) {
         console.log('%s:saveItem>', this.CLASS_NAME, item);
         if (this.authService.authUser === null) return;
         if (this.authService.authUser.id === null) return;
-        if (item.id == undefined) {
+        if (item.$key == undefined) {
             // insert.
             // this.databaseReference
             // .push(toFirebaseTodo(item));
@@ -220,13 +220,13 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
                 .ref(this.DB_USERS_KEY)
                 .child(this.authService.authUser.id)
                 .child(this.DB_LIST_KEY)
-                .child(item.id)
+                .child(item.$key)
                 .set(toFirebaseTodo(item));
         }
     }
 
     public toggleCompleteItem(
-        todo: Todo
+        todo: ITodo
     ): void {
         console.log('%s:toggleCompleteItem>', this.CLASS_NAME, todo);
         todo.isComplete = !todo.isComplete;
@@ -235,7 +235,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
 }
 
 
-function toFirebaseTodo(todo: Todo): DM_CurrentTodo {
+function toFirebaseTodo(todo: ITodo): DM_CurrentTodo {
     //
     let result: DM_CurrentTodo = {
         // id: todo.id,
@@ -266,11 +266,11 @@ function fromDatabase(x: any[]): Todo[] {
 function fromFirebaseTodo(
     id: string,
     x: any
-): Todo {
+): ITodo {
     console.log('fromFirebaseTodo');
 
-    let result: Todo = {
-        id: id,
+    let result: ITodo = {
+        $key: id,
         description: x.description,
         index: x.index,
         isComplete: x.isComplete,
