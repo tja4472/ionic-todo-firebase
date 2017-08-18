@@ -19,7 +19,7 @@ import { CurrentTodoDetailModal } from '../pages/current-todo-detail-modal/curre
 import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
 
 import { CompletedTodoListComponent } from '../components/completed-todo-list/completed-todo-list.component';
-import { CurrentTodoListComponent } from '../components/current-todo-list/current-todo-list.component';
+import { CurrentTodoListComponent } from '../shared/components/current-todo-list/current-todo-list.component';
 import { CurrentTodosPopover } from '../components/current-todos-popover/current-todos.popover';
 
 
