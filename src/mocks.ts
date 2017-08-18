@@ -1,7 +1,7 @@
 /* tslint:disable */ 
 // IONIC:
-import { EventEmitter}      from '@angular/core';
-import { FormBuilder }      from '@angular/forms';
+// import { EventEmitter}      from '@angular/core';
+// import { FormBuilder }      from '@angular/forms';
 
 export class AlertMock {
 
@@ -91,11 +91,11 @@ export class PlatformMock {
     });
   }
 
-  public registerBackButtonAction(fn: Function, priority?: number): Function {
+  public registerBackButtonAction(_fn: Function, _priority?: number): Function {
     return (() => true);
   }
 
-  public hasFocus(ele: HTMLElement): boolean {
+  public hasFocus(_ele: HTMLElement): boolean {
     return true;
   }
 
@@ -107,7 +107,7 @@ export class PlatformMock {
     return true;
   }
 
-  public getElementComputedStyle(container: any): any {
+  public getElementComputedStyle(_container: any): any {
     return {
       paddingLeft: '10',
       paddingTop: '10',
@@ -120,7 +120,7 @@ export class PlatformMock {
     return callback;
   }
 
-  public registerListener(ele: any, eventName: string, callback: any): Function {
+  public registerListener(_ele: any, _eventName: string, _callback: any): Function {
     return (() => true);
   }
 
@@ -128,7 +128,7 @@ export class PlatformMock {
     return window;
   }
 
-  public raf(callback: any): number {
+  public raf(_callback: any): number {
     return 1;
   }
 
@@ -136,7 +136,7 @@ export class PlatformMock {
     return setTimeout(callback, timer);
   }
 
-  public cancelTimeout(id: any) {
+  public cancelTimeout(_id: any) {
     // do nothing
   }
 
@@ -161,7 +161,7 @@ export class StatusMock {
 
 export class StorageMock {
 
-  public get(key: string): Promise<{}> {
+  public get(_key: string): Promise<{}> {
     return new Promise((resolve: Function) => {
       resolve({});
     });
