@@ -4,7 +4,7 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { NavController } from 'ionic-angular';
 import { SignupPage } from '../signup/signup.page';
 
-import { AuthService } from '../../services/auth.service'
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
@@ -12,12 +12,11 @@ import { AuthService } from '../../services/auth.service'
   templateUrl: 'login.page.html'
 })
 export class LoginPage {
-  private readonly CLASS_NAME = 'LoginPage';
-
   public submitted = false;
   public loginForm: FormGroup;
 
   // loginState$: any;
+  private readonly CLASS_NAME = 'LoginPage';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,13 +25,6 @@ export class LoginPage {
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
     this.createForm();
-  }
-
-  private createForm(): void {
-    this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(8)]],
-    });
   }
 
   onLogin() {
@@ -65,5 +57,12 @@ export class LoginPage {
 
   ionViewDidLeave() {
     console.log('LoginPage:ionViewDidLeave');
+  }
+
+  private createForm(): void {
+    this.loginForm = this.formBuilder.group({
+      password: ['', [Validators.required, Validators.minLength(8)]],
+      username: ['', Validators.required],
+    });
   }
 }

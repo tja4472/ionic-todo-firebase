@@ -11,22 +11,29 @@ import { Observable } from 'rxjs/Observable';
 
 import { CurrentTodoService } from '../../services/current-todo.service';
 
-import { ReorderArrayIndexes } from '../../models/reorder-array-indexes';
+import { IReorderArrayIndexes } from '../../models/reorder-array-indexes';
 import { ITodo } from '../../models/todo.model';
 
-import { CurrentTodoDetailModal, CurrentTodoDetailModalParam } from '../current-todo-detail-modal/current-todo-detail.modal';
-import { CurrentTodosPopover, CurrentTodosPopoverResult } from '../../components/current-todos-popover/current-todos.popover';
+import {
+  CurrentTodoDetailModal,
+  ICurrentTodoDetailModalParam
+} from '../current-todo-detail-modal/current-todo-detail.modal';
+import {
+  CurrentTodosPopover,
+  ICurrentTodosPopoverResult
+} from '../../components/current-todos-popover/current-todos.popover';
 
 @Component({
   selector: 'page-current-todos',
   templateUrl: 'current-todos.page.html'
 })
 export class CurrentTodosPage {
-  private readonly CLASS_NAME = 'CurrentTodosPage';
   todos$: Observable<ITodo[]>;
 
+  private readonly CLASS_NAME = 'CurrentTodosPage';
+
   constructor(
-        public events: Events,
+    public events: Events,
     public modalCtrl: ModalController,
     public navCtrl: NavController,
     public popoverCtrl: PopoverController,
@@ -38,8 +45,8 @@ export class CurrentTodosPage {
 
   createItem() {
     console.log('createItem');
-    let params: CurrentTodoDetailModalParam = { isEdited: false }
-    let modal = this.modalCtrl.create(CurrentTodoDetailModal, params);
+    const params: ICurrentTodoDetailModalParam = { isEdited: false };
+    const modal = this.modalCtrl.create(CurrentTodoDetailModal, params);
 
     modal.onDidDismiss((data: ITodo) => {
       console.log('onDidDismiss>', data);
@@ -49,7 +56,7 @@ export class CurrentTodosPage {
       }
     });
 
-    modal.present()
+    modal.present();
   }
 
   toggleCompleteItem(item: ITodo) {
@@ -62,8 +69,8 @@ export class CurrentTodosPage {
     // let todo: ToDo;
     // todo = assign(todo, item);
 
-    let params: CurrentTodoDetailModalParam = { data: item, isEdited: true }
-    let modal = this.modalCtrl.create(CurrentTodoDetailModal, params);
+    const params: ICurrentTodoDetailModalParam = { data: item, isEdited: true };
+    const modal = this.modalCtrl.create(CurrentTodoDetailModal, params);
 
     modal.onDidDismiss((data: ITodo) => {
       console.log('onDidDismiss>', data);
@@ -77,9 +84,9 @@ export class CurrentTodosPage {
   }
 
   presentPopover(event: Event) {
-    let popover = this.popoverCtrl.create(CurrentTodosPopover);
+    const popover = this.popoverCtrl.create(CurrentTodosPopover);
 
-    popover.onDidDismiss((result: CurrentTodosPopoverResult) => {
+    popover.onDidDismiss((result: ICurrentTodosPopoverResult) => {
       console.log('popover.onDidDismiss>', result);
 
       if (!!!result) {
@@ -100,7 +107,7 @@ export class CurrentTodosPage {
     });
   }
 
-  reorderItems(indexes: ReorderArrayIndexes) {
+  reorderItems(indexes: IReorderArrayIndexes) {
     console.log('reorderItems:indexes>', indexes);
     console.log('reorderItems:indexes.from>', indexes.from);
     console.log('reorderItems:indexes.to>', indexes.to);
@@ -128,10 +135,10 @@ export class CurrentTodosPage {
   ionViewDidLoad() {
     console.log('CurrentTodosPage:ionViewDidLoad');
     this.events.publish('app:boot', Date.now());
-  }  
+  }
 }
 
-/*    
+/*
         this.todos =
             [{
                 id: 'AA',
@@ -156,7 +163,7 @@ export class CurrentTodosPage {
                 index: 0,
                 isComplete: false,
                 userId: 'a01',
-            }];   
+            }];
 
-            this.todos$ = Observable.of(this.todos);     
+            this.todos$ = Observable.of(this.todos);
 */

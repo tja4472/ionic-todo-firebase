@@ -12,8 +12,8 @@ export class Page1 {
   constructor(
     public navCtrl: NavController,
     // private authService: AuthService,
-        ) {
-    
+  ) {
+
   }
 
   doLogout() {

@@ -1,4 +1,4 @@
-export interface ReorderArrayIndexes {
+export interface IReorderArrayIndexes {
     from: number;
     to: number;
 }

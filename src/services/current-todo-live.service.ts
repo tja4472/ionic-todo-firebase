@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import * as firebase from 'firebase/app';
 
@@ -11,18 +11,18 @@ import { AuthService } from '../services/auth.service';
 import { CompletedTodoService } from '../services/completed-todo.service';
 import { CurrentTodoService } from './current-todo.service';
 
-import { ReorderArrayIndexes } from '../models/reorder-array-indexes';
+import { IReorderArrayIndexes } from '../models/reorder-array-indexes';
 
-import { DM_CurrentTodo } from '../database-models/dm-current-todo';
+import { IDmCurrentTodo } from '../database-models/dm-current-todo';
 
 import { ITodo } from '../models/todo.model';
-import { TodoCompleted } from '../models/todo-completed';
+import { ITodoCompleted } from '../models/todo-completed';
 
 
 
 // Multiple subscriptions on a FirebaseListObservable #574
 // https://github.com/angular/angularfire2/issues/574
-// beta.7 
+// beta.7
 
 // https://coryrylan.com/blog/angular-2-observable-data-services
 
@@ -46,7 +46,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
     /*
     Currently this is a singleton for the app.
     So constructor gets called once.
-    
+
     Database needs to be requeried when login status changes.
     */
     constructor(
@@ -56,23 +56,22 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
     ) {
         console.log('%s:constructor()', this.CLASS_NAME);
         this.data = [];
-        this.dataBehaviorSubject = <BehaviorSubject<ITodo[]>>new BehaviorSubject([]);
+        this.dataBehaviorSubject = new BehaviorSubject([]) as BehaviorSubject<ITodo[]>;
     }
 
     public clearCompletedItems(): void {
         console.log('%s:clearCompletedItems', this.CLASS_NAME);
-        let completedItems = this.data.filter(a => a.isComplete);
+        const completedItems = this.data.filter((a) => a.isComplete);
         console.log('%s:completedItems>', this.CLASS_NAME, completedItems);
 
-        completedItems.map(x => {
-            let todoCompleted: TodoCompleted =
-                {
-                    id: undefined,
-                    isComplete: x.isComplete,
-                    description: x.description,
-                    name: x.name,
-                    userId: x.userId,
-                };
+        completedItems.map((x) => {
+            const todoCompleted: ITodoCompleted = {
+                description: x.description,
+                id: undefined,
+                isComplete: x.isComplete,
+                name: x.name,
+                userId: x.userId,
+            };
 
             this.completedTodoService.saveItem(todoCompleted);
             this.removeItem(x);
@@ -80,15 +79,15 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
     }
 
     public moveToCurrent(
-        item: TodoCompleted,
+        item: ITodoCompleted,
     ): void {
         console.log('%s:clearCompletedItems', this.CLASS_NAME, item);
-        let todo: ITodo = {
+        const todo: ITodo = {
             $key: undefined,
             description: item.description,
-            name: item.name,
-            isComplete: false,
             index: 0,
+            isComplete: false,
+            name: item.name,
             userId: item.userId,
         };
 
@@ -107,8 +106,12 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         // userId: string,
     ): void {
         console.log('%s:startListening()', this.CLASS_NAME);
-        if (this.authService.authUser === null) return;
-        if (this.authService.authUser.id === null) return;
+        if (this.authService.authUser === null) {
+            return;
+        }
+        if (this.authService.authUser.id === null) {
+            return;
+        }
 
         this.databaseReferenceListening = firebase.database()
             .ref(this.DB_USERS_KEY)
@@ -117,14 +120,18 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
 
         this.databaseReferenceListening
             .orderByChild('index')
-            .on('value', snapshot => {
+            .on('value', (snapshot) => {
                 // console.log('snapshot>', snapshot);
-                if (snapshot === null) return;
+                if (snapshot === null) {
+                    return;
+                }
 
-                let arr: ITodo[] = [];
+                const arr: ITodo[] = [];
 
                 snapshot.forEach((childSnapshot) => {
-                    if (childSnapshot.key === null) return false;
+                    if (childSnapshot.key === null) {
+                        return false;
+                    }
 
                     arr.push(
                         fromFirebaseTodo
@@ -155,21 +162,25 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
     }
 
     reorderItems(
-        indexes: ReorderArrayIndexes,
+        indexes: IReorderArrayIndexes,
     ) {
         console.log('%s:reorderItems():indexes>', this.CLASS_NAME, indexes);
-        if (this.authService.authUser === null) return;
-        if (this.authService.authUser.id === null) return;
+        if (this.authService.authUser === null) {
+            return;
+        }
+        if (this.authService.authUser.id === null) {
+            return;
+        }
 
         const itemsToSave = [...this.data];
         reorderArray(itemsToSave, indexes);
 
-        let updates: any = {};
+        const updates: any = {};
         for (let x = 0; x < itemsToSave.length; x++) {
             updates[itemsToSave[x].$key + '/index'] = x;
         }
 
-        //this.databaseReference.update(updates);
+        // this.databaseReference.update(updates);
         firebase.database()
             .ref(this.DB_USERS_KEY)
             .child(this.authService.authUser.id)
@@ -181,9 +192,15 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         item: ITodo,
     ) {
         console.log('%s:removeItem>', this.CLASS_NAME, item);
-        if (this.authService.authUser === null) return;
-        if (this.authService.authUser.id === null) return;
-        if (item.$key === undefined) return;
+        if (this.authService.authUser === null) {
+            return;
+        }
+        if (this.authService.authUser.id === null) {
+            return;
+        }
+        if (item.$key === undefined) {
+            return;
+        }
 
         // this.databaseReference
         //  .child(item.id)
@@ -200,9 +217,13 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         item: ITodo,
     ) {
         console.log('%s:saveItem>', this.CLASS_NAME, item);
-        if (this.authService.authUser === null) return;
-        if (this.authService.authUser.id === null) return;
-        if (item.$key == undefined) {
+        if (this.authService.authUser === null) {
+            return;
+        }
+        if (this.authService.authUser.id === null) {
+            return;
+        }
+        if (item.$key === undefined) {
             // insert.
             // this.databaseReference
             // .push(toFirebaseTodo(item));
@@ -212,8 +233,8 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
                 .child(this.DB_LIST_KEY)
                 .push(toFirebaseTodo(item));
         } else {
-            // update.                        
-            //this.databaseReference
+            // update.
+            // this.databaseReference
             // .child(item.id)
             // .set(toFirebaseTodo(item));
             firebase.database()
@@ -235,16 +256,16 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
 }
 
 
-function toFirebaseTodo(todo: ITodo): DM_CurrentTodo {
+function toFirebaseTodo(todo: ITodo): IDmCurrentTodo {
     //
-    let result: DM_CurrentTodo = {
+    const result: IDmCurrentTodo = {
         // id: todo.id,
-        //id: undefined,
+        // id: undefined,
         description: todo.description,
         index: todo.index,
-        name: todo.name,
         isComplete: todo.isComplete,
-        //userId: todo.userId,
+        name: todo.name,
+        // userId: todo.userId,
         // userId: 'aaa',
     };
 
@@ -269,13 +290,13 @@ function fromFirebaseTodo(
 ): ITodo {
     console.log('fromFirebaseTodo');
 
-    let result: ITodo = {
+    const result: ITodo = {
         $key: id,
         description: x.description,
         index: x.index,
         isComplete: x.isComplete,
         name: x.name,
-        //userId: x.userId,
+        // userId: x.userId,
         userId: 'aaa',
     };
 

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { CurrentTodoService } from './current-todo.service';
 
-import { ReorderArrayIndexes } from '../models/reorder-array-indexes';
+import { IReorderArrayIndexes } from '../models/reorder-array-indexes';
 import { ITodo } from '../models/todo.model';
-import { TodoCompleted } from '../models/todo-completed';
+import { ITodoCompleted } from '../models/todo-completed';
 
 @Injectable()
 export class CurrentTodoServiceMock implements CurrentTodoService {
@@ -22,7 +22,7 @@ export class CurrentTodoServiceMock implements CurrentTodoService {
     constructor() {
         console.log(`%s:constructor()`, this.CLASS_NAME);
         this.data = this.dummyData();
-        this.dataBehaviorSubject = <BehaviorSubject<ITodo[]>>new BehaviorSubject(this.data);
+        this.dataBehaviorSubject = new BehaviorSubject(this.data) as BehaviorSubject<ITodo[]>;
     }
 
     clearCompletedItems(): void {
@@ -30,7 +30,7 @@ export class CurrentTodoServiceMock implements CurrentTodoService {
     }
 
     moveToCurrent(
-        item: TodoCompleted,
+        item: ITodoCompleted,
     ): void {
         console.log(`%s:moveToCurrent>`, this.CLASS_NAME, item);
     }
@@ -42,7 +42,7 @@ export class CurrentTodoServiceMock implements CurrentTodoService {
     }
 
     reorderItems(
-        indexes: ReorderArrayIndexes,
+        indexes: IReorderArrayIndexes,
     ): void {
         console.log(`%s:reorderItems>`, this.CLASS_NAME, indexes);
     }
@@ -68,29 +68,29 @@ export class CurrentTodoServiceMock implements CurrentTodoService {
     }
 
     private dummyData(): ITodo[] {
-        let data: ITodo[] =
+        const data: ITodo[] =
             [{
                 $key: 'AA',
                 description: 'AA-description',
-                name: 'AA-name',
                 index: 0,
                 isComplete: false,
+                name: 'AA-name',
                 userId: 'a01',
             },
             {
                 $key: 'BB',
                 description: 'BB-description',
-                name: 'BB-name',
                 index: 0,
                 isComplete: false,
+                name: 'BB-name',
                 userId: 'a01',
             },
             {
                 $key: 'CC',
                 description: 'CC-description',
-                name: 'CC-name',
                 index: 0,
                 isComplete: true,
+                name: 'CC-name',
                 userId: 'a01',
             }];
 

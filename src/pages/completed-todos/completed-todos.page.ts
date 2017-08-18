@@ -5,20 +5,20 @@ import { Observable } from 'rxjs/Observable';
 import { CompletedTodoService } from '../../services/completed-todo.service';
 import { CurrentTodoService } from '../../services/current-todo.service';
 
-import { TodoCompleted } from '../../models/todo-completed';
-import { CompletedTodoDetailPage, ModalResult } from '../completed-todo-detail/completed-todo-detail.page';
+import { ITodoCompleted } from '../../models/todo-completed';
+import { CompletedTodoDetailPage, IModalResult } from '../completed-todo-detail/completed-todo-detail.page';
 
 @Component({
   selector: 'page-completed-todos',
   templateUrl: 'completed-todos.page.html'
 })
 export class CompletedTodosPage {
+  data$: Observable<ITodoCompleted[]>;
+
   private readonly CLASS_NAME = 'CompletedTodosPage';
 
-  data$: Observable<TodoCompleted[]>;
-
   constructor(
-    private completedTodoService: CompletedTodoService,    
+    private completedTodoService: CompletedTodoService,
     private currentTodoService: CurrentTodoService,
     public navCtrl: NavController,
     public modalCtrl: ModalController,
@@ -31,12 +31,12 @@ export class CompletedTodosPage {
     // this.todoCompletedService.initialise();
   }
 
-  editItem(item: TodoCompleted) {
+  editItem(item: ITodoCompleted) {
     console.log('editItem:item>', item);
 
-    let modal = this.modalCtrl.create(CompletedTodoDetailPage, { todo: item });
+    const modal = this.modalCtrl.create(CompletedTodoDetailPage, { todo: item });
 
-    modal.onDidDismiss((modalResult: ModalResult) => {
+    modal.onDidDismiss((modalResult: IModalResult) => {
       console.log('editItem:onDidDismiss>: modalResult', modalResult);
 
       if (modalResult.isCancelled) {
@@ -46,7 +46,7 @@ export class CompletedTodosPage {
       if (modalResult.todo === undefined) {
         return;
       }
-      
+
       if (modalResult.isRemoved) {
         this.completedTodoService.removeItem(modalResult.todo);
         return;
@@ -63,7 +63,7 @@ export class CompletedTodosPage {
   }
 
   toggleCompleteItem(
-    item: TodoCompleted,
+    item: ITodoCompleted,
   ) {
     console.log('toggleCompleteItem:item>', item);
 

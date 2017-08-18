@@ -1,9 +1,9 @@
-export interface ActiveUser {
+export interface IActiveUser {
     id: string;
     email: string;
     image: string;
     name?: string;
-    userName: string;     
+    userName: string;
 }
 
 /*

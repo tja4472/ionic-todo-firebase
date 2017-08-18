@@ -31,19 +31,19 @@ import { CurrentTodoService } from '../services/current-todo.service';
 import { CurrentTodoServiceLive } from '../services/current-todo-live.service';
 // import { CurrentTodoServiceMock } from '../services/current-todo-mock.service';
 
-import { DM_CompletedTodoService } from '../services/dm-completed-todo.service';
+import { DmCompletedTodoService } from '../services/dm-completed-todo.service';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { MyFirebaseAppConfig } from './my-firebase-app-config';
+import { MY_FRIREBASE_APP_CONFIG } from './my-firebase-app-config';
 
 // Add the RxJS Observable operators we need in this app.
 import './rxjs-operators';
 
 // This import loads the firebase namespace along with all its type information.
 import * as firebase from 'firebase/app';
- 
+
 // These imports load individual services into the firebase namespace.
 import 'firebase/auth';
 import 'firebase/database';
@@ -69,6 +69,7 @@ import 'firebase/database';
     BrowserModule,
     IonicModule.forRoot(MyApp),
   ],
+  // tslint:disable-next-line:object-literal-sort-keys
   bootstrap: [IonicApp],
   entryComponents: [
     CompletedTodoDetailPage,
@@ -86,8 +87,8 @@ import 'firebase/database';
   providers: [
     AuthService,
     { provide: CompletedTodoService, useClass: CompletedTodoServiceLive },
-    { provide: CurrentTodoService, useClass: CurrentTodoServiceLive },    
-    DM_CompletedTodoService,
+    { provide: CurrentTodoService, useClass: CurrentTodoServiceLive },
+    DmCompletedTodoService,
     ValidationService,
     StatusBar,
     SplashScreen,
@@ -97,6 +98,6 @@ import 'firebase/database';
 export class AppModule {
 
   constructor() {
-    firebase.initializeApp(MyFirebaseAppConfig);
+    firebase.initializeApp(MY_FRIREBASE_APP_CONFIG);
   }
 }

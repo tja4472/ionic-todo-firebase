@@ -1,6 +1,6 @@
-export interface DM_CurrentTodo {
+export interface IDmCurrentTodo {
     description?: string;
     index: number;
-    isComplete: boolean;    
+    isComplete: boolean;
     name: string;
 }

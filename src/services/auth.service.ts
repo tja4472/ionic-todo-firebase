@@ -1,8 +1,8 @@
 import { ReplaySubject } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { CurrentUser } from '../models/current-user';
+import { ICurrentUser } from '../models/current-user';
 
 import * as firebase from 'firebase/app';
 
@@ -10,15 +10,17 @@ import * as firebase from 'firebase/app';
 
 @Injectable()
 export class AuthService {
+    public notifier$: ReplaySubject<ICurrentUser | null> = new ReplaySubject<ICurrentUser>(1);
     private readonly CLASS_NAME = 'AuthService';
     //
     // this will hold the user object when we have one, we can subscribe
     // to changes of this object to determine of we are logged in or not
     // activeUser = new BehaviorSubject<ActiveUser>(null)
 
-    public notifier$: ReplaySubject<CurrentUser | null> = new ReplaySubject<CurrentUser>(1);
 
-    private _authUserBehaviorSubject$ = new BehaviorSubject<CurrentUser | null>({ id: null, email: null });
+
+    // tslint:disable-next-line:variable-name
+    private _authUserBehaviorSubject$ = new BehaviorSubject<ICurrentUser | null>({ id: null, email: null });
 
     // private _authStateChecked: boolean = false;
 
@@ -26,11 +28,11 @@ export class AuthService {
         return this._authUserBehaviorSubject$.getValue();
     }
 
-/*
-    get authStateChecked() {
-        return this._authStateChecked;
-    }
-*/
+    /*
+        get authStateChecked() {
+            return this._authStateChecked;
+        }
+    */
     constructor(
     ) {
         console.log(`%s:constructor`, this.CLASS_NAME);
@@ -42,14 +44,14 @@ export class AuthService {
                 // User is signed in.
                 console.log(`%s:User is signed in>`, this.CLASS_NAME, user.uid);
                 this._authUserBehaviorSubject$.next(this.createCurrentUser(user));
-this.notifier$.next(this.createCurrentUser(user));
+                this.notifier$.next(this.createCurrentUser(user));
             } else {
                 // No user is signed in.
                 console.log(`%s: No user is signed in.`, this.CLASS_NAME);
                 // this._authUserBehaviorSubject$.next({ id: null, email: null });
                 // this.replaySubject$.next({ id: null, email: null });
                 this._authUserBehaviorSubject$.next(null);
-                this.notifier$.next(null);  
+                this.notifier$.next(null);
             }
         });
     }
@@ -57,12 +59,12 @@ this.notifier$.next(this.createCurrentUser(user));
         init() {
             firebase.auth().onAuthStateChanged((user: firebase.User) => {
                 this.stateChecked = true;
-    
+
                 if (user) {
                     // User is signed in.
                     console.log(`%s:User is signed in>`, this.CLASS_NAME, user.uid);
                     this.currentUser$.next(this.createCurrentUser(user));
-    
+
                 } else {
                     // No user is signed in.
                     console.log(`%s: No user is signed in.`, this.CLASS_NAME);
@@ -73,11 +75,11 @@ this.notifier$.next(this.createCurrentUser(user));
     */
     createCurrentUser(
         user: firebase.User
-    ): CurrentUser {
-        let currentUser: CurrentUser = {
+    ): ICurrentUser {
+        const currentUser: ICurrentUser = {
             email: user.email,
             id: user.uid,
-        }
+        };
 
         return currentUser;
     }
@@ -95,7 +97,7 @@ this.notifier$.next(this.createCurrentUser(user));
                         name: this.user.details.name,
                         userName: this.user.details.username
                     };
-        
+
                     this.activeUser.next(authUser);
                 }
         */
@@ -105,15 +107,15 @@ this.notifier$.next(this.createCurrentUser(user));
      * login using a username and password
      */
     doLogin(
-        _username: string,
-        _password: string
+        username: string,
+        password: string
     ) {
         console.log('%s:doLogin()', this.CLASS_NAME);
-        if (_username.length) {
-            firebase.auth().signInWithEmailAndPassword(_username, _password)
-                .catch(error => {
+        if (username.length) {
+            firebase.auth().signInWithEmailAndPassword(username, password)
+                .catch((error) => {
                     // Handle Errors here.
-                    console.log('error>', error)
+                    console.log('error>', error);
                     // var errorCode = error.code;
                     // var errorMessage = error.message;
                     // ...
@@ -124,48 +126,48 @@ this.notifier$.next(this.createCurrentUser(user));
     /**
      * create the user with the information and set the user object
      */
-/*    
-    doCreateUser(_params) {
-        console.log('%s:doCreateUser()', this.CLASS_NAME);
-        /*        
-                this.auth.signup({ email: _params.email, password: _params.password, username: _params.username })
-                    .then(() => {
-                        return this.doLogin(_params.email, _params.password);
-                    }, (err: IDetailedError<string[]>) => {
-                        console.log(err)
-                        for (let e of err.details) {
-                            if (e === 'conflict_email') {
-                                alert('Email already exists.');
-                            } else {
-                                // handle other errors
-                            }
-                        }
-                    });
-        * /
-    }
-*/
-    doSignup(
-        _email: string, 
-        _password?: string) {
-        console.log('%s:doSignup()', this.CLASS_NAME)
-        if (_email.length) {
-           /*
-            let details = { 'email': _email, 'password': _password };
- 
-                        this.auth.signup(details)
-                            .then(() => {
-                                return this.doLogin(_email, _password);
-                            }, (err: IDetailedError<string[]>) => {
-                                console.log(err)
-                                for (let e of err.details) {
-                                    if (e === 'conflict_email') {
-                                        alert('Email already exists.');
-                                    } else {
-                                        // handle other errors
-                                    }
+    /*
+        doCreateUser(_params) {
+            console.log('%s:doCreateUser()', this.CLASS_NAME);
+            /*
+                    this.auth.signup({ email: _params.email, password: _params.password, username: _params.username })
+                        .then(() => {
+                            return this.doLogin(_params.email, _params.password);
+                        }, (err: IDetailedError<string[]>) => {
+                            console.log(err)
+                            for (let e of err.details) {
+                                if (e === 'conflict_email') {
+                                    alert('Email already exists.');
+                                } else {
+                                    // handle other errors
                                 }
-                            });
-            */
+                            }
+                        });
+            * /
+        }
+    */
+    doSignup(
+        email: string,
+        _password?: string) {
+        console.log('%s:doSignup()', this.CLASS_NAME);
+        if (email.length) {
+            /*
+             let details = { 'email': _email, 'password': _password };
+
+                         this.auth.signup(details)
+                             .then(() => {
+                                 return this.doLogin(_email, _password);
+                             }, (err: IDetailedError<string[]>) => {
+                                 console.log(err)
+                                 for (let e of err.details) {
+                                     if (e === 'conflict_email') {
+                                         alert('Email already exists.');
+                                     } else {
+                                         // handle other errors
+                                     }
+                                 }
+                             });
+             */
         }
     }
 
@@ -173,14 +175,14 @@ this.notifier$.next(this.createCurrentUser(user));
      * logout and remove the user...
      */
     doLogout() {
-        console.log('%s:doLogout()', this.CLASS_NAME);        
+        console.log('%s:doLogout()', this.CLASS_NAME);
 
-        firebase.auth().signOut().then(function () {
+        firebase.auth().signOut().then(() => {
             // Sign-out successful.
         }, (error) => {
             // this.error = error
             console.log(error);
         });
-       // this._authUserBehaviorSubject$.next(null)
+        // this._authUserBehaviorSubject$.next(null)
     }
 }

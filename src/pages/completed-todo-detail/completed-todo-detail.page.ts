@@ -2,15 +2,15 @@ import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 // import { Observable } from 'rxjs/Observable';
 // import { TodoService } from '../../services/todo.service';
-// import { ItemSelectedOutput, ReorderItemsOutput, TodosInput, TodoListComponent } from '../../components/todo-list/todo-list.component';
-import { TodoCompleted } from '../../models/todo-completed';
+
+import { ITodoCompleted } from '../../models/todo-completed';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 // import { ControlMessages } from '../../components/control-messages/control-messages.component';
 
-export interface ModalResult {
+export interface IModalResult {
   isRemoved: boolean;
   isCancelled: boolean;
-  todo?: TodoCompleted;
+  todo?: ITodoCompleted;
 }
 
 @Component({
@@ -18,16 +18,16 @@ export interface ModalResult {
   templateUrl: 'completed-todo-detail.page.html'
 })
 export class CompletedTodoDetailPage {
-  private readonly CLASS_NAME = 'CompletedTodoDetailPage';
-
   public todoForm: FormGroup;
 
+  private readonly CLASS_NAME = 'CompletedTodoDetailPage';
+
   // data model.
-  private todo: TodoCompleted =
+  private todo: ITodoCompleted =
   {
+    description: undefined,
     id: undefined,
     isComplete: false,
-    description: undefined,
     name: '',
     userId: '',
   };
@@ -42,7 +42,7 @@ export class CompletedTodoDetailPage {
     console.log(`%s:constructor`, this.CLASS_NAME);
     console.log('params:get>', params.get('todo'));
 
-    let paramTodo: TodoCompleted = params.get('todo');
+    const paramTodo: ITodoCompleted = params.get('todo');
     this.isEditing = !!paramTodo;
 
     if (this.isEditing) {
@@ -52,28 +52,22 @@ export class CompletedTodoDetailPage {
     this.createForm();
   }
 
-  private createForm(): void {
-    this.todoForm = this.formBuilder.group({
-      name: [this.todo.name, Validators.required],
-      description: [this.todo.description],
-      isComplete: [this.todo.isComplete],
-    });
-  }
+
 
   dismiss() {
     console.log('dismiss');
-    let modalResult: ModalResult = {
-      isRemoved: false,
+    const modalResult: IModalResult = {
       isCancelled: true,
+      isRemoved: false,
     };
     this.viewController.dismiss(modalResult);
   }
 
   remove() {
     console.log('remove');
-    let modalResult: ModalResult = {
-      isRemoved: true,
+    const modalResult: IModalResult = {
       isCancelled: false,
+      isRemoved: true,
       todo: this.todo,
     };
     this.viewController.dismiss(modalResult);
@@ -92,19 +86,27 @@ export class CompletedTodoDetailPage {
     this.todo = this.prepareSaveData();
     // console.log('localTodo>', this.todo);
 
-    let modalResult: ModalResult = {
-      isRemoved: false,
+    const modalResult: IModalResult = {
       isCancelled: false,
+      isRemoved: false,
       todo: this.todo,
     };
 
     this.viewController.dismiss(modalResult);
   }
 
-  private prepareSaveData(): TodoCompleted {
+  private createForm(): void {
+    this.todoForm = this.formBuilder.group({
+      description: [this.todo.description],
+      isComplete: [this.todo.isComplete],
+      name: [this.todo.name, Validators.required],
+    });
+  }
+
+  private prepareSaveData(): ITodoCompleted {
     const formModel = this.todoForm.value;
 
-    const saveData: TodoCompleted = {
+    const saveData: ITodoCompleted = {
       description: formModel.description,
       id: this.todo.id,
       isComplete: formModel.isComplete,

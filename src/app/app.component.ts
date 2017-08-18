@@ -3,7 +3,7 @@ import { Events, MenuController, Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { CurrentUser } from '../models/current-user';
+import { ICurrentUser } from '../models/current-user';
 import { CompletedTodosPage } from '../pages/completed-todos/completed-todos.page';
 import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
 import { HomePage } from '../pages/home/home.page';
@@ -15,7 +15,7 @@ import { AuthService } from '../services/auth.service';
 import { CompletedTodoService } from '../services/completed-todo.service';
 import { CurrentTodoService } from '../services/current-todo.service';
 
-export interface PageInterface {
+export interface IPageInterface {
   title: string;
   component: any;
   icon: string;
@@ -28,33 +28,34 @@ export interface PageInterface {
   templateUrl: 'app.html'
 })
 export class MyApp implements OnInit {
-  private readonly CLASS_NAME = 'MyApp';
-
   @ViewChild(Nav) nav: Nav;
 
   public displayUserName: string;
   // List of pages that can be navigated to from the left menu
   // the left menu only works after login
   // the login page disables the left menu
-  appPages: PageInterface[] = [
+  appPages: IPageInterface[] = [
     { title: 'Home Page', component: HomePage, icon: 'calendar' },
     { title: 'Page One', component: Page1, icon: 'calendar' },
     { title: 'Page Two', component: Page2, icon: 'calendar' },
   ];
 
-  loggedInPages: PageInterface[] = [
+  loggedInPages: IPageInterface[] = [
     { title: 'Current Todos Page', component: CurrentTodosPage, icon: 'calendar' },
     { title: 'Completed Todos Page', component: CompletedTodosPage, icon: 'calendar' },
     { title: 'Logout', component: Page1, icon: 'log-out', logsOut: true }
   ];
 
-  loggedOutPages: PageInterface[] = [
+  loggedOutPages: IPageInterface[] = [
     { title: 'Login', component: LoginPage, icon: 'log-in' },
     { title: 'Signup', component: SignupPage, icon: 'log-in' },
-  ]
+  ];
   rootPage: any; // = Page1;
 
   pages: Array<{ title: string, component: any }>;
+
+
+  private readonly CLASS_NAME = 'MyApp';
 
   constructor(
     public events: Events,
@@ -80,13 +81,13 @@ export class MyApp implements OnInit {
 
   initializeApp() {
     console.log(`%s:initializeApp`, this.CLASS_NAME);
-    let bootTime = Date.now();
+    const bootTime = Date.now();
 
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       console.log(`%s:platform.ready()`, this.CLASS_NAME);
-      let readyTime = Date.now();
+      const readyTime = Date.now();
       this.events.subscribe('app:boot', (time: number) => {
         console.log('App boot start: ', bootTime);
         console.log('App boot ready: ', readyTime);
@@ -98,18 +99,18 @@ export class MyApp implements OnInit {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-/*      
-      this.authService.replaySubject$.subscribe((user:CurrentUser) => {
-console.log('>>>>>>>>>>>>>>app.component.ts: authService.replaySubject$>', user);
-      });
-*/
+      /*
+            this.authService.replaySubject$.subscribe((user:CurrentUser) => {
+      console.log('>>>>>>>>>>>>>>app.component.ts: authService.replaySubject$>', user);
+            });
+      */
       // This has to be done after platform.ready() else enableMenu() will
       // not change menu.
       this.setupAuthServiceSubscription();
     });
   }
 
-  openPage(page: PageInterface) {
+  openPage(page: IPageInterface) {
     // the nav component was found using @ViewChild(Nav)
     // reset the nav to remove previous pages and only have this page
     // we wouldn't want the back button to show in this scenario
@@ -122,66 +123,9 @@ console.log('>>>>>>>>>>>>>>app.component.ts: authService.replaySubject$>', user)
     if (page.logsOut === true) {
       // Give the menu time to close before changing to logged out
       setTimeout(() => {
-        this.authService.doLogout()
+        this.authService.doLogout();
       }, 1000);
     }
-  }
-
-  private setupAuthServiceSubscription() {
-    // NgZone.isInAngularZone() = true
-    // console.log('NgZone.isInAngularZone()-1>', NgZone.isInAngularZone());
-          this.authService.notifier$.subscribe((currentUser: CurrentUser) => {
-console.log('>>>>>>>>>>>>>>app.component.ts: authService.replaySubject$>', currentUser);
-    //  });
-    // this.authService.authUser$
-    //  .subscribe((currentUser: CurrentUser) => {
-        console.log(`%s: -- authService.activeUser subscribe --`, this.CLASS_NAME);
-        console.log(`%s:currentUser>`, this.CLASS_NAME, currentUser);
-//        console.log(`%s:stateChecked>`, this.CLASS_NAME, this.authService.authStateChecked);
-/*
-        if (!this.authService.authStateChecked) {
-          return;
-        }
-*/
-        // NgZone.isInAngularZone() = false
-        // console.log('NgZone.isInAngularZone()-2>', NgZone.isInAngularZone());
-
-        // Without the ngZone the [disabled]="!loginForm.valid" was being ignored
-        // in login.page.html.
-        // this.ngZone.run(() => {
-        // NgZone.isInAngularZone() = true
-        // console.log('NgZone.isInAngularZone()-3>', NgZone.isInAngularZone());
-        if (currentUser) {
-          console.log(`%s: -- logged in --`, this.CLASS_NAME);
-
-          if (currentUser.email === null) {
-            this.displayUserName = '';
-          } else {
-            this.displayUserName = currentUser.email;
-          }
-
-          this.enableMenu(true);
-          this.nav.setRoot(CurrentTodosPage).catch(() => {
-            console.error("Didn't set nav root");
-          });
-
-          this.currentTodoService.startListening();
-          this.completedTodoService.startListening();
-        } else {
-          console.log(`%s: -- logged out --`, this.CLASS_NAME);
-          this.displayUserName = 'Not logged in';
-          this.enableMenu(false);
-          this.nav.setRoot(HomePage).catch(() => {
-            console.error("Didn't set nav root");
-          });
-          console.log(`%s: -- logged out 1--`, this.CLASS_NAME);
-          this.currentTodoService.stopListening();
-          console.log(`%s: -- logged out 2--`, this.CLASS_NAME);
-          this.completedTodoService.stopListening();
-          console.log(`%s: -- logged out 3 --`, this.CLASS_NAME);
-        }
-      });
-    // });
   }
 
   enableMenu(loggedIn: boolean): void {
@@ -200,8 +144,8 @@ console.log('>>>>>>>>>>>>>>app.component.ts: authService.replaySubject$>', curre
     this.menu.enable(!loggedIn, loggedOutMenu);
   }
 
-  isActive(page: PageInterface) {
-    let childNav = this.nav.getActiveChildNavs()[0];
+  isActive(page: IPageInterface) {
+    const childNav = this.nav.getActiveChildNavs()[0];
 
     // Tabs are a special case because they have their own navigation
     if (childNav) {
@@ -215,5 +159,62 @@ console.log('>>>>>>>>>>>>>>app.component.ts: authService.replaySubject$>', curre
       return 'primary';
     }
     return;
+  }
+
+  private setupAuthServiceSubscription() {
+    // NgZone.isInAngularZone() = true
+    // console.log('NgZone.isInAngularZone()-1>', NgZone.isInAngularZone());
+    this.authService.notifier$.subscribe((currentUser: ICurrentUser) => {
+      console.log('>>>>>>>>>>>>>>app.component.ts: authService.replaySubject$>', currentUser);
+      //  });
+      // this.authService.authUser$
+      //  .subscribe((currentUser: CurrentUser) => {
+      console.log(`%s: -- authService.activeUser subscribe --`, this.CLASS_NAME);
+      console.log(`%s:currentUser>`, this.CLASS_NAME, currentUser);
+      //        console.log(`%s:stateChecked>`, this.CLASS_NAME, this.authService.authStateChecked);
+      /*
+              if (!this.authService.authStateChecked) {
+                return;
+              }
+      */
+      // NgZone.isInAngularZone() = false
+      // console.log('NgZone.isInAngularZone()-2>', NgZone.isInAngularZone());
+
+      // Without the ngZone the [disabled]="!loginForm.valid" was being ignored
+      // in login.page.html.
+      // this.ngZone.run(() => {
+      // NgZone.isInAngularZone() = true
+      // console.log('NgZone.isInAngularZone()-3>', NgZone.isInAngularZone());
+      if (currentUser) {
+        console.log(`%s: -- logged in --`, this.CLASS_NAME);
+
+        if (currentUser.email === null) {
+          this.displayUserName = '';
+        } else {
+          this.displayUserName = currentUser.email;
+        }
+
+        this.enableMenu(true);
+        this.nav.setRoot(CurrentTodosPage).catch(() => {
+          console.error('Didn\'t set nav root');
+        });
+
+        this.currentTodoService.startListening();
+        this.completedTodoService.startListening();
+      } else {
+        console.log(`%s: -- logged out --`, this.CLASS_NAME);
+        this.displayUserName = 'Not logged in';
+        this.enableMenu(false);
+        this.nav.setRoot(HomePage).catch(() => {
+          console.error('Didn\'t set nav root');
+        });
+        console.log(`%s: -- logged out 1--`, this.CLASS_NAME);
+        this.currentTodoService.stopListening();
+        console.log(`%s: -- logged out 2--`, this.CLASS_NAME);
+        this.completedTodoService.stopListening();
+        console.log(`%s: -- logged out 3 --`, this.CLASS_NAME);
+      }
+    });
+    // });
   }
 }

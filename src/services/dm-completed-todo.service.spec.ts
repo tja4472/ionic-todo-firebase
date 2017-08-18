@@ -1,26 +1,26 @@
-import { DM_CompletedTodoService } from './dm-completed-todo.service';
+import { DmCompletedTodoService } from './dm-completed-todo.service';
 import { DM_CompletedTodo } from '../database-models/dm-completed-todo';
 
 import { TodoCompleted } from '../models/todo-completed';
 
-let data: DM_CompletedTodo = {
+const data: DM_CompletedTodo = {
     description: 'description',
     isComplete: false,
     name: 'name',
 };
 
-let expected: TodoCompleted = {
+const expected: TodoCompleted = {
     description: 'description',
-    isComplete: false,
     id: 'id1',
+    isComplete: false,
     name: 'name',
     userId: 'uu',
 };
 
 describe('DM_CompletedTodoService', () => {
     it('fromDatabase', () => {
-        let dm_CompletedTodoService = new DM_CompletedTodoService();
-        let result = dm_CompletedTodoService.fromDatabase('id1', data);
+        const dmCompletedTodoService = new DmCompletedTodoService();
+        const result = dmCompletedTodoService.fromDatabase('id1', data);
         expect(result).toEqual(expected);
     });
 });

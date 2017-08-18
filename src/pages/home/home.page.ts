@@ -18,6 +18,6 @@ export class HomePage {
   }
 
   doLogout() {
-    this.authService.doLogout()
+    this.authService.doLogout();
   }
 }

@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import * as firebase from 'firebase/app';
 
-import { DM_CompletedTodo } from '../database-models/dm-completed-todo';
+import { IDmCompletedTodo } from '../database-models/dm-completed-todo';
 
-import { TodoCompleted } from '../models/todo-completed';
+import { ITodoCompleted } from '../models/todo-completed';
 import { CompletedTodoService } from './completed-todo.service';
 
 import { AuthService } from '../services/auth.service';
-import { DM_CompletedTodoService } from '../services/dm-completed-todo.service';
+import { DmCompletedTodoService } from '../services/dm-completed-todo.service';
 
 // Multiple subscriptions on a FirebaseListObservable #574
 // https://github.com/angular/angularfire2/issues/574
-// beta.7 
+// beta.7
 
 // https://coryrylan.com/blog/angular-2-observable-data-services
 
@@ -26,8 +26,8 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     private readonly DB_LIST_KEY = 'completedTodos';
     private readonly DB_USERS_KEY = '/users';
 
-    private data: TodoCompleted[];
-    private dataBehaviorSubject: BehaviorSubject<TodoCompleted[]>;
+    private data: ITodoCompleted[];
+    private dataBehaviorSubject: BehaviorSubject<ITodoCompleted[]>;
 
     private databaseReferenceListening: firebase.database.Reference;
 
@@ -38,17 +38,17 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     /*
     Currently this is a singleton for the app.
     So constructor gets called once.
-    
+
     Database needs to be requeried when login status changes.
     */
     constructor(
         private authService: AuthService,
-        private dm_CompletedTodoService: DM_CompletedTodoService,
+        private dmCompletedTodoService: DmCompletedTodoService,
         // private ngZone: NgZone,
     ) {
         console.log(`%s:constructor()`, this.CLASS_NAME);
         this.data = [];
-        this.dataBehaviorSubject = <BehaviorSubject<TodoCompleted[]>>new BehaviorSubject([]);
+        this.dataBehaviorSubject = new BehaviorSubject([]) as BehaviorSubject<ITodoCompleted[]>;
     }
 
     public startListening(
@@ -56,8 +56,12 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     ): void {
         console.log('%s:startListening()', this.CLASS_NAME);
 
-        if (this.authService.authUser === null) return;
-        if (this.authService.authUser.id === null) return;
+        if (this.authService.authUser === null) {
+            return;
+        }
+        if (this.authService.authUser.id === null) {
+            return;
+        }
 
         this.databaseReferenceListening = firebase.database()
             .ref(this.DB_USERS_KEY)
@@ -66,16 +70,21 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
 
         this.databaseReferenceListening
             .orderByChild('index')
-            .on('value', snapshot => {
+            .on('value', (snapshot) => {
                 // console.log('snapshot>', snapshot);
-                let arr: TodoCompleted[] = [];
+                const arr: ITodoCompleted[] = [];
 
-                if (snapshot === null) return;
+                if (snapshot === null) {
+                    return;
+                }
 
                 snapshot.forEach((childSnapshot) => {
-                    if (childSnapshot.key === null) return false;
+                    if (childSnapshot.key === null) {
+                        return false;
+                    }
+
                     arr.push(
-                        this.dm_CompletedTodoService.fromDatabase
+                        this.dmCompletedTodoService.fromDatabase
                             (childSnapshot.key, childSnapshot.val()));
                     return false;
                 });
@@ -103,13 +112,19 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     }
 
     removeItem(
-        item: TodoCompleted,
+        item: ITodoCompleted,
     ) {
         console.log('%s:removeItem>', this.CLASS_NAME, item);
 
-        if (this.authService.authUser === null) return;
-        if (this.authService.authUser.id === null) return;
-        if (item.id === undefined) return;
+        if (this.authService.authUser === null) {
+            return;
+        }
+        if (this.authService.authUser.id === null) {
+            return;
+        }
+        if (item.id === undefined) {
+            return;
+        }
 
         firebase.database()
             .ref(this.DB_USERS_KEY)
@@ -120,11 +135,15 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     }
 
     saveItem(
-        item: TodoCompleted
+        item: ITodoCompleted
     ) {
         console.log(`%s:saveItem>`, this.CLASS_NAME, item);
-        if (this.authService.authUser === null) return;
-        if (this.authService.authUser.id === null) return;
+        if (this.authService.authUser === null) {
+            return;
+        }
+        if (this.authService.authUser.id === null) {
+            return;
+        }
 
         if (item.id === undefined) {
             // insert.
@@ -134,7 +153,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
                 .child(this.DB_LIST_KEY)
                 .push(toFirebaseTodo(item));
         } else {
-            // update.                        
+            // update.
             firebase.database()
                 .ref(this.DB_USERS_KEY)
                 .child(this.authService.authUser.id)
@@ -145,14 +164,14 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     }
 }
 
-function toFirebaseTodo(todo: TodoCompleted): DM_CompletedTodo {
+function toFirebaseTodo(todo: ITodoCompleted): IDmCompletedTodo {
     //
-    let result: DM_CompletedTodo = {
+    const result: IDmCompletedTodo = {
         // id: todo.id,
-        //id: undefined,
+        // id: undefined,
         description: todo.description,
-        name: todo.name,
         isComplete: todo.isComplete,
+        name: todo.name,
         // userId: todo.userId,
     };
 

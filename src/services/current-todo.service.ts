@@ -1,21 +1,21 @@
 import { Observable } from 'rxjs/Observable';
 
-import { ReorderArrayIndexes } from '../models/reorder-array-indexes';
+import { IReorderArrayIndexes } from '../models/reorder-array-indexes';
 import { ITodo } from '../models/todo.model';
-import { TodoCompleted } from '../models/todo-completed';
+import { ITodoCompleted } from '../models/todo-completed';
 
 export abstract class CurrentTodoService {
     readonly data$: Observable<ITodo[]>;
 
     abstract clearCompletedItems(): void;
     abstract moveToCurrent(
-        item: TodoCompleted,
+        item: ITodoCompleted,
     ): void;
     abstract removeItem(
         item: ITodo,
     ): void;
     abstract reorderItems(
-        indexes: ReorderArrayIndexes,
+        indexes: IReorderArrayIndexes,
     ): void;
     abstract saveItem(
         item: ITodo

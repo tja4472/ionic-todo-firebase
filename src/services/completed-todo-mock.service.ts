@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { TodoCompleted } from '../models/todo-completed';
+import { ITodoCompleted } from '../models/todo-completed';
 import { CompletedTodoService } from './completed-todo.service';
 
 @Injectable()
 export class CompletedTodoServiceMock implements CompletedTodoService {
     private readonly CLASS_NAME = 'CompletedTodoServiceMock';
 
-    private data: TodoCompleted[];
-    private dataBehaviorSubject: BehaviorSubject<TodoCompleted[]>;
+    private data: ITodoCompleted[];
+    private dataBehaviorSubject: BehaviorSubject<ITodoCompleted[]>;
 
     get data$() {
         return this.dataBehaviorSubject.asObservable();
@@ -18,17 +18,17 @@ export class CompletedTodoServiceMock implements CompletedTodoService {
     constructor() {
         console.log(`%s:constructor()`, this.CLASS_NAME);
         this.data = this.dummyData();
-        this.dataBehaviorSubject = <BehaviorSubject<TodoCompleted[]>>new BehaviorSubject(this.data);
+        this.dataBehaviorSubject = new BehaviorSubject(this.data) as BehaviorSubject<ITodoCompleted[]>;
     }
 
     removeItem(
-        item: TodoCompleted,
+        item: ITodoCompleted,
     ): void {
         console.log(`%s:removeItem>`, this.CLASS_NAME, item);
     }
 
     saveItem(
-        item: TodoCompleted
+        item: ITodoCompleted
     ): void {
         console.log(`%s:saveItem>`, this.CLASS_NAME, item);
     }
@@ -41,27 +41,27 @@ export class CompletedTodoServiceMock implements CompletedTodoService {
         console.log(`%s:stopListening>`, this.CLASS_NAME);
     }
 
-    private dummyData(): TodoCompleted[] {
-        let data: TodoCompleted[] =
+    private dummyData(): ITodoCompleted[] {
+        const data: ITodoCompleted[] =
             [{
-                id: 'AA',
                 description: 'AA-description',
+                id: 'AA',
+                isComplete: true,
                 name: 'AA-name',
-                isComplete: true,
                 userId: 'a01',
             },
             {
-                id: 'BB',
                 description: 'BB-description',
-                name: 'BB-name',
+                id: 'BB',
                 isComplete: true,
+                name: 'BB-name',
                 userId: 'a01',
             },
             {
-                id: 'CC',
                 description: 'CC-description',
-                name: 'CC-name',
+                id: 'CC',
                 isComplete: true,
+                name: 'CC-name',
                 userId: 'a01',
             }];
 

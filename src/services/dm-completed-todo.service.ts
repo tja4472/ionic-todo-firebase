@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 
-import { DM_CompletedTodo } from '../database-models/dm-completed-todo';
+import { IDmCompletedTodo } from '../database-models/dm-completed-todo';
 
-import { TodoCompleted } from '../models/todo-completed';
+import { ITodoCompleted } from '../models/todo-completed';
 
 @Injectable()
-export class DM_CompletedTodoService {
+export class DmCompletedTodoService {
     private readonly CLASS_NAME: string = 'DM_CompletedTodoService';
 
     constructor() {
@@ -14,14 +14,14 @@ export class DM_CompletedTodoService {
 
     public fromDatabase(
         id: string,
-        data: DM_CompletedTodo,
-    ): TodoCompleted {
+        data: IDmCompletedTodo,
+    ): ITodoCompleted {
         console.log(`%s:fromDatabase()`, this.CLASS_NAME);
 
-        let expected: TodoCompleted = {
+        const expected: ITodoCompleted = {
             description: data.description,
+            id,
             isComplete: data.isComplete,
-            id: id,
             name: data.name,
             userId: 'uu',
         };
