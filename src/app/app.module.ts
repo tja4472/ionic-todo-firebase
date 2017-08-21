@@ -41,7 +41,7 @@ import { DmCompletedTodoService } from '../services/dm-completed-todo.service';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { MY_FRIREBASE_APP_CONFIG } from './my-firebase-app-config';
+import { MY_FIREBASE_APP_CONFIG } from './my-firebase-app-config';
 
 // Add the RxJS Observable operators we need in this app.
 import './rxjs-operators';
@@ -104,6 +104,6 @@ import 'firebase/database';
 export class AppModule {
 
   constructor() {
-    firebase.initializeApp(MY_FRIREBASE_APP_CONFIG);
+    firebase.initializeApp(MY_FIREBASE_APP_CONFIG);
   }
 }

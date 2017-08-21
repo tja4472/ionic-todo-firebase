@@ -14,10 +14,7 @@ import { CurrentTodoService } from '../../services/current-todo.service';
 import { IReorderArrayIndexes } from '../../shared/models/reorder-array-indexes';
 import { Todo } from '../../shared/models/todo.model';
 
-import {
-  CurrentTodoDetailModal,
-  ICurrentTodoDetailModalParam
-} from '../current-todo-detail-modal/current-todo-detail.modal';
+import { CurrentTodoDetailModal } from '../current-todo-detail-modal/current-todo-detail.modal';
 import {
   CurrentTodosPopover,
   ICurrentTodosPopoverResult
@@ -43,20 +40,9 @@ export class CurrentTodosPage {
     this.todos$ = this.todoService.data$;
   }
 
-  createItem() {
-    console.log('createItem');
-    const params: ICurrentTodoDetailModalParam = { isEdited: false };
-    const modal = this.modalCtrl.create(CurrentTodoDetailModal, params);
-
-    modal.onDidDismiss((data: Todo) => {
-      console.log('onDidDismiss>', data);
-
-      if (!!data) {
-        this.todoService.saveItem(data);
-      }
-    });
-
-    modal.present();
+  addItem() {
+    console.log('addItem');
+    this.showModal();
   }
 
   toggleCompleteItem(item: Todo) {
@@ -66,21 +52,7 @@ export class CurrentTodosPage {
 
   editItem(item: Todo) {
     console.log('editItem:item>', item);
-    // let todo: ToDo;
-    // todo = assign(todo, item);
-
-    const params: ICurrentTodoDetailModalParam = { data: item, isEdited: true };
-    const modal = this.modalCtrl.create(CurrentTodoDetailModal, params);
-
-    modal.onDidDismiss((data: Todo) => {
-      console.log('onDidDismiss>', data);
-
-      if (!!data) {
-        this.todoService.saveItem(data);
-      }
-    });
-
-    modal.present();
+    this.showModal(item);
   }
 
   presentPopover(event: Event) {
@@ -136,34 +108,19 @@ export class CurrentTodosPage {
     console.log('CurrentTodosPage:ionViewDidLoad');
     this.events.publish('app:boot', Date.now());
   }
+
+  private showModal(item?: Todo) {
+    //
+    const modal = this.modalCtrl.create(CurrentTodoDetailModal, { todo: item });
+
+    modal.onDidDismiss((data: Todo) => {
+      console.log('onDidDismiss>', data);
+
+      if (!!data) {
+        this.todoService.saveItem(data);
+      }
+    });
+
+    modal.present();
+  }
 }
-
-/*
-        this.todos =
-            [{
-                id: 'AA',
-                description: 'AA-description',
-                name: 'AA-name',
-                index: 0,
-                isComplete: false,
-                userId: 'a01',
-            },
-            {
-                id: 'BB',
-                description: 'BB-description',
-                name: 'BB-name',
-                index: 0,
-                isComplete: false,
-                userId: 'a01',
-            },
-            {
-                id: 'CC',
-                description: 'CC-description',
-                name: 'CC-name',
-                index: 0,
-                isComplete: false,
-                userId: 'a01',
-            }];
-
-            this.todos$ = Observable.of(this.todos);
-*/
