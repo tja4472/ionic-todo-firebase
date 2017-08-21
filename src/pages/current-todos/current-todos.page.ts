@@ -11,8 +11,8 @@ import { Observable } from 'rxjs/Observable';
 
 import { CurrentTodoService } from '../../services/current-todo.service';
 
-import { IReorderArrayIndexes } from '../../models/reorder-array-indexes';
-import { ITodo } from '../../models/todo.model';
+import { IReorderArrayIndexes } from '../../shared/models/reorder-array-indexes';
+import { Todo } from '../../shared/models/todo.model';
 
 import {
   CurrentTodoDetailModal,
@@ -28,7 +28,7 @@ import {
   templateUrl: 'current-todos.page.html'
 })
 export class CurrentTodosPage {
-  todos$: Observable<ITodo[]>;
+  todos$: Observable<Todo[]>;
 
   private readonly CLASS_NAME = 'CurrentTodosPage';
 
@@ -48,7 +48,7 @@ export class CurrentTodosPage {
     const params: ICurrentTodoDetailModalParam = { isEdited: false };
     const modal = this.modalCtrl.create(CurrentTodoDetailModal, params);
 
-    modal.onDidDismiss((data: ITodo) => {
+    modal.onDidDismiss((data: Todo) => {
       console.log('onDidDismiss>', data);
 
       if (!!data) {
@@ -59,12 +59,12 @@ export class CurrentTodosPage {
     modal.present();
   }
 
-  toggleCompleteItem(item: ITodo) {
+  toggleCompleteItem(item: Todo) {
     console.log('completeItem:item>', item);
     this.todoService.toggleCompleteItem(item);
   }
 
-  editItem(item: ITodo) {
+  editItem(item: Todo) {
     console.log('editItem:item>', item);
     // let todo: ToDo;
     // todo = assign(todo, item);
@@ -72,7 +72,7 @@ export class CurrentTodosPage {
     const params: ICurrentTodoDetailModalParam = { data: item, isEdited: true };
     const modal = this.modalCtrl.create(CurrentTodoDetailModal, params);
 
-    modal.onDidDismiss((data: ITodo) => {
+    modal.onDidDismiss((data: Todo) => {
       console.log('onDidDismiss>', data);
 
       if (!!data) {
@@ -116,7 +116,7 @@ export class CurrentTodosPage {
     // this.items = reorderArray(this.items, indexes);
   }
 
-  removeItem(item: ITodo) {
+  removeItem(item: Todo) {
     console.log('CurrentTodosPage:removeItem:item>', item);
     this.todoService.removeItem(item);
   }

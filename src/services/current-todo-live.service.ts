@@ -11,11 +11,11 @@ import { AuthService } from '../services/auth.service';
 import { CompletedTodoService } from '../services/completed-todo.service';
 import { CurrentTodoService } from './current-todo.service';
 
-import { IReorderArrayIndexes } from '../models/reorder-array-indexes';
+import { IReorderArrayIndexes } from '../shared/models/reorder-array-indexes';
 
 import { IDmCurrentTodo } from '../database-models/dm-current-todo';
 
-import { ITodo } from '../models/todo.model';
+import { Todo } from '../shared/models/todo.model';
 import { ITodoCompleted } from '../models/todo-completed';
 
 
@@ -34,8 +34,8 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
     private readonly DB_LIST_KEY = 'currentTodos';
     private readonly DB_USERS_KEY = '/users';
 
-    private data: ITodo[];
-    private dataBehaviorSubject: BehaviorSubject<ITodo[]>;
+    private data: Todo[];
+    private dataBehaviorSubject: BehaviorSubject<Todo[]>;
 
     private databaseReferenceListening: firebase.database.Reference;
 
@@ -56,7 +56,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
     ) {
         console.log('%s:constructor()', this.CLASS_NAME);
         this.data = [];
-        this.dataBehaviorSubject = new BehaviorSubject([]) as BehaviorSubject<ITodo[]>;
+        this.dataBehaviorSubject = new BehaviorSubject([]) as BehaviorSubject<Todo[]>;
     }
 
     public clearCompletedItems(): void {
@@ -82,14 +82,11 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         item: ITodoCompleted,
     ): void {
         console.log('%s:clearCompletedItems', this.CLASS_NAME, item);
-        const todo: ITodo = {
-            $key: undefined,
-            description: item.description,
-            index: 0,
-            isComplete: false,
-            name: item.name,
-            userId: item.userId,
-        };
+        const todo: Todo = new Todo();
+        todo.description = item.description;
+        todo.isComplete = false;
+        todo.name = item.name;
+        todo.userId = item.userId;
 
         this.saveItem(todo);
         this.completedTodoService.removeItem(item);
@@ -126,7 +123,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
                     return;
                 }
 
-                const arr: ITodo[] = [];
+                const arr: Todo[] = [];
 
                 snapshot.forEach((childSnapshot) => {
                     if (childSnapshot.key === null) {
@@ -189,7 +186,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
     }
 
     removeItem(
-        item: ITodo,
+        item: Todo,
     ) {
         console.log('%s:removeItem>', this.CLASS_NAME, item);
         if (this.authService.authUser === null) {
@@ -214,7 +211,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
     }
 
     saveItem(
-        item: ITodo,
+        item: Todo,
     ) {
         console.log('%s:saveItem>', this.CLASS_NAME, item);
         if (this.authService.authUser === null) {
@@ -247,7 +244,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
     }
 
     public toggleCompleteItem(
-        todo: ITodo
+        todo: Todo
     ): void {
         console.log('%s:toggleCompleteItem>', this.CLASS_NAME, todo);
         todo.isComplete = !todo.isComplete;
@@ -256,7 +253,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
 }
 
 
-function toFirebaseTodo(todo: ITodo): IDmCurrentTodo {
+function toFirebaseTodo(todo: Todo): IDmCurrentTodo {
     //
     const result: IDmCurrentTodo = {
         // id: todo.id,
@@ -287,18 +284,17 @@ function fromDatabase(x: any[]): Todo[] {
 function fromFirebaseTodo(
     id: string,
     x: any
-): ITodo {
+): Todo {
     console.log('fromFirebaseTodo');
 
-    const result: ITodo = {
-        $key: id,
-        description: x.description,
-        index: x.index,
-        isComplete: x.isComplete,
-        name: x.name,
-        // userId: x.userId,
-        userId: 'aaa',
-    };
+    const result: Todo = new Todo();
+    result.$key = id;
+    result.description = x.description;
+    result.index = x.index;
+    result.isComplete = x.isComplete;
+    result.name = x.name;
+    // userId: x.userId,
+    result.userId = 'aaa';
 
     /*
         if (result.description === undefined) {

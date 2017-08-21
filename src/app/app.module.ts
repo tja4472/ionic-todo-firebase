@@ -7,11 +7,9 @@ import { Page2 } from '../pages/page2/page2';
 import { HomePage } from '../pages/home/home.page';
 
 // auth module?
-import { ControlMessages } from '../components/control-messages/control-messages.component';
 import { LoginPage } from '../pages/login/login.page';
 import { SignupPage } from '../pages/signup/signup.page';
 import { AuthService } from '../services/auth.service';
-import { ValidationService } from '../services/validation.service';
 // ---
 import { CompletedTodoDetailPage } from '../pages/completed-todo-detail/completed-todo-detail.page';
 import { CompletedTodosPage } from '../pages/completed-todos/completed-todos.page';
@@ -19,8 +17,15 @@ import { CurrentTodoDetailModal } from '../pages/current-todo-detail-modal/curre
 import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
 
 import { CompletedTodoListComponent } from '../components/completed-todo-list/completed-todo-list.component';
-import { CurrentTodoListComponent } from '../shared/components/current-todo-list/current-todo-list.component';
 import { CurrentTodosPopover } from '../components/current-todos-popover/current-todos.popover';
+
+// shared
+import { CurrentTodoDetailsComponent } from '../shared/components/current-todo-details/current-todo-details.component';
+
+import { ControlMessagesComponent } from '../shared/components/control-messages/control-messages.component';
+import { CurrentTodoListComponent } from '../shared/components/current-todo-list/current-todo-list.component';
+
+import { ValidationService } from '../shared/services/validation.service';
 
 
 import { CompletedTodoService } from '../services/completed-todo.service';
@@ -57,8 +62,9 @@ import 'firebase/database';
     CompletedTodoDetailPage,
     CompletedTodoListComponent,
     CompletedTodosPage,
-    ControlMessages,
+    ControlMessagesComponent,
     CurrentTodoDetailModal,
+    CurrentTodoDetailsComponent,
     CurrentTodoListComponent,
     CurrentTodosPage,
     LoginPage,
