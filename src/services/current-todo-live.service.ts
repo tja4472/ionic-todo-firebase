@@ -11,7 +11,7 @@ import { AuthService } from '../services/auth.service';
 import { CompletedTodoService } from '../services/completed-todo.service';
 import { CurrentTodoService } from './current-todo.service';
 
-import { IReorderArrayIndexes } from '../shared/models/reorder-array-indexes';
+import { IAReorderArrayIndexes } from '../shared/models/reorder-array-indexes.model';
 
 import { IDmCurrentTodo } from '../database-models/dm-current-todo';
 
@@ -159,7 +159,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
     }
 
     reorderItems(
-        indexes: IReorderArrayIndexes,
+        indexes: IAReorderArrayIndexes,
     ) {
         console.log('%s:reorderItems():indexes>', this.CLASS_NAME, indexes);
         if (this.authService.authUser === null) {

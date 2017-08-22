@@ -11,7 +11,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { CurrentTodoService } from '../../services/current-todo.service';
 
-import { IReorderArrayIndexes } from '../../shared/models/reorder-array-indexes';
+import { IAReorderArrayIndexes } from '../../shared/models/reorder-array-indexes.model';
 import { Todo } from '../../shared/models/todo.model';
 
 import { CurrentTodoDetailModal } from '../current-todo-detail-modal/current-todo-detail.modal';
@@ -79,7 +79,7 @@ export class CurrentTodosPage {
     });
   }
 
-  reorderItems(indexes: IReorderArrayIndexes) {
+  reorderItems(indexes: IAReorderArrayIndexes) {
     console.log('reorderItems:indexes>', indexes);
     console.log('reorderItems:indexes.from>', indexes.from);
     console.log('reorderItems:indexes.to>', indexes.to);
