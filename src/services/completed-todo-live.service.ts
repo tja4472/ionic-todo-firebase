@@ -122,7 +122,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
         if (this.authService.authUser.id === null) {
             return;
         }
-        if (item.id === undefined) {
+        if (item.$key === undefined) {
             return;
         }
 
@@ -130,7 +130,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
             .ref(this.DB_USERS_KEY)
             .child(this.authService.authUser.id)
             .child(this.DB_LIST_KEY)
-            .child(item.id)
+            .child(item.$key)
             .remove();
     }
 
@@ -145,7 +145,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
             return;
         }
 
-        if (item.id === undefined) {
+        if (item.isNew()) {
             // insert.
             firebase.database()
                 .ref(this.DB_USERS_KEY)
@@ -154,11 +154,15 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
                 .push(toFirebaseTodo(item));
         } else {
             // update.
+            if (item.$key === undefined) {
+                return;
+            }
+
             firebase.database()
                 .ref(this.DB_USERS_KEY)
                 .child(this.authService.authUser.id)
                 .child(this.DB_LIST_KEY)
-                .child(item.id)
+                .child(item.$key)
                 .set(toFirebaseTodo(item));
         }
     }

@@ -23,7 +23,8 @@ export class CompletedTodoDetailPage {
   private readonly CLASS_NAME = 'CompletedTodoDetailPage';
 
   // data model.
-  private todo: TodoCompleted =
+  private todo: TodoCompleted = new TodoCompleted();
+/*
   {
     description: undefined,
     id: undefined,
@@ -31,7 +32,7 @@ export class CompletedTodoDetailPage {
     name: '',
     userId: '',
   };
-
+*/
   private isEditing: boolean;
 
   constructor(
@@ -106,6 +107,12 @@ export class CompletedTodoDetailPage {
   private prepareSaveData(): TodoCompleted {
     const formModel = this.todoForm.value;
 
+    const saveData: TodoCompleted = new TodoCompleted();
+    saveData.description = formModel.description;
+    saveData.$key = this.todo.$key;
+    saveData.name = formModel.name;
+    saveData.userId = this.todo.userId;
+/*
     const saveData: TodoCompleted = {
       description: formModel.description,
       id: this.todo.id,
@@ -113,7 +120,7 @@ export class CompletedTodoDetailPage {
       name: formModel.name,
       userId: this.todo.userId,
     };
-
+*/
     return saveData;
   }
 }

@@ -65,13 +65,13 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         console.log('%s:completedItems>', this.CLASS_NAME, completedItems);
 
         completedItems.map((x) => {
-            const todoCompleted: TodoCompleted = {
-                description: x.description,
-                id: undefined,
-                isComplete: x.isComplete,
-                name: x.name,
-                userId: x.userId,
-            };
+            const todoCompleted: TodoCompleted =
+                Object.assign(new TodoCompleted(),
+                    {
+                        description: x.description,
+                        name: x.name,
+                        userId: x.userId,
+                    });
 
             this.completedTodoService.saveItem(todoCompleted);
             this.removeItem(x);

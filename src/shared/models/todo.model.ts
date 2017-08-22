@@ -1,14 +1,3 @@
-/*
-export interface Todo {
-    $key?: string;
-    index: number;
-    name: string;
-    description?: string;
-    isComplete: boolean;
-    userId: string;
-    isNew(): boolean;
-}
-*/
 export class Todo {
     $key?: string = undefined;
     description?: string = undefined;

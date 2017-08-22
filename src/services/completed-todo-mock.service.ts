@@ -43,27 +43,31 @@ export class CompletedTodoServiceMock implements CompletedTodoService {
 
     private dummyData(): TodoCompleted[] {
         const data: TodoCompleted[] =
-            [{
+            [
+                Object.assign(new TodoCompleted(),
+                {
                 description: 'AA-description',
                 id: 'AA',
                 isComplete: true,
                 name: 'AA-name',
                 userId: 'a01',
-            },
+            }),
+            Object.assign(new TodoCompleted(),
             {
                 description: 'BB-description',
                 id: 'BB',
                 isComplete: true,
                 name: 'BB-name',
                 userId: 'a01',
-            },
+            }),
+            Object.assign(new TodoCompleted(),
             {
                 description: 'CC-description',
                 id: 'CC',
                 isComplete: true,
                 name: 'CC-name',
                 userId: 'a01',
-            }];
+            })];
 
         return data;
     }

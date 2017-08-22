@@ -1,31 +1,11 @@
 export class TodoCompleted {
-    id?: string;
-    isComplete: boolean;
-    description?: string;
-    name: string;
-    userId: string;
-}
+    $key?: string = undefined;
+    description?: string = undefined;
+    isComplete: boolean = true;
+    name: string = '';
+    userId: string = '';
 
-/*
-export class TodoCompleted {
-    id: string;
-    isComplete: boolean;
-    description?: string;
-    name: string;
-    userId: string;
-
-    constructor(
-        // id: string,
-        isComplete: boolean,
-        userId: string,
-        name: string,
-        description?: string,
-    ) {
-        this.id = undefined;
-        this.description = description;
-        this.isComplete = isComplete;
-        this.userId = userId;
-        this.name = name;
+    public isNew(): boolean {
+        return (this.$key === undefined);
     }
 }
-*/
