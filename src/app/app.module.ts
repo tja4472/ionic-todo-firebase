@@ -12,7 +12,7 @@ import { SignupPage } from '../pages/signup/signup.page';
 import { AuthService } from '../services/auth.service';
 // ---
 import { CompletedTodoDetailPage } from '../pages/completed-todo-detail/completed-todo-detail.page';
-import { CompletedTodosPage } from '../pages/completed-todos/completed-todos.page';
+import { TodoCompletedListPage } from '../pages/todo-completed-list/todo-completed-list.page';
 import { CurrentTodoDetailModal } from '../pages/current-todo-detail-modal/current-todo-detail.modal';
 import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
 
@@ -61,7 +61,7 @@ import 'firebase/database';
     Page2,
     CompletedTodoDetailPage,
     CompletedTodoListComponent,
-    CompletedTodosPage,
+    TodoCompletedListPage,
     ControlMessagesComponent,
     CurrentTodoDetailModal,
     CurrentTodoDetailsComponent,
@@ -79,7 +79,7 @@ import 'firebase/database';
   bootstrap: [IonicApp],
   entryComponents: [
     CompletedTodoDetailPage,
-    CompletedTodosPage,
+    TodoCompletedListPage,
     CurrentTodoDetailModal,
     CurrentTodosPage,
     HomePage,

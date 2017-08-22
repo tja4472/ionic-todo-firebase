@@ -9,10 +9,10 @@ import { TodoCompleted } from '../../shared/models/todo-completed.model';
 import { CompletedTodoDetailPage, IModalResult } from '../completed-todo-detail/completed-todo-detail.page';
 
 @Component({
-  selector: 'page-completed-todos',
-  templateUrl: 'completed-todos.page.html'
+  selector: 'tja-page-todo-completed-list',
+  templateUrl: 'todo-completed-list.page.html'
 })
-export class CompletedTodosPage {
+export class TodoCompletedListPage {
   data$: Observable<TodoCompleted[]>;
 
   private readonly CLASS_NAME = 'CompletedTodosPage';

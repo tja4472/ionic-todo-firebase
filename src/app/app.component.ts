@@ -4,7 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { ICurrentUser } from '../models/current-user';
-import { CompletedTodosPage } from '../pages/completed-todos/completed-todos.page';
+import { TodoCompletedListPage } from '../pages/todo-completed-list/todo-completed-list.page';
 import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
 import { HomePage } from '../pages/home/home.page';
 import { LoginPage } from '../pages/login/login.page';
@@ -42,7 +42,7 @@ export class MyApp implements OnInit {
 
   loggedInPages: IPageInterface[] = [
     { title: 'Current Todos Page', component: CurrentTodosPage, icon: 'calendar' },
-    { title: 'Completed Todos Page', component: CompletedTodosPage, icon: 'calendar' },
+    { title: 'Completed Todos Page', component: TodoCompletedListPage, icon: 'calendar' },
     { title: 'Logout', component: Page1, icon: 'log-out', logsOut: true }
   ];
 
