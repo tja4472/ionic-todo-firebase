@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { CompletedTodoService } from '../../services/completed-todo.service';
 import { CurrentTodoService } from '../../services/current-todo.service';
 
-import { ITodoCompleted } from '../../models/todo-completed';
+import { TodoCompleted } from '../../shared/models/todo-completed.model';
 import { CompletedTodoDetailPage, IModalResult } from '../completed-todo-detail/completed-todo-detail.page';
 
 @Component({
@@ -13,7 +13,7 @@ import { CompletedTodoDetailPage, IModalResult } from '../completed-todo-detail/
   templateUrl: 'completed-todos.page.html'
 })
 export class CompletedTodosPage {
-  data$: Observable<ITodoCompleted[]>;
+  data$: Observable<TodoCompleted[]>;
 
   private readonly CLASS_NAME = 'CompletedTodosPage';
 
@@ -31,7 +31,7 @@ export class CompletedTodosPage {
     // this.todoCompletedService.initialise();
   }
 
-  editItem(item: ITodoCompleted) {
+  editItem(item: TodoCompleted) {
     console.log('editItem:item>', item);
 
     const modal = this.modalCtrl.create(CompletedTodoDetailPage, { todo: item });
@@ -63,7 +63,7 @@ export class CompletedTodosPage {
   }
 
   toggleCompleteItem(
-    item: ITodoCompleted,
+    item: TodoCompleted,
   ) {
     console.log('toggleCompleteItem:item>', item);
 

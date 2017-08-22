@@ -1,15 +1,15 @@
 import { Observable } from 'rxjs/Observable';
 
-import { ITodoCompleted } from '../models/todo-completed';
+import { TodoCompleted } from '../shared/models/todo-completed.model';
 
 export abstract class CompletedTodoService {
-    readonly data$: Observable<ITodoCompleted[]>;
+    readonly data$: Observable<TodoCompleted[]>;
 
     abstract removeItem(
-        item: ITodoCompleted,
+        item: TodoCompleted,
     ): void;
     abstract saveItem(
-        item: ITodoCompleted
+        item: TodoCompleted
     ): void;
 
     abstract startListening(): void;

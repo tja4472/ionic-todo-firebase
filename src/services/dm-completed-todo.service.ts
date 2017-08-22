@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { IDmCompletedTodo } from '../database-models/dm-completed-todo';
 
-import { ITodoCompleted } from '../models/todo-completed';
+import { TodoCompleted } from '../shared/models/todo-completed.model';
 
 @Injectable()
 export class DmCompletedTodoService {
@@ -15,10 +15,10 @@ export class DmCompletedTodoService {
     public fromDatabase(
         id: string,
         data: IDmCompletedTodo,
-    ): ITodoCompleted {
+    ): TodoCompleted {
         console.log(`%s:fromDatabase()`, this.CLASS_NAME);
 
-        const expected: ITodoCompleted = {
+        const expected: TodoCompleted = {
             description: data.description,
             id,
             isComplete: data.isComplete,

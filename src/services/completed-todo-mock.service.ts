@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { ITodoCompleted } from '../models/todo-completed';
+import { TodoCompleted } from '../shared/models/todo-completed.model';
 import { CompletedTodoService } from './completed-todo.service';
 
 @Injectable()
 export class CompletedTodoServiceMock implements CompletedTodoService {
     private readonly CLASS_NAME = 'CompletedTodoServiceMock';
 
-    private data: ITodoCompleted[];
-    private dataBehaviorSubject: BehaviorSubject<ITodoCompleted[]>;
+    private data: TodoCompleted[];
+    private dataBehaviorSubject: BehaviorSubject<TodoCompleted[]>;
 
     get data$() {
         return this.dataBehaviorSubject.asObservable();
@@ -18,17 +18,17 @@ export class CompletedTodoServiceMock implements CompletedTodoService {
     constructor() {
         console.log(`%s:constructor()`, this.CLASS_NAME);
         this.data = this.dummyData();
-        this.dataBehaviorSubject = new BehaviorSubject(this.data) as BehaviorSubject<ITodoCompleted[]>;
+        this.dataBehaviorSubject = new BehaviorSubject(this.data) as BehaviorSubject<TodoCompleted[]>;
     }
 
     removeItem(
-        item: ITodoCompleted,
+        item: TodoCompleted,
     ): void {
         console.log(`%s:removeItem>`, this.CLASS_NAME, item);
     }
 
     saveItem(
-        item: ITodoCompleted
+        item: TodoCompleted
     ): void {
         console.log(`%s:saveItem>`, this.CLASS_NAME, item);
     }
@@ -41,8 +41,8 @@ export class CompletedTodoServiceMock implements CompletedTodoService {
         console.log(`%s:stopListening>`, this.CLASS_NAME);
     }
 
-    private dummyData(): ITodoCompleted[] {
-        const data: ITodoCompleted[] =
+    private dummyData(): TodoCompleted[] {
+        const data: TodoCompleted[] =
             [{
                 description: 'AA-description',
                 id: 'AA',

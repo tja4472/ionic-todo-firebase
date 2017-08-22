@@ -3,14 +3,14 @@ import { NavParams, ViewController } from 'ionic-angular';
 // import { Observable } from 'rxjs/Observable';
 // import { TodoService } from '../../services/todo.service';
 
-import { ITodoCompleted } from '../../models/todo-completed';
+import { TodoCompleted } from '../../shared/models/todo-completed.model';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 // import { ControlMessages } from '../../components/control-messages/control-messages.component';
 
 export interface IModalResult {
   isRemoved: boolean;
   isCancelled: boolean;
-  todo?: ITodoCompleted;
+  todo?: TodoCompleted;
 }
 
 @Component({
@@ -23,7 +23,7 @@ export class CompletedTodoDetailPage {
   private readonly CLASS_NAME = 'CompletedTodoDetailPage';
 
   // data model.
-  private todo: ITodoCompleted =
+  private todo: TodoCompleted =
   {
     description: undefined,
     id: undefined,
@@ -42,7 +42,7 @@ export class CompletedTodoDetailPage {
     console.log(`%s:constructor`, this.CLASS_NAME);
     console.log('params:get>', params.get('todo'));
 
-    const paramTodo: ITodoCompleted = params.get('todo');
+    const paramTodo: TodoCompleted = params.get('todo');
     this.isEditing = !!paramTodo;
 
     if (this.isEditing) {
@@ -103,10 +103,10 @@ export class CompletedTodoDetailPage {
     });
   }
 
-  private prepareSaveData(): ITodoCompleted {
+  private prepareSaveData(): TodoCompleted {
     const formModel = this.todoForm.value;
 
-    const saveData: ITodoCompleted = {
+    const saveData: TodoCompleted = {
       description: formModel.description,
       id: this.todo.id,
       isComplete: formModel.isComplete,

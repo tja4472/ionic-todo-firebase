@@ -1,15 +1,15 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ITodoCompleted } from '../../models/todo-completed';
+import { TodoCompleted } from '../../shared/models/todo-completed.model';
 
 @Component({
   selector: 'completed-todo-list',
   templateUrl: 'completed-todo-list.component.html',
 })
 export class CompletedTodoListComponent {
-  @Input() public data: ITodoCompleted[];
+  @Input() public data: TodoCompleted[];
 
-  @Output() public editItem = new EventEmitter<ITodoCompleted>();
-  @Output() public toggleCompleteItem = new EventEmitter<ITodoCompleted>();
+  @Output() public editItem = new EventEmitter<TodoCompleted>();
+  @Output() public toggleCompleteItem = new EventEmitter<TodoCompleted>();
 
   private readonly CLASS_NAME = 'CompletedTodoListComponent';
 

@@ -6,7 +6,7 @@ import { CurrentTodoService } from './current-todo.service';
 
 import { IReorderArrayIndexes } from '../shared/models/reorder-array-indexes';
 import { Todo } from '../shared/models/todo.model';
-import { ITodoCompleted } from '../models/todo-completed';
+import { TodoCompleted } from '../shared/models/todo-completed.model';
 
 @Injectable()
 export class CurrentTodoServiceMock implements CurrentTodoService {
@@ -30,7 +30,7 @@ export class CurrentTodoServiceMock implements CurrentTodoService {
     }
 
     moveToCurrent(
-        item: ITodoCompleted,
+        item: TodoCompleted,
     ): void {
         console.log(`%s:moveToCurrent>`, this.CLASS_NAME, item);
     }

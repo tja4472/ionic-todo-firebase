@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 
-import { ITodoCompleted } from '../models/todo-completed';
+import { TodoCompleted } from '../shared/models/todo-completed.model';
 
 import { IReorderArrayIndexes } from '../shared/models/reorder-array-indexes';
 import { Todo } from '../shared/models/todo.model';
@@ -10,7 +10,7 @@ export abstract class CurrentTodoService {
 
     abstract clearCompletedItems(): void;
     abstract moveToCurrent(
-        item: ITodoCompleted,
+        item: TodoCompleted,
     ): void;
     abstract removeItem(
         item: Todo,

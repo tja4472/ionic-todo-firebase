@@ -6,7 +6,7 @@ import * as firebase from 'firebase/app';
 
 import { IDmCompletedTodo } from '../database-models/dm-completed-todo';
 
-import { ITodoCompleted } from '../models/todo-completed';
+import { TodoCompleted } from '../shared/models/todo-completed.model';
 import { CompletedTodoService } from './completed-todo.service';
 
 import { AuthService } from '../services/auth.service';
@@ -26,8 +26,8 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     private readonly DB_LIST_KEY = 'completedTodos';
     private readonly DB_USERS_KEY = '/users';
 
-    private data: ITodoCompleted[];
-    private dataBehaviorSubject: BehaviorSubject<ITodoCompleted[]>;
+    private data: TodoCompleted[];
+    private dataBehaviorSubject: BehaviorSubject<TodoCompleted[]>;
 
     private databaseReferenceListening: firebase.database.Reference;
 
@@ -48,7 +48,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     ) {
         console.log(`%s:constructor()`, this.CLASS_NAME);
         this.data = [];
-        this.dataBehaviorSubject = new BehaviorSubject([]) as BehaviorSubject<ITodoCompleted[]>;
+        this.dataBehaviorSubject = new BehaviorSubject([]) as BehaviorSubject<TodoCompleted[]>;
     }
 
     public startListening(
@@ -72,7 +72,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
             .orderByChild('index')
             .on('value', (snapshot) => {
                 // console.log('snapshot>', snapshot);
-                const arr: ITodoCompleted[] = [];
+                const arr: TodoCompleted[] = [];
 
                 if (snapshot === null) {
                     return;
@@ -112,7 +112,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     }
 
     removeItem(
-        item: ITodoCompleted,
+        item: TodoCompleted,
     ) {
         console.log('%s:removeItem>', this.CLASS_NAME, item);
 
@@ -135,7 +135,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     }
 
     saveItem(
-        item: ITodoCompleted
+        item: TodoCompleted
     ) {
         console.log(`%s:saveItem>`, this.CLASS_NAME, item);
         if (this.authService.authUser === null) {
@@ -164,7 +164,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     }
 }
 
-function toFirebaseTodo(todo: ITodoCompleted): IDmCompletedTodo {
+function toFirebaseTodo(todo: TodoCompleted): IDmCompletedTodo {
     //
     const result: IDmCompletedTodo = {
         // id: todo.id,

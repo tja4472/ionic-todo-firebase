@@ -16,7 +16,7 @@ import { IReorderArrayIndexes } from '../shared/models/reorder-array-indexes';
 import { IDmCurrentTodo } from '../database-models/dm-current-todo';
 
 import { Todo } from '../shared/models/todo.model';
-import { ITodoCompleted } from '../models/todo-completed';
+import { TodoCompleted } from '../shared/models/todo-completed.model';
 
 
 
@@ -65,7 +65,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         console.log('%s:completedItems>', this.CLASS_NAME, completedItems);
 
         completedItems.map((x) => {
-            const todoCompleted: ITodoCompleted = {
+            const todoCompleted: TodoCompleted = {
                 description: x.description,
                 id: undefined,
                 isComplete: x.isComplete,
@@ -79,7 +79,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
     }
 
     public moveToCurrent(
-        item: ITodoCompleted,
+        item: TodoCompleted,
     ): void {
         console.log('%s:clearCompletedItems', this.CLASS_NAME, item);
         const todo: Todo = new Todo();

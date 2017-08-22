@@ -1,4 +1,4 @@
-export interface ITodoCompleted {
+export class TodoCompleted {
     id?: string;
     isComplete: boolean;
     description?: string;
