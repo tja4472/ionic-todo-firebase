@@ -11,7 +11,8 @@ import { LoginPage } from '../pages/login/login.page';
 import { SignupPage } from '../pages/signup/signup.page';
 import { AuthService } from '../services/auth.service';
 // ---
-import { CompletedTodoDetailPage } from '../pages/completed-todo-detail/completed-todo-detail.page';
+import { TodoCompletedDetailModal } from '../modals/todo-completed-detail/todo-completed-detail.modal';
+
 import { TodoCompletedListPage } from '../pages/todo-completed-list/todo-completed-list.page';
 import { CurrentTodoDetailModal } from '../pages/current-todo-detail-modal/current-todo-detail.modal';
 import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
@@ -59,7 +60,7 @@ import 'firebase/database';
     MyApp,
     Page1,
     Page2,
-    CompletedTodoDetailPage,
+    TodoCompletedDetailModal,
     CompletedTodoListComponent,
     TodoCompletedListPage,
     ControlMessagesComponent,
@@ -78,7 +79,7 @@ import 'firebase/database';
   // tslint:disable-next-line:object-literal-sort-keys
   bootstrap: [IonicApp],
   entryComponents: [
-    CompletedTodoDetailPage,
+    TodoCompletedDetailModal,
     TodoCompletedListPage,
     CurrentTodoDetailModal,
     CurrentTodosPage,

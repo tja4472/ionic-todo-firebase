@@ -6,7 +6,7 @@ import { CompletedTodoService } from '../../services/completed-todo.service';
 import { CurrentTodoService } from '../../services/current-todo.service';
 
 import { TodoCompleted } from '../../shared/models/todo-completed.model';
-import { CompletedTodoDetailPage, IModalResult } from '../completed-todo-detail/completed-todo-detail.page';
+import { TodoCompletedDetailModal, IModalResult } from '../../modals/todo-completed-detail/todo-completed-detail.modal';
 
 @Component({
   selector: 'tja-page-todo-completed-list',
@@ -34,7 +34,7 @@ export class TodoCompletedListPage {
   editItem(item: TodoCompleted) {
     console.log('editItem:item>', item);
 
-    const modal = this.modalCtrl.create(CompletedTodoDetailPage, { todo: item });
+    const modal = this.modalCtrl.create(TodoCompletedDetailModal, { todo: item });
 
     modal.onDidDismiss((modalResult: IModalResult) => {
       console.log('editItem:onDidDismiss>: modalResult', modalResult);

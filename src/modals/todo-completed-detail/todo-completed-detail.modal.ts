@@ -14,10 +14,10 @@ export interface IModalResult {
 }
 
 @Component({
-  selector: 'page-completed-todo-detail',
-  templateUrl: 'completed-todo-detail.page.html'
+  selector: 'tja-modal-todo-completed-detail',
+  templateUrl: 'todo-completed-detail.modal.html'
 })
-export class CompletedTodoDetailPage {
+export class TodoCompletedDetailModal {
   public todoForm: FormGroup;
 
   private readonly CLASS_NAME = 'CompletedTodoDetailPage';
