@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { TodoCompleted } from '../../shared/models/todo-completed.model';
+import { TodoCompleted } from '../../models/todo-completed.model';
 
 @Component({
   selector: 'tja-todo-completed-list',

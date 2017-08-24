@@ -16,17 +16,15 @@ import { TodoDetailModal } from '../modals/todo-detail/todo-detail.modal';
 
 import { TodoCompletedListPage } from '../pages/todo-completed-list/todo-completed-list.page';
 import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
-import { TodoCompletedListComponent } from '../components/todo-completed-list/todo-completed-list.component';
+
 import { CurrentTodosPopover } from '../components/current-todos-popover/current-todos.popover';
 
 // shared
 import { CurrentTodoDetailsComponent } from '../shared/components/current-todo-details/current-todo-details.component';
-
 import { ControlMessagesComponent } from '../shared/components/control-messages/control-messages.component';
 import { CurrentTodoListComponent } from '../shared/components/current-todo-list/current-todo-list.component';
-
+import { TodoCompletedListComponent } from '../shared/components/todo-completed-list/todo-completed-list.component';
 import { ValidationService } from '../shared/services/validation.service';
-
 
 import { CompletedTodoService } from '../services/completed-todo.service';
 import { CompletedTodoServiceLive } from '../services/completed-todo-live.service';
