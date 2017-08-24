@@ -12,11 +12,10 @@ import { SignupPage } from '../pages/signup/signup.page';
 import { AuthService } from '../services/auth.service';
 // ---
 import { TodoCompletedDetailModal } from '../modals/todo-completed-detail/todo-completed-detail.modal';
+import { TodoDetailModal } from '../modals/todo-detail/todo-detail.modal';
 
 import { TodoCompletedListPage } from '../pages/todo-completed-list/todo-completed-list.page';
-import { CurrentTodoDetailModal } from '../pages/current-todo-detail-modal/current-todo-detail.modal';
 import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
-
 import { CompletedTodoListComponent } from '../components/completed-todo-list/completed-todo-list.component';
 import { CurrentTodosPopover } from '../components/current-todos-popover/current-todos.popover';
 
@@ -64,7 +63,7 @@ import 'firebase/database';
     CompletedTodoListComponent,
     TodoCompletedListPage,
     ControlMessagesComponent,
-    CurrentTodoDetailModal,
+    TodoDetailModal,
     CurrentTodoDetailsComponent,
     CurrentTodoListComponent,
     CurrentTodosPage,
@@ -81,7 +80,7 @@ import 'firebase/database';
   entryComponents: [
     TodoCompletedDetailModal,
     TodoCompletedListPage,
-    CurrentTodoDetailModal,
+    TodoDetailModal,
     CurrentTodosPage,
     HomePage,
     MyApp,

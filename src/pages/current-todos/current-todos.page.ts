@@ -14,7 +14,7 @@ import { CurrentTodoService } from '../../services/current-todo.service';
 import { IAReorderArrayIndexes } from '../../shared/models/reorder-array-indexes.model';
 import { Todo } from '../../shared/models/todo.model';
 
-import { CurrentTodoDetailModal } from '../current-todo-detail-modal/current-todo-detail.modal';
+import { TodoDetailModal } from '../../modals/todo-detail/todo-detail.modal';
 import {
   CurrentTodosPopover,
   ICurrentTodosPopoverResult
@@ -111,7 +111,7 @@ export class CurrentTodosPage {
 
   private showModal(item?: Todo) {
     //
-    const modal = this.modalCtrl.create(CurrentTodoDetailModal, { todo: item });
+    const modal = this.modalCtrl.create(TodoDetailModal, { todo: item });
 
     modal.onDidDismiss((data: Todo) => {
       console.log('onDidDismiss>', data);
