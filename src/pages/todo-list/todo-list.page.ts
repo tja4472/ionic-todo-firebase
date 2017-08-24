@@ -16,9 +16,9 @@ import { Todo } from '../../shared/models/todo.model';
 
 import { TodoDetailModal } from '../../modals/todo-detail/todo-detail.modal';
 import {
-  CurrentTodosPopover,
+  TodoListPopover,
   ICurrentTodosPopoverResult
-} from '../../components/current-todos-popover/current-todos.popover';
+} from '../../components/todo-list-popover/todo-list.popover';
 
 @Component({
   selector: 'tja-page-todo-list',
@@ -56,7 +56,7 @@ export class TodoListPage {
   }
 
   presentPopover(event: Event) {
-    const popover = this.popoverCtrl.create(CurrentTodosPopover);
+    const popover = this.popoverCtrl.create(TodoListPopover);
 
     popover.onDidDismiss((result: ICurrentTodosPopoverResult) => {
       console.log('popover.onDidDismiss>', result);

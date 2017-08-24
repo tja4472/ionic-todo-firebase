@@ -6,17 +6,10 @@ export interface ICurrentTodosPopoverResult {
 }
 
 @Component({
-  template: `
-    <ion-list>
-    <!--
-      <ion-list-header>Ionic</ion-list-header>
--->
-      <button ion-item (click)="clearCompleted()">Clear completed</button>
-    </ion-list>
-  `
+  templateUrl: 'todo-list.popover.html'
 })
-export class CurrentTodosPopover {
-  private readonly CLASS_NAME = 'CurrentTodosPopover';
+export class TodoListPopover {
+  private readonly CLASS_NAME = 'TodoListPopover';
 
   constructor(
     public viewCtrl: ViewController
@@ -30,9 +23,5 @@ export class CurrentTodosPopover {
     };
 
     this.viewCtrl.dismiss(result);
-  }
-
-  close(data: string) {
-    this.viewCtrl.dismiss(data);
   }
 }
