@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TodoCompleted } from '../../shared/models/todo-completed.model';
 
 @Component({
-  selector: 'completed-todo-list',
-  templateUrl: 'completed-todo-list.component.html',
+  selector: 'tja-todo-completed-list',
+  templateUrl: 'todo-completed-list.component.html',
 })
-export class CompletedTodoListComponent {
+export class TodoCompletedListComponent {
   @Input() public data: TodoCompleted[];
 
   @Output() public editItem = new EventEmitter<TodoCompleted>();

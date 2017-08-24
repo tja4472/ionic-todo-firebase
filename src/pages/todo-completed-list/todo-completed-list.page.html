@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-  <completed-todo-list [data]="data$ | async"
-                       (editItem)="editItem($event)"
-                       (toggleCompleteItem)="toggleCompleteItem($event)"></completed-todo-list>
+  <tja-todo-completed-list [data]="data$ | async"
+                           (editItem)="editItem($event)"
+                           (toggleCompleteItem)="toggleCompleteItem($event)"></tja-todo-completed-list>
 </ion-content>

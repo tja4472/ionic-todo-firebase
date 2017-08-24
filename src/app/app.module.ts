@@ -16,7 +16,7 @@ import { TodoDetailModal } from '../modals/todo-detail/todo-detail.modal';
 
 import { TodoCompletedListPage } from '../pages/todo-completed-list/todo-completed-list.page';
 import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
-import { CompletedTodoListComponent } from '../components/completed-todo-list/completed-todo-list.component';
+import { TodoCompletedListComponent } from '../components/todo-completed-list/todo-completed-list.component';
 import { CurrentTodosPopover } from '../components/current-todos-popover/current-todos.popover';
 
 // shared
@@ -60,7 +60,7 @@ import 'firebase/database';
     Page1,
     Page2,
     TodoCompletedDetailModal,
-    CompletedTodoListComponent,
+    TodoCompletedListComponent,
     TodoCompletedListPage,
     ControlMessagesComponent,
     TodoDetailModal,
