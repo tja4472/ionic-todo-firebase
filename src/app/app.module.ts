@@ -15,7 +15,7 @@ import { TodoCompletedDetailModal } from '../modals/todo-completed-detail/todo-c
 import { TodoDetailModal } from '../modals/todo-detail/todo-detail.modal';
 
 import { TodoCompletedListPage } from '../pages/todo-completed-list/todo-completed-list.page';
-import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
+import { TodoListPage } from '../pages/todo-list/todo-list.page';
 
 import { CurrentTodosPopover } from '../components/current-todos-popover/current-todos.popover';
 
@@ -64,7 +64,7 @@ import 'firebase/database';
     TodoDetailModal,
     CurrentTodoDetailsComponent,
     CurrentTodoListComponent,
-    CurrentTodosPage,
+    TodoListPage,
     LoginPage,
     CurrentTodosPopover,
     SignupPage,
@@ -79,7 +79,7 @@ import 'firebase/database';
     TodoCompletedDetailModal,
     TodoCompletedListPage,
     TodoDetailModal,
-    CurrentTodosPage,
+    TodoListPage,
     HomePage,
     MyApp,
     Page1,

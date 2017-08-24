@@ -21,10 +21,10 @@ import {
 } from '../../components/current-todos-popover/current-todos.popover';
 
 @Component({
-  selector: 'page-current-todos',
-  templateUrl: 'current-todos.page.html'
+  selector: 'tja-page-todo-list',
+  templateUrl: 'todo-list.page.html'
 })
-export class CurrentTodosPage {
+export class TodoListPage {
   todos$: Observable<Todo[]>;
 
   private readonly CLASS_NAME = 'CurrentTodosPage';

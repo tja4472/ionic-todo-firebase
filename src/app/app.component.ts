@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { ICurrentUser } from '../models/current-user';
 import { TodoCompletedListPage } from '../pages/todo-completed-list/todo-completed-list.page';
-import { CurrentTodosPage } from '../pages/current-todos/current-todos.page';
+import { TodoListPage } from '../pages/todo-list/todo-list.page';
 import { HomePage } from '../pages/home/home.page';
 import { LoginPage } from '../pages/login/login.page';
 import { Page1 } from '../pages/page1/page1';
@@ -41,7 +41,7 @@ export class MyApp implements OnInit {
   ];
 
   loggedInPages: IPageInterface[] = [
-    { title: 'Current Todos Page', component: CurrentTodosPage, icon: 'calendar' },
+    { title: 'Current Todos Page', component: TodoListPage, icon: 'calendar' },
     { title: 'Completed Todos Page', component: TodoCompletedListPage, icon: 'calendar' },
     { title: 'Logout', component: Page1, icon: 'log-out', logsOut: true }
   ];
@@ -195,7 +195,7 @@ export class MyApp implements OnInit {
         }
 
         this.enableMenu(true);
-        this.nav.setRoot(CurrentTodosPage).catch(() => {
+        this.nav.setRoot(TodoListPage).catch(() => {
           console.error('Didn\'t set nav root');
         });
 
