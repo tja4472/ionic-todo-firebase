@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { CurrentTodoService } from './current-todo.service';
 
-import { IAReorderArrayIndexes } from '../shared/models/reorder-array-indexes.model';
+import { IReorderArrayIndexes } from '../shared/models/reorder-array-indexes.model';
 import { Todo } from '../shared/models/todo.model';
 import { TodoCompleted } from '../shared/models/todo-completed.model';
 
@@ -42,7 +42,7 @@ export class CurrentTodoServiceMock implements CurrentTodoService {
     }
 
     reorderItems(
-        indexes: IAReorderArrayIndexes,
+        indexes: IReorderArrayIndexes,
     ): void {
         console.log(`%s:reorderItems>`, this.CLASS_NAME, indexes);
     }

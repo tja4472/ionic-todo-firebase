@@ -20,9 +20,9 @@ import { TodoListPage } from '../pages/todo-list/todo-list.page';
 import { TodoListPopover } from '../components/todo-list-popover/todo-list.popover';
 
 // shared
-import { CurrentTodoDetailsComponent } from '../shared/components/current-todo-details/current-todo-details.component';
+import { TodoDetailComponent } from '../shared/components/todo-detail/todo-detail.component';
 import { ControlMessagesComponent } from '../shared/components/control-messages/control-messages.component';
-import { CurrentTodoListComponent } from '../shared/components/current-todo-list/current-todo-list.component';
+import { TodoListComponent } from '../shared/components/todo-list/todo-list.component';
 import { TodoCompletedListComponent } from '../shared/components/todo-completed-list/todo-completed-list.component';
 import { ValidationService } from '../shared/services/validation.service';
 
@@ -62,8 +62,8 @@ import 'firebase/database';
     TodoCompletedListPage,
     ControlMessagesComponent,
     TodoDetailModal,
-    CurrentTodoDetailsComponent,
-    CurrentTodoListComponent,
+    TodoDetailComponent,
+    TodoListComponent,
     TodoListPage,
     LoginPage,
     TodoListPopover,

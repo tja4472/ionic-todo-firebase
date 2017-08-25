@@ -11,13 +11,13 @@ import { Observable } from 'rxjs/Observable';
 
 import { CurrentTodoService } from '../../services/current-todo.service';
 
-import { IAReorderArrayIndexes } from '../../shared/models/reorder-array-indexes.model';
+import { IReorderArrayIndexes } from '../../shared/models/reorder-array-indexes.model';
 import { Todo } from '../../shared/models/todo.model';
 
 import { TodoDetailModal } from '../../modals/todo-detail/todo-detail.modal';
 import {
   TodoListPopover,
-  ICurrentTodosPopoverResult
+  ITodoListPopoverResult
 } from '../../components/todo-list-popover/todo-list.popover';
 
 @Component({
@@ -27,7 +27,7 @@ import {
 export class TodoListPage {
   todos$: Observable<Todo[]>;
 
-  private readonly CLASS_NAME = 'CurrentTodosPage';
+  private readonly CLASS_NAME = 'TodoListPage';
 
   constructor(
     public events: Events,
@@ -58,7 +58,7 @@ export class TodoListPage {
   presentPopover(event: Event) {
     const popover = this.popoverCtrl.create(TodoListPopover);
 
-    popover.onDidDismiss((result: ICurrentTodosPopoverResult) => {
+    popover.onDidDismiss((result: ITodoListPopoverResult) => {
       console.log('popover.onDidDismiss>', result);
 
       if (!!!result) {
@@ -79,7 +79,7 @@ export class TodoListPage {
     });
   }
 
-  reorderItems(indexes: IAReorderArrayIndexes) {
+  reorderItems(indexes: IReorderArrayIndexes) {
     console.log('reorderItems:indexes>', indexes);
     console.log('reorderItems:indexes.from>', indexes.from);
     console.log('reorderItems:indexes.to>', indexes.to);
