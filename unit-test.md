@@ -2,18 +2,22 @@ With thanks to https://github.com/lathonez/clicker
 
 ### package.json
 ``` json
-    "@angular/cli": "1.0.0",
-    "@angular/router": "4.0.2",
-    "@types/jasmine": "2.5.47",
+  "dependencies": {
+    "@angular/router": "4.1.3",
+  },
+  "devDependencies": {
+    "@angular/cli": "1.3.2",
+    "@types/jasmine": "2.5.54",
     "@types/node": "7.0.12",
-    "jasmine-core": "2.5.2",
-    "jasmine-spec-reporter": "3.3.0",
-    "karma": "1.6.0",
-    "karma-chrome-launcher": "2.0.0",
+    "ionic-mocks": "0.13.0",    
+    "jasmine-core": "2.6.2",
+    "karma": "1.7.0",
+    "karma-chrome-launcher": "2.1.1",
     "karma-cli": "1.0.1",
-    "karma-coverage-istanbul-reporter": "1.1.0",
+    "karma-coverage-istanbul-reporter": "1.2.1",
     "karma-jasmine": "1.1.0",
     "karma-jasmine-html-reporter": "0.2.2",
+    "karma-junit-reporter": "1.2.0",    
 ```
 ### root
 ```
@@ -23,11 +27,11 @@ tsconfig.ng-cli.json
 ```
 ### src
 ```
-mocks.ts
 polyfills.ts
 test.ts
 tsconfig.spec.json
 ```
+Comment out ClickersServiceMock & ClickersService.
 ### tsconfig.json
 ``` json
   "exclude": [
@@ -40,7 +44,7 @@ tsconfig.spec.json
 ``` json
   "scripts": {
     ...
-    "test-coverage": "ng test --code-coverage",
-    "test": "ng test"
+    "test": "ng test",        
+    "test-coverage": "ng test --code-coverage"
   },
 ```

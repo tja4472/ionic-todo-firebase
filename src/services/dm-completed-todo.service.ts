@@ -18,16 +18,16 @@ export class DmCompletedTodoService {
     ): TodoCompleted {
         console.log(`%s:fromDatabase()`, this.CLASS_NAME);
 
-        const expected = Object.assign(new TodoCompleted(),
-            {
-                description: data.description,
-                id,
-                name: data.name,
-                userId: 'uu',
-            });
+        const expected = new TodoCompleted({
+            $key: id,
+            description: data.description,
+            name: data.name,
+            userId: 'uu',
+        });
 
         return expected;
     }
+
 }
 /*
 function fromFirebaseTodo(

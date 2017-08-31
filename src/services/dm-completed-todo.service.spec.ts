@@ -1,21 +1,20 @@
 import { DmCompletedTodoService } from './dm-completed-todo.service';
-import { DM_CompletedTodo } from '../database-models/dm-completed-todo';
+import { IDmCompletedTodo } from '../database-models/dm-completed-todo';
+import { TodoCompleted } from '../shared/models/todo-completed.model';
 
-import { TodoCompleted } from '../models/todo-completed';
-
-const data: DM_CompletedTodo = {
+const data: IDmCompletedTodo = {
     description: 'description',
     isComplete: false,
     name: 'name',
 };
 
-const expected: TodoCompleted = {
+const expected = new TodoCompleted({
+    $key: 'id1',
     description: 'description',
-    id: 'id1',
-    isComplete: false,
+    isComplete: true,
     name: 'name',
     userId: 'uu',
-};
+});
 
 describe('DM_CompletedTodoService', () => {
     it('fromDatabase', () => {
