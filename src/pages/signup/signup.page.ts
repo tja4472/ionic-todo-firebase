@@ -1,42 +1,35 @@
 import { Component } from '@angular/core';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 import { AuthService } from '../../services/auth.service';
 
+import { IUserFormResult } from '../../shared/components/create-user/create-user.component';
 
 @Component({
-  selector: 'page-signup',
+  selector: 'tja-page-signup',
   templateUrl: 'signup.page.html'
 })
 export class SignupPage {
-  public submitted = false;
-  public signupForm: FormGroup;
+  // Used in view
+  public error$: any;
 
-  // loginState$: any;
   private readonly CLASS_NAME = 'SignupPage';
 
   constructor(
-    private formBuilder: FormBuilder,
     private authService: AuthService,
   ) {
-    console.log(`%s:constructor`, this.CLASS_NAME);
-    this.createForm();
+    console.log('%s:constructor', this.CLASS_NAME);
+    this.error$ = authService.error$;
   }
 
-  onSignup() {
-    console.log('onSignup:this.signupForm.value>', this.signupForm.value);
-    this.submitted = true;
-    const formModel = this.signupForm.value;
-
-    if (this.signupForm.valid) {
-      this.authService.doSignup(formModel.username, formModel.password);
-    }
+  // Used in view
+  public createUser(x: IUserFormResult) {
+    console.log('###%s:createUser', this.CLASS_NAME);
+    console.log('%s:x>', this.CLASS_NAME, x);
+    this.authService.createUserWithEmailAndPassword(x.email, x.password);
   }
 
-  private createForm(): void {
-    this.signupForm = this.formBuilder.group({
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      username: ['', Validators.required],
-    });
+  public ionViewDidLeave() {
+    console.log('###%s:ionViewDidLeave', this.CLASS_NAME);
+    this.authService.clearError$();
   }
 }

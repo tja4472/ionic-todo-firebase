@@ -10,6 +10,8 @@ import * as firebase from 'firebase/app';
 
 @Injectable()
 export class AuthService {
+    public error$ = new ReplaySubject<Error | null>(1);
+
     public notifier$: ReplaySubject<ICurrentUser | null> = new ReplaySubject<ICurrentUser>(1);
     private readonly CLASS_NAME = 'AuthService';
     //
@@ -36,6 +38,7 @@ export class AuthService {
     constructor(
     ) {
         console.log(`%s:constructor`, this.CLASS_NAME);
+        this.clearError$();
 
         firebase.auth().onAuthStateChanged((user: firebase.User) => {
             // this._authStateChecked = true;
@@ -73,6 +76,10 @@ export class AuthService {
             });
         }
     */
+    public clearError$() {
+        this.error$.next(null);
+    }
+
     createCurrentUser(
         user: firebase.User
     ): ICurrentUser {
@@ -146,11 +153,33 @@ export class AuthService {
             * /
         }
     */
+    public createUserWithEmailAndPassword(
+        email: string,
+        password: string) {
+        console.log('###%s:createUserWithEmailAndPassword', this.CLASS_NAME);
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+            .catch((error) => {
+                // Handle Errors here.
+                /*
+                                var errorCode = error.code;
+                                var errorMessage = error.message;
+                                if (errorCode == 'auth/weak-password') {
+                                    alert('The password is too weak.');
+                                } else {
+                                    alert(errorMessage);
+                                }
+                */
+                console.log('error>', error);
+                this.error$.next(error);
+            });
+    }
+
     doSignup(
         email: string,
         _password?: string) {
         console.log('%s:doSignup()', this.CLASS_NAME);
         if (email.length) {
+            // firebase.auth().createUserWithEmailAndPassword
             /*
              let details = { 'email': _email, 'password': _password };
 
