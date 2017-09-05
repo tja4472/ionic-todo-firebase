@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 import { NavController } from 'ionic-angular';
-import { SignupPage } from '../signup/signup.page';
+import { RegisterPage } from '../register/register.page';
 
 import { AuthService } from '../../services/auth.service';
 
@@ -39,7 +39,7 @@ export class LoginPage {
 
   onSignup() {
     console.log('onSignup');
-    this.nav.push(SignupPage);
+    this.nav.push(RegisterPage);
   }
 
   signInAnonymously() {

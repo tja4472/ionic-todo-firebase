@@ -10,7 +10,8 @@ import { HomePage } from '../pages/home/home.page';
 import { LoginPage } from '../pages/login/login.page';
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
-import { SignupPage } from '../pages/signup/signup.page';
+import { RegisterPage } from '../pages/register/register.page';
+
 import { AuthService } from '../services/auth.service';
 import { CompletedTodoService } from '../services/completed-todo.service';
 import { CurrentTodoService } from '../services/current-todo.service';
@@ -48,8 +49,9 @@ export class MyApp implements OnInit {
 
   loggedOutPages: IPageInterface[] = [
     { title: 'Login', component: LoginPage, icon: 'log-in' },
-    { title: 'Signup', component: SignupPage, icon: 'log-in' },
+    { title: 'Register', component: RegisterPage, icon: 'person-add'  },
   ];
+
   rootPage: any; // = Page1;
 
   pages: Array<{ title: string, component: any }>;

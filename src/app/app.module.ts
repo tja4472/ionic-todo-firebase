@@ -8,7 +8,7 @@ import { HomePage } from '../pages/home/home.page';
 
 // auth module?
 import { LoginPage } from '../pages/login/login.page';
-import { SignupPage } from '../pages/signup/signup.page';
+import { RegisterPage } from '../pages/register/register.page';
 import { AuthService } from '../services/auth.service';
 // ---
 import { TodoCompletedDetailModal } from '../modals/todo-completed-detail/todo-completed-detail.modal';
@@ -69,7 +69,7 @@ import 'firebase/database';
     TodoListPage,
     LoginPage,
     TodoListPopover,
-    SignupPage,
+    RegisterPage,
   ],
   imports: [
     BrowserModule,
@@ -88,7 +88,7 @@ import 'firebase/database';
     Page2,
     LoginPage,
     TodoListPopover,
-    SignupPage,
+    RegisterPage,
   ],
   providers: [
     AuthService,
