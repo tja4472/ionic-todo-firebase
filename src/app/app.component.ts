@@ -44,7 +44,7 @@ export class MyApp implements OnInit {
   loggedInPages: IPageInterface[] = [
     { title: 'Current Todos Page', component: TodoListPage, icon: 'calendar' },
     { title: 'Completed Todos Page', component: TodoCompletedListPage, icon: 'calendar' },
-    { title: 'Logout', component: Page1, icon: 'log-out', logsOut: true }
+    { title: 'Sign Out', component: Page1, icon: 'log-out', logsOut: true }
   ];
 
   loggedOutPages: IPageInterface[] = [
