@@ -7,7 +7,7 @@ import { ICurrentUser } from '../models/current-user';
 import { TodoCompletedListPage } from '../pages/todo-completed-list/todo-completed-list.page';
 import { TodoListPage } from '../pages/todo-list/todo-list.page';
 import { HomePage } from '../pages/home/home.page';
-import { LoginPage } from '../pages/login/login.page';
+import { SignInPage } from '../pages/sign-in/sign-in.page';
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 import { RegisterPage } from '../pages/register/register.page';
@@ -48,7 +48,7 @@ export class MyApp implements OnInit {
   ];
 
   loggedOutPages: IPageInterface[] = [
-    { title: 'Login', component: LoginPage, icon: 'log-in' },
+    { title: 'Login', component: SignInPage, icon: 'log-in' },
     { title: 'Register', component: RegisterPage, icon: 'person-add'  },
   ];
 

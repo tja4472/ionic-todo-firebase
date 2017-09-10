@@ -7,7 +7,7 @@ import { Page2 } from '../pages/page2/page2';
 import { HomePage } from '../pages/home/home.page';
 
 // auth module?
-import { LoginPage } from '../pages/login/login.page';
+import { SignInPage } from '../pages/sign-in/sign-in.page';
 import { RegisterPage } from '../pages/register/register.page';
 import { AuthService } from '../services/auth.service';
 // ---
@@ -67,7 +67,7 @@ import 'firebase/database';
     TodoDetailComponent,
     TodoListComponent,
     TodoListPage,
-    LoginPage,
+    SignInPage,
     TodoListPopover,
     RegisterPage,
   ],
@@ -86,7 +86,7 @@ import 'firebase/database';
     MyApp,
     Page1,
     Page2,
-    LoginPage,
+    SignInPage,
     TodoListPopover,
     RegisterPage,
   ],

@@ -8,15 +8,15 @@ import { AuthService } from '../../services/auth.service';
 
 
 @Component({
-  selector: 'page-login',
-  templateUrl: 'login.page.html'
+  selector: 'tja-page-sign-in',
+  templateUrl: 'sign-in.page.html'
 })
-export class LoginPage {
+export class SignInPage {
   public submitted = false;
   public loginForm: FormGroup;
 
   // loginState$: any;
-  private readonly CLASS_NAME = 'LoginPage';
+  private readonly CLASS_NAME = 'SignInPage';
 
   constructor(
     private formBuilder: FormBuilder,
