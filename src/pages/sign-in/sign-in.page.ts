@@ -26,8 +26,9 @@ export class SignInPage {
     this.error$ = authService.error$;
   }
 
-  ionViewDidLeave() {
-    console.log('LoginPage:ionViewDidLeave');
+  public ionViewDidLeave() {
+    console.log('###%s:ionViewDidLeave', this.CLASS_NAME);
+    this.authService.clearError$();
   }
 
   public viewRegister(): void {
