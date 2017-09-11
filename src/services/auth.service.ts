@@ -1,6 +1,7 @@
-import { ReplaySubject } from 'rxjs/Rx';
 import { Injectable } from '@angular/core';
+
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ReplaySubject } from 'rxjs/Rx';
 
 import { ICurrentUser } from '../models/current-user';
 
@@ -126,6 +127,7 @@ export class AuthService {
                     // var errorCode = error.code;
                     // var errorMessage = error.message;
                     // ...
+                    this.error$.next(error);
                 });
         }
     }

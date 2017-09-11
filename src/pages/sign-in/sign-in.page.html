@@ -1,49 +1,16 @@
 <ion-header>
   <ion-navbar>
-    <button menuToggle ion-button icon-only>
+    <button menuToggle
+            ion-button
+            icon-only>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Login</ion-title>
+    <ion-title>Sign In</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <form [formGroup]="loginForm" novalidate>
-      <ion-item>
-        <ion-label floating color="primary">Username</ion-label>
-        <ion-input type="text" formControlName="username">
-        </ion-input>
-      </ion-item>
-
-      <tja-control-messages [control]="loginForm.controls.username"></tja-control-messages>   
-
-      <ion-item>
-        <ion-label floating color="primary">Password</ion-label>
-        <ion-input type="password" formControlName="password">
-        </ion-input>
-      </ion-item>
-
-      <tja-control-messages [control]="loginForm.controls.password"></tja-control-messages>   
-
-      <ion-row responsive-sm>
-        <ion-col>
-          <button ion-button (click)="onLogin()" color="primary" block [disabled]="!loginForm.valid">Login</button>
-        </ion-col>
-        <ion-col>
-          <button ion-button (click)="onSignup()" color="light" block>Signup</button>
-        </ion-col>
-      </ion-row>
-      <ion-row responsive-sm>
-        <ion-col>
-          <button ion-button color="secondary" (click)="signInAnonymously()">Login Anonymously</button>
-        </ion-col>
-      </ion-row>
-      <ion-row responsive-sm>
-        <ion-col>
-          <button ion-button color="secondary" (click)="signInWithGoogle()">Login with Google</button>
-        </ion-col>
-      </ion-row>
-    </form>
-  </ion-list>
+  <tja-sign-in (register)="viewRegister($event)"
+               (signIn)="viewSignIn($event)"
+               [error]="error$ | async "></tja-sign-in>
 </ion-content>

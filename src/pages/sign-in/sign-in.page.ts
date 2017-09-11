@@ -1,68 +1,43 @@
 import { Component } from '@angular/core';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 import { NavController } from 'ionic-angular';
+
 import { RegisterPage } from '../register/register.page';
 
 import { AuthService } from '../../services/auth.service';
 
+import { ISignInComponentResult } from '../../shared/components/sign-in/sign-in.component';
 
 @Component({
   selector: 'tja-page-sign-in',
   templateUrl: 'sign-in.page.html'
 })
 export class SignInPage {
-  public submitted = false;
-  public loginForm: FormGroup;
+  // Used in view
+  public error$: any;
 
-  // loginState$: any;
   private readonly CLASS_NAME = 'SignInPage';
 
   constructor(
-    private formBuilder: FormBuilder,
-    private nav: NavController,
     private authService: AuthService,
+    private nav: NavController,
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
-    this.createForm();
-  }
-
-  onLogin() {
-    this.submitted = true;
-    console.log('this.loginForm.value>', this.loginForm.value);
-    const formModel = this.loginForm.value;
-
-    if (this.loginForm.dirty && this.loginForm.valid) {
-      this.authService.doLogin(formModel.username, formModel.password);
-    }
-  }
-
-  onSignup() {
-    console.log('onSignup');
-    this.nav.push(RegisterPage);
-  }
-
-  signInAnonymously() {
-    console.log('signInAnonymously');
-    // this.store.dispatch(
-    //   new loginActions.AnonymousAuthenticationAction());
-  }
-
-  signInWithGoogle() {
-    console.log('signInWithGoogle');
-
-    // this.store.dispatch(
-    //   new loginActions.GoogleAuthenticationAction());
+    this.error$ = authService.error$;
   }
 
   ionViewDidLeave() {
     console.log('LoginPage:ionViewDidLeave');
   }
 
-  private createForm(): void {
-    this.loginForm = this.formBuilder.group({
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      username: ['', Validators.required],
-    });
+  public viewRegister(): void {
+    console.log('viewRegister>');
+    // Should be root.
+    this.nav.push(RegisterPage);
+  }
+
+  public viewSignIn(x: ISignInComponentResult): void {
+    console.log('viewSignIn>', x);
+    this.authService.doLogin(x.email, x.password);
   }
 }

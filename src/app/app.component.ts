@@ -1,16 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Events, MenuController, Nav, Platform } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
+
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+import { Events, MenuController, Nav, Platform } from 'ionic-angular';
 
 import { ICurrentUser } from '../models/current-user';
-import { TodoCompletedListPage } from '../pages/todo-completed-list/todo-completed-list.page';
-import { TodoListPage } from '../pages/todo-list/todo-list.page';
+
 import { HomePage } from '../pages/home/home.page';
-import { SignInPage } from '../pages/sign-in/sign-in.page';
 import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 import { RegisterPage } from '../pages/register/register.page';
+import { SignInPage } from '../pages/sign-in/sign-in.page';
+import { TodoCompletedListPage } from '../pages/todo-completed-list/todo-completed-list.page';
+import { TodoListPage } from '../pages/todo-list/todo-list.page';
 
 import { AuthService } from '../services/auth.service';
 import { CompletedTodoService } from '../services/completed-todo.service';
@@ -48,7 +50,7 @@ export class MyApp implements OnInit {
   ];
 
   loggedOutPages: IPageInterface[] = [
-    { title: 'Login', component: SignInPage, icon: 'log-in' },
+    { title: 'Sign In', component: SignInPage, icon: 'log-in' },
     { title: 'Register', component: RegisterPage, icon: 'person-add'  },
   ];
 
