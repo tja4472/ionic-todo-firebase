@@ -20,7 +20,7 @@ export interface IModalResult {
 export class TodoCompletedDetailModal {
   public todoForm: FormGroup;
 
-  private readonly CLASS_NAME = 'CompletedTodoDetailPage';
+  private readonly CLASS_NAME = 'TodoCompletedDetailModal';
 
   // data model.
   private todo: TodoCompleted = new TodoCompleted();
@@ -37,17 +37,20 @@ export class TodoCompletedDetailModal {
 
   constructor(
     private formBuilder: FormBuilder,
-    params: NavParams,
+    navParams: NavParams,
     public viewController: ViewController
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
-    console.log('params:get>', params.get('todo'));
+    // navParams passes by reference.
+    const navParamsTodo: Readonly<TodoCompleted> = Object.assign(new TodoCompleted(), navParams.get('todo'));
 
-    const paramTodo: TodoCompleted = params.get('todo');
-    this.isEditing = !!paramTodo;
+    // console.log('params:get>', navParams.get('todo'));
+    // const navParamsTodo: TodoCompleted = navParams.get('todo');
+
+    this.isEditing = !!navParamsTodo;
 
     if (this.isEditing) {
-      this.todo = paramTodo;
+      this.todo = navParamsTodo;
     }
 
     this.createForm();

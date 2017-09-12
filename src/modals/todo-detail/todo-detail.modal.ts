@@ -8,35 +8,41 @@ import { Todo } from '../../shared/models/todo.model';
     templateUrl: 'todo-detail.modal.html',
 })
 export class TodoDetailModal {
-    // Called from template.
-    public todo: Todo;
+    public viewTodo: Todo;
 
-    private readonly CLASS_NAME = 'CurrentTodoDetailModal';
+    private readonly CLASS_NAME = 'TodoDetailModal';
 
     constructor(
-        params: NavParams,
+        navParams: NavParams,
         public viewController: ViewController
     ) {
         console.log(`%s:constructor`, this.CLASS_NAME);
+        // navParams passes by reference.
+        const navParamsTodo: Readonly<Todo> = Object.assign(new Todo(), navParams.get('todo'));
+        console.log('navParamsTodo>', navParamsTodo);
+        console.log('navParamsTodo.isNew()>', navParamsTodo.isNew());
 
-        const paramTodo: Todo = params.get('todo');
+        this.viewTodo = Object.assign(new Todo(), navParamsTodo);
+        console.log('this.viewTodo>', this.viewTodo);
+
+/*
+        const paramTodo: Todo = navParams.get('todo');
 
         if (paramTodo) {
-            this.todo = paramTodo;
+            this.viewTodo = paramTodo;
         } else {
-            this.todo = new Todo();
+            this.viewTodo = new Todo();
         }
+*/
     }
 
-    // Called from template.
-    itemCancelled() {
-        console.log('itemCancelled>');
+    viewItemCancelled() {
+        console.log('viewItemCancelled>');
         this.viewController.dismiss();
     }
 
-    // Called from template.
-    itemSaved(item: Todo) {
-        console.log('itemSaved>', item);
+    viewItemSaved(item: Todo) {
+        console.log('viewItemSaved>', item);
         this.viewController.dismiss(item);
     }
 }
