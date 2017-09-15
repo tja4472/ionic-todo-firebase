@@ -51,7 +51,7 @@ export class MyApp implements OnInit {
 
   loggedOutPages: IPageInterface[] = [
     { title: 'Sign In', component: SignInPage, icon: 'log-in' },
-    { title: 'Register', component: RegisterPage, icon: 'person-add'  },
+    { title: 'Register', component: RegisterPage, icon: 'person-add' },
   ];
 
   rootPage: any; // = Page1;
@@ -87,10 +87,12 @@ export class MyApp implements OnInit {
     console.log(`%s:initializeApp`, this.CLASS_NAME);
     const bootTime = Date.now();
 
-    this.platform.ready().then(() => {
+    this.platform.ready().then((readySource) => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       console.log(`%s:platform.ready()`, this.CLASS_NAME);
+      console.log(`%s:readySource>`, this.CLASS_NAME, readySource);
+
       const readyTime = Date.now();
       this.events.subscribe('app:boot', (time: number) => {
         console.log('App boot start: ', bootTime);
@@ -163,6 +165,10 @@ export class MyApp implements OnInit {
       return 'primary';
     }
     return;
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad');
   }
 
   private setupAuthServiceSubscription() {
