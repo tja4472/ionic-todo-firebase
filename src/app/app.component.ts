@@ -4,7 +4,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Events, MenuController, Nav, Platform } from 'ionic-angular';
 
-import { ICurrentUser } from '../models/current-user';
+import { SignedInUser } from '../models/signed-in-user.model';
 
 import { HomePage } from '../pages/home/home.page';
 import { Page1 } from '../pages/page1/page1';
@@ -167,42 +167,12 @@ export class MyApp implements OnInit {
     return;
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad');
-  }
-
   private setupAuthServiceSubscription() {
-    // NgZone.isInAngularZone() = true
-    // console.log('NgZone.isInAngularZone()-1>', NgZone.isInAngularZone());
-    this.authService.notifier$.subscribe((currentUser: ICurrentUser) => {
-      console.log('>>>>>>>>>>>>>>app.component.ts: authService.replaySubject$>', currentUser);
-      //  });
-      // this.authService.authUser$
-      //  .subscribe((currentUser: CurrentUser) => {
-      console.log(`%s: -- authService.activeUser subscribe --`, this.CLASS_NAME);
-      console.log(`%s:currentUser>`, this.CLASS_NAME, currentUser);
-      //        console.log(`%s:stateChecked>`, this.CLASS_NAME, this.authService.authStateChecked);
-      /*
-              if (!this.authService.authStateChecked) {
-                return;
-              }
-      */
-      // NgZone.isInAngularZone() = false
-      // console.log('NgZone.isInAngularZone()-2>', NgZone.isInAngularZone());
-
-      // Without the ngZone the [disabled]="!loginForm.valid" was being ignored
-      // in login.page.html.
-      // this.ngZone.run(() => {
-      // NgZone.isInAngularZone() = true
-      // console.log('NgZone.isInAngularZone()-3>', NgZone.isInAngularZone());
-      if (currentUser) {
+    this.authService.notifier$.subscribe((signedInUser: SignedInUser) => {
+      console.log('>>>>>>>>>>signedInUser>', signedInUser);
+      if (signedInUser) {
         console.log(`%s: -- logged in --`, this.CLASS_NAME);
-
-        if (currentUser.email === null) {
-          this.displayUserName = '';
-        } else {
-          this.displayUserName = currentUser.email;
-        }
+        this.displayUserName = signedInUser.displayName;
 
         this.enableMenu(true);
         this.nav.setRoot(TodoListPage).catch(() => {
@@ -213,7 +183,7 @@ export class MyApp implements OnInit {
         this.completedTodoService.startListening();
       } else {
         console.log(`%s: -- logged out --`, this.CLASS_NAME);
-        this.displayUserName = 'Not logged in';
+        this.displayUserName = 'Not signed in';
         this.enableMenu(false);
         this.nav.setRoot(HomePage).catch(() => {
           console.error('Didn\'t set nav root');

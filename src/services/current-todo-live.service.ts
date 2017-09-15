@@ -103,16 +103,13 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         // userId: string,
     ): void {
         console.log('%s:startListening()', this.CLASS_NAME);
-        if (this.authService.authUser === null) {
-            return;
-        }
-        if (this.authService.authUser.id === null) {
+        if (this.authService.signedInUserId === null) {
             return;
         }
 
         this.databaseReferenceListening = firebase.database()
             .ref(this.DB_USERS_KEY)
-            .child(this.authService.authUser.id)
+            .child(this.authService.signedInUserId)
             .child(this.DB_LIST_KEY);
 
         this.databaseReferenceListening
@@ -162,10 +159,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         indexes: IReorderArrayIndexes,
     ) {
         console.log('%s:reorderItems():indexes>', this.CLASS_NAME, indexes);
-        if (this.authService.authUser === null) {
-            return;
-        }
-        if (this.authService.authUser.id === null) {
+        if (this.authService.signedInUserId === null) {
             return;
         }
 
@@ -180,7 +174,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         // this.databaseReference.update(updates);
         firebase.database()
             .ref(this.DB_USERS_KEY)
-            .child(this.authService.authUser.id)
+            .child(this.authService.signedInUserId)
             .child(this.DB_LIST_KEY)
             .update(updates);
     }
@@ -189,10 +183,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         item: Todo,
     ) {
         console.log('%s:removeItem>', this.CLASS_NAME, item);
-        if (this.authService.authUser === null) {
-            return;
-        }
-        if (this.authService.authUser.id === null) {
+        if (this.authService.signedInUserId === null) {
             return;
         }
         if (item.$key === undefined) {
@@ -204,7 +195,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         //  .remove();
         firebase.database()
             .ref(this.DB_USERS_KEY)
-            .child(this.authService.authUser.id)
+            .child(this.authService.signedInUserId)
             .child(this.DB_LIST_KEY)
             .child(item.$key)
             .remove();
@@ -214,10 +205,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         item: Todo,
     ) {
         console.log('%s:saveItem>', this.CLASS_NAME, item);
-        if (this.authService.authUser === null) {
-            return;
-        }
-        if (this.authService.authUser.id === null) {
+        if (this.authService.signedInUserId === null) {
             return;
         }
         if (item.$key === undefined) {
@@ -226,7 +214,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
             // .push(toFirebaseTodo(item));
             firebase.database()
                 .ref(this.DB_USERS_KEY)
-                .child(this.authService.authUser.id)
+                .child(this.authService.signedInUserId)
                 .child(this.DB_LIST_KEY)
                 .push(toFirebaseTodo(item));
         } else {
@@ -236,7 +224,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
             // .set(toFirebaseTodo(item));
             firebase.database()
                 .ref(this.DB_USERS_KEY)
-                .child(this.authService.authUser.id)
+                .child(this.authService.signedInUserId)
                 .child(this.DB_LIST_KEY)
                 .child(item.$key)
                 .set(toFirebaseTodo(item));

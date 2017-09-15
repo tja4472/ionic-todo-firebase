@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ReplaySubject } from 'rxjs/Rx';
 
-import { ICurrentUser } from '../models/current-user';
+import { SignedInUser } from '../models/signed-in-user.model';
 
 import * as firebase from 'firebase/app';
 
@@ -13,84 +12,43 @@ import * as firebase from 'firebase/app';
 export class AuthService {
     public error$ = new ReplaySubject<Error | null>(1);
 
-    public notifier$: ReplaySubject<ICurrentUser | null> = new ReplaySubject<ICurrentUser>(1);
+    public notifier$: ReplaySubject<SignedInUser | null> = new ReplaySubject<SignedInUser>(1);
+    private _signedInUser: SignedInUser | null;
+
     private readonly CLASS_NAME = 'AuthService';
-    //
-    // this will hold the user object when we have one, we can subscribe
-    // to changes of this object to determine of we are logged in or not
-    // activeUser = new BehaviorSubject<ActiveUser>(null)
 
-
-
-    // tslint:disable-next-line:variable-name
-    private _authUserBehaviorSubject$ = new BehaviorSubject<ICurrentUser | null>({ id: null, email: null });
-
-    // private _authStateChecked: boolean = false;
-
-    get authUser() {
-        return this._authUserBehaviorSubject$.getValue();
+    public get signedInUserId(): string | null {
+        if (this._signedInUser) {
+            return this._signedInUser.userId;
+        } else {
+            return null;
+        }
     }
 
-    /*
-        get authStateChecked() {
-            return this._authStateChecked;
-        }
-    */
     constructor(
     ) {
         console.log(`%s:constructor`, this.CLASS_NAME);
         this.clearError$();
 
-        firebase.auth().onAuthStateChanged((user: firebase.User) => {
-            // this._authStateChecked = true;
-
-            if (user) {
+        firebase.auth().onAuthStateChanged((firebaseUser: firebase.User) => {
+            if (firebaseUser) {
                 // User is signed in.
-                console.log(`%s:User is signed in>`, this.CLASS_NAME, user.uid);
-                this._authUserBehaviorSubject$.next(this.createCurrentUser(user));
-                this.notifier$.next(this.createCurrentUser(user));
+                console.log(`%s:User is signed in>`, this.CLASS_NAME, firebaseUser.uid);
+
+                this._signedInUser = this.createSignedInUser(firebaseUser);
+                this.notifier$.next(this._signedInUser);
             } else {
                 // No user is signed in.
                 console.log(`%s: No user is signed in.`, this.CLASS_NAME);
-                // this._authUserBehaviorSubject$.next({ id: null, email: null });
-                // this.replaySubject$.next({ id: null, email: null });
-                this._authUserBehaviorSubject$.next(null);
                 this.notifier$.next(null);
             }
         });
     }
-    /*
-        init() {
-            firebase.auth().onAuthStateChanged((user: firebase.User) => {
-                this.stateChecked = true;
 
-                if (user) {
-                    // User is signed in.
-                    console.log(`%s:User is signed in>`, this.CLASS_NAME, user.uid);
-                    this.currentUser$.next(this.createCurrentUser(user));
-
-                } else {
-                    // No user is signed in.
-                    console.log(`%s: No user is signed in.`, this.CLASS_NAME);
-                    this.currentUser$.next(null);
-                }
-            });
-        }
-    */
     public clearError$() {
         this.error$.next(null);
     }
 
-    createCurrentUser(
-        user: firebase.User
-    ): ICurrentUser {
-        const currentUser: ICurrentUser = {
-            email: user.email,
-            id: user.uid,
-        };
-
-        return currentUser;
-    }
     /**
      * here we check to see if ionic saved a user for us
      */
@@ -215,5 +173,19 @@ export class AuthService {
             console.log(error);
         });
         // this._authUserBehaviorSubject$.next(null)
+    }
+
+    private createSignedInUser(
+        user: firebase.User
+    ): SignedInUser {
+        const result: SignedInUser = new SignedInUser(
+            {
+                email: user.email,
+                firebaseDisplayName: user.displayName,
+                userId: user.uid,
+            }
+        );
+
+        return result;
     }
 }

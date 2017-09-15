@@ -56,16 +56,13 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     ): void {
         console.log('%s:startListening()', this.CLASS_NAME);
 
-        if (this.authService.authUser === null) {
-            return;
-        }
-        if (this.authService.authUser.id === null) {
+        if (this.authService.signedInUserId === null) {
             return;
         }
 
         this.databaseReferenceListening = firebase.database()
             .ref(this.DB_USERS_KEY)
-            .child(this.authService.authUser.id)
+            .child(this.authService.signedInUserId)
             .child(this.DB_LIST_KEY);
 
         this.databaseReferenceListening
@@ -116,19 +113,17 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
     ) {
         console.log('%s:removeItem>', this.CLASS_NAME, item);
 
-        if (this.authService.authUser === null) {
+        if (this.authService.signedInUserId === null) {
             return;
         }
-        if (this.authService.authUser.id === null) {
-            return;
-        }
+
         if (item.$key === undefined) {
             return;
         }
 
         firebase.database()
             .ref(this.DB_USERS_KEY)
-            .child(this.authService.authUser.id)
+            .child(this.authService.signedInUserId)
             .child(this.DB_LIST_KEY)
             .child(item.$key)
             .remove();
@@ -138,10 +133,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
         item: TodoCompleted
     ) {
         console.log(`%s:saveItem>`, this.CLASS_NAME, item);
-        if (this.authService.authUser === null) {
-            return;
-        }
-        if (this.authService.authUser.id === null) {
+        if (this.authService.signedInUserId === null) {
             return;
         }
 
@@ -149,7 +141,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
             // insert.
             firebase.database()
                 .ref(this.DB_USERS_KEY)
-                .child(this.authService.authUser.id)
+                .child(this.authService.signedInUserId)
                 .child(this.DB_LIST_KEY)
                 .push(toFirebaseTodo(item));
         } else {
@@ -160,7 +152,7 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
 
             firebase.database()
                 .ref(this.DB_USERS_KEY)
-                .child(this.authService.authUser.id)
+                .child(this.authService.signedInUserId)
                 .child(this.DB_LIST_KEY)
                 .child(item.$key)
                 .set(toFirebaseTodo(item));
