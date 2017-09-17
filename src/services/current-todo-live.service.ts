@@ -107,6 +107,8 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
             return;
         }
 
+        const signedInUserId: string = this.authService.signedInUserId;
+
         this.databaseReferenceListening = firebase.database()
             .ref(this.DB_USERS_KEY)
             .child(this.authService.signedInUserId)
@@ -129,7 +131,10 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
 
                     arr.push(
                         fromFirebaseTodo
-                            (childSnapshot.key, childSnapshot.val()));
+                            (childSnapshot.key,
+                            childSnapshot.val(),
+                            signedInUserId,
+                        ));
                     return false;
                 });
 
@@ -271,7 +276,8 @@ function fromDatabase(x: any[]): Todo[] {
 
 function fromFirebaseTodo(
     id: string,
-    x: any
+    x: any,
+    userId: string,
 ): Todo {
     console.log('fromFirebaseTodo');
 
@@ -281,8 +287,7 @@ function fromFirebaseTodo(
     result.index = x.index;
     result.isComplete = x.isComplete;
     result.name = x.name;
-    // userId: x.userId,
-    result.userId = 'aaa';
+    result.userId = userId;
 
     /*
         if (result.description === undefined) {

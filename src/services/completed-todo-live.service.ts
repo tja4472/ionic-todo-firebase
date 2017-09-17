@@ -60,9 +60,11 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
             return;
         }
 
+        const signedInUserId: string = this.authService.signedInUserId;
+
         this.databaseReferenceListening = firebase.database()
             .ref(this.DB_USERS_KEY)
-            .child(this.authService.signedInUserId)
+            .child(signedInUserId)
             .child(this.DB_LIST_KEY);
 
         this.databaseReferenceListening
@@ -82,7 +84,10 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
 
                     arr.push(
                         this.dmCompletedTodoService.fromDatabase
-                            (childSnapshot.key, childSnapshot.val()));
+                            (childSnapshot.key,
+                            childSnapshot.val(),
+                            signedInUserId,
+                        ));
                     return false;
                 });
 
