@@ -27,6 +27,8 @@ import { TodoDetailModal } from '../modals/todo-detail/todo-detail.modal';
 import { ControlMessagesComponent } from '../shared/components/control-messages/control-messages.component';
 import { CreateUserComponent } from '../shared/components/create-user/create-user.component';
 import { SignInComponent } from '../shared/components/sign-in/sign-in.component';
+// tslint:disable-next-line:max-line-length
+import { TodoCompletedDetailComponent } from '../shared/components/todo-completed-detail/todo-completed-detail.component';
 import { TodoCompletedListComponent } from '../shared/components/todo-completed-list/todo-completed-list.component';
 import { TodoDetailComponent } from '../shared/components/todo-detail/todo-detail.component';
 import { TodoListComponent } from '../shared/components/todo-list/todo-list.component';
@@ -65,6 +67,7 @@ import 'firebase/database';
     Page2,
     SignInComponent,
     TodoCompletedDetailModal,
+    TodoCompletedDetailComponent,
     TodoCompletedListComponent,
     TodoCompletedListPage,
     ControlMessagesComponent,
