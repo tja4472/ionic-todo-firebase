@@ -70,7 +70,6 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
                     {
                         description: x.description,
                         name: x.name,
-                        userId: x.userId,
                     });
 
             this.completedTodoService.saveItem(todoCompleted);
@@ -110,7 +109,7 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
 
         this.databaseReferenceListening = firebase.database()
             .ref(this.DB_USERS_KEY)
-            .child(this.authService.signedInUserId)
+            .child(signedInUserId)
             .child(this.DB_LIST_KEY);
 
         this.databaseReferenceListening
@@ -132,7 +131,6 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
                         fromFirebaseTodo
                             (childSnapshot.key,
                             childSnapshot.val(),
-                            signedInUserId,
                         ));
                     return false;
                 });
@@ -276,7 +274,6 @@ function fromDatabase(x: any[]): Todo[] {
 function fromFirebaseTodo(
     id: string,
     x: any,
-    userId: string,
 ): Todo {
     console.log('fromFirebaseTodo');
 
@@ -286,7 +283,6 @@ function fromFirebaseTodo(
     result.index = x.index;
     result.isComplete = x.isComplete;
     result.name = x.name;
-    result.userId = userId;
 
     /*
         if (result.description === undefined) {
