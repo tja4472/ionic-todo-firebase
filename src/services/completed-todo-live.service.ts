@@ -86,7 +86,6 @@ export class CompletedTodoServiceLive implements CompletedTodoService {
                         this.dmCompletedTodoService.fromDatabase
                             (childSnapshot.key,
                             childSnapshot.val(),
-                            signedInUserId,
                         ));
                     return false;
                 });

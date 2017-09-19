@@ -86,7 +86,6 @@ export class CurrentTodoServiceLive implements CurrentTodoService {
         todo.description = item.description;
         todo.isComplete = false;
         todo.name = item.name;
-        todo.userId = item.userId;
 
         this.saveItem(todo);
         this.completedTodoService.removeItem(item);

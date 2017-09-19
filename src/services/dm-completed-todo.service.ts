@@ -15,7 +15,6 @@ export class DmCompletedTodoService {
     public fromDatabase(
         id: string,
         data: IDmCompletedTodo,
-        userId: string,
     ): TodoCompleted {
         console.log(`%s:fromDatabase()`, this.CLASS_NAME);
 
@@ -23,7 +22,6 @@ export class DmCompletedTodoService {
             $key: id,
             description: data.description,
             name: data.name,
-            userId,
         });
 
         return expected;
