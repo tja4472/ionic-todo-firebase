@@ -1,3 +1,4 @@
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -17,6 +18,9 @@ import { TodoListPage } from '../pages/todo-list/todo-list.page';
 import { AuthService } from '../services/auth.service';
 import { CompletedTodoService } from '../services/completed-todo.service';
 import { CurrentTodoService } from '../services/current-todo.service';
+
+import 'rxjs/add/operator/combineLatest';
+import 'rxjs/add/operator/skipUntil';
 
 export interface IPageInterface {
   title: string;
@@ -46,7 +50,7 @@ export class MyApp implements OnInit {
   loggedInPages: IPageInterface[] = [
     { title: 'Current Todos Page', component: TodoListPage, icon: 'calendar' },
     { title: 'Completed Todos Page', component: TodoCompletedListPage, icon: 'calendar' },
-    { title: 'Sign Out', component: Page1, icon: 'log-out', logsOut: true }
+    { title: 'Sign Out', component: HomePage, icon: 'log-out', logsOut: true }
   ];
 
   loggedOutPages: IPageInterface[] = [
@@ -73,6 +77,9 @@ export class MyApp implements OnInit {
     private currentTodoService: CurrentTodoService,
   ) {
     console.log(`%s:constructor`, this.CLASS_NAME);
+
+
+
     this.initializeApp();
   }
 
@@ -112,8 +119,15 @@ export class MyApp implements OnInit {
       */
       // This has to be done after platform.ready() else enableMenu() will
       // not change menu.
-      this.setupAuthServiceSubscription();
+      this.setupSubscriptions();
     });
+
+    this.checkPlatformReady();
+  }
+  async checkPlatformReady() {
+    const readySource = await this.platform.ready();
+    console.log('Platform ready:', readySource);
+    return readySource;
   }
 
   openPage(page: IPageInterface) {
@@ -167,34 +181,79 @@ export class MyApp implements OnInit {
     return;
   }
 
-  private setupAuthServiceSubscription() {
-    this.authService.notifier$.subscribe((signedInUser: SignedInUser) => {
-      console.log('>>>>>>>>>>signedInUser>', signedInUser);
-      if (signedInUser) {
-        console.log(`%s: -- logged in --`, this.CLASS_NAME);
-        this.displayUserName = signedInUser.displayName;
+  private setupSubscriptions(): void {
+    const signedIn$ = this.authService.notifier$
+      .filter((x) => x !== null)
+      .map((x) => x as SignedInUser);
 
-        this.enableMenu(true);
-        this.nav.setRoot(TodoListPage).catch(() => {
-          console.error('Didn\'t set nav root');
-        });
+    const signedOut$ = this.authService.notifier$
+      .filter((x) => x === null)
+      .map(() => { return; });
 
-        this.currentTodoService.startListening();
-        this.completedTodoService.startListening();
-      } else {
-        console.log(`%s: -- logged out --`, this.CLASS_NAME);
-        this.displayUserName = 'Not signed in';
-        this.enableMenu(false);
-        this.nav.setRoot(HomePage).catch(() => {
-          console.error('Didn\'t set nav root');
-        });
-        console.log(`%s: -- logged out 1--`, this.CLASS_NAME);
-        this.currentTodoService.stopListening();
-        console.log(`%s: -- logged out 2--`, this.CLASS_NAME);
-        this.completedTodoService.stopListening();
-        console.log(`%s: -- logged out 3 --`, this.CLASS_NAME);
-      }
+    signedIn$.subscribe((signedInUser) => {
+      console.log('%s:---signedIn$>', this.CLASS_NAME, signedInUser);
+      this.displayUserName = signedInUser.displayName;
+      this.enableMenu(true);
+      this.nav.setRoot(TodoListPage).catch(() => {
+        console.error('Didn\'t set nav root');
+      });
     });
-    // });
+
+    signedOut$.subscribe(() => {
+      console.log('%s:---signedOut$>', this.CLASS_NAME);
+      this.displayUserName = 'Not signed inA';
+      this.enableMenu(false);
+
+      // set in loggedInPages
+      /*
+      this.nav.setRoot(HomePage).catch(() => {
+        console.error('Didn\'t set nav root');
+      });
+      */
+    });
+
+    const combined$
+      = combineLatest(
+        this.authService.notifier$,
+        this.authService.online$,
+        (signedInUser, isOnline) => ({ signedInUser, isOnline }));
+
+    const offlineSignedIn$ = combined$
+      .filter((x) => (!x.isOnline) && (x.signedInUser !== null))
+      .map((x) => x.signedInUser as SignedInUser);
+
+    const offlineSignedOut$ = combined$
+      .filter((x) => (!x.isOnline) && (x.signedInUser === null))
+      .map(() => { return; });
+
+    const onlineSignedIn$ = combined$
+      .filter((x) => x.isOnline && (x.signedInUser !== null))
+      .map((x) => x.signedInUser as SignedInUser);
+
+    const onlineSignedOut$ = combined$
+      .filter((x) => x.isOnline && (x.signedInUser === null))
+      .map(() => { return; });
+
+    offlineSignedIn$.subscribe((signedInUser) => {
+      console.log('%s:---offlineSignedIn$>', this.CLASS_NAME, signedInUser);
+
+    });
+
+    offlineSignedOut$.subscribe(() => {
+      console.log('%s:---offlineSignedOut$>', this.CLASS_NAME);
+
+    });
+
+    onlineSignedIn$.subscribe((x) => {
+      console.log('%s:---onlineSignedIn$>', this.CLASS_NAME, x);
+      this.currentTodoService.startListening();
+      this.completedTodoService.startListening();
+    });
+
+    onlineSignedOut$.subscribe(() => {
+      console.log('%s:---onlineSignedOut$>', this.CLASS_NAME);
+      this.currentTodoService.stopListening();
+      this.completedTodoService.stopListening();
+    });
   }
 }

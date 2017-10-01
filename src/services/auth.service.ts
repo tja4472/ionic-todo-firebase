@@ -11,11 +11,17 @@ import * as firebase from 'firebase/app';
 @Injectable()
 export class AuthService {
     public error$ = new ReplaySubject<Error | null>(1);
+    public online$ = new ReplaySubject<boolean>(1);
 
     public notifier$: ReplaySubject<SignedInUser | null> = new ReplaySubject<SignedInUser>(1);
+
+    public isOnline: boolean = false;
+
     private _signedInUser: SignedInUser | null;
 
     private readonly CLASS_NAME = 'AuthService';
+
+
 
     public get signedInUserId(): string | null {
         if (this._signedInUser) {
@@ -29,20 +35,8 @@ export class AuthService {
     ) {
         console.log(`%s:constructor`, this.CLASS_NAME);
         this.clearError$();
-
-        firebase.auth().onAuthStateChanged((firebaseUser: firebase.User) => {
-            if (firebaseUser) {
-                // User is signed in.
-                console.log(`%s:User is signed in>`, this.CLASS_NAME, firebaseUser.uid);
-
-                this._signedInUser = this.createSignedInUser(firebaseUser);
-                this.notifier$.next(this._signedInUser);
-            } else {
-                // No user is signed in.
-                console.log(`%s: No user is signed in.`, this.CLASS_NAME);
-                this.notifier$.next(null);
-            }
-        });
+        this.initOnline$();
+        this.initNotifier$();
     }
 
     public clearError$() {
@@ -188,4 +182,32 @@ export class AuthService {
 
         return result;
     }
+
+    private initNotifier$(): void {
+        firebase.auth().onAuthStateChanged((firebaseUser: firebase.User) => {
+            if (firebaseUser) {
+                // User is signed in.
+                console.log(`%s:User is signed in>`, this.CLASS_NAME, firebaseUser.uid);
+
+                this._signedInUser = this.createSignedInUser(firebaseUser);
+                this.notifier$.next(this._signedInUser);
+            } else {
+                // No user is signed in.
+                console.log(`%s: No user is signed in.`, this.CLASS_NAME);
+                this.notifier$.next(null);
+            }
+        });
+    }
+
+    private initOnline$(): void {
+        const connectedRef = firebase.database().ref('.info/connected');
+
+        connectedRef.on('value', (snap: any) => {
+            this.isOnline = snap.val();
+            console.log('%s: isOnline', this.CLASS_NAME, this.isOnline);
+            this.online$.next(this.isOnline);
+            // console.log('isOnline>', this.isOnline, firebase.database().ref().push().key);
+        });
+    }
+
 }
